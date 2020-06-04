@@ -1,0 +1,25 @@
+{
+	"name": "providerPortalBlobStorage",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=@{linkedService().Storage_AccountName};AccountKey=@{linkedService().Storage_AccountKey};EndpointSuffix=@{linkedService().Storage_EndpointSuffix}"
+		},
+		"parameters": {
+			"Storage_AccountName": {
+				"type": "String",
+				"defaultValue": "#DEVOPS__StorageAccountName"
+			},
+			"Storage_AccountKey": {
+				"type": "String",
+				"defaultValue": "#DEVOPS__StorageAccountKey"
+			},
+			"Storage_EndpointSuffix": {
+				"type": "String",
+				"defaultValue": "core.windows.net"
+			}
+		}
+	}
+}

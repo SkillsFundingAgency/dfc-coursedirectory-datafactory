@@ -1,0 +1,97 @@
+{
+	"name": "cosmosDb_Venues",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalCosmosDb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "cosmos"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"UKPRN": {
+					"type": "integer"
+				},
+				"PROVIDER_ID": {
+					"type": "integer"
+				},
+				"VENUE_ID": {
+					"type": "integer"
+				},
+				"VENUE_NAME": {
+					"type": "string"
+				},
+				"PROV_VENUE_ID": {
+					"type": "string"
+				},
+				"ADDRESS_1": {
+					"type": "string"
+				},
+				"ADDRESS_2": {
+					"type": "string"
+				},
+				"TOWN": {
+					"type": "string"
+				},
+				"COUNTY": {
+					"type": "string"
+				},
+				"POSTCODE": {
+					"type": "string"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Status": {
+					"type": "integer"
+				},
+				"DateUpdated": {
+					"type": "string"
+				},
+				"UpdatedBy": {
+					"type": "string"
+				},
+				"PHONE": {
+					"type": "string"
+				},
+				"EMAIL": {
+					"type": "string"
+				},
+				"WEBSITE": {
+					"type": "string"
+				},
+				"LocationId": {
+					"type": "integer"
+				},
+				"TribalLocationId": {
+					"type": "null"
+				},
+				"Telephone": {
+					"type": "string"
+				},
+				"Email": {
+					"type": "string"
+				},
+				"Website": {
+					"type": "string"
+				},
+				"CreatedBy": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "venues"
+		}
+	}
+}
