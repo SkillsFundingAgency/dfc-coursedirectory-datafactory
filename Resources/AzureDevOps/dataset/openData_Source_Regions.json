@@ -1,0 +1,22 @@
+{
+	"name": "openData_Source_Regions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "regions.json",
+				"folderPath": "source",
+				"container": "open-data"
+			}
+		}
+	}
+}
