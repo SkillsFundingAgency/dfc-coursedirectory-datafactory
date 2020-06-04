@@ -1,0 +1,10 @@
+{
+	"name": "providerPortalAzureKeyVault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://dfc-sohara-prov-kv.vault.azure.net/"
+		}
+	}
+}
