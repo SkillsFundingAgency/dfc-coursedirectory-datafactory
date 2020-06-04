@@ -1,0 +1,25 @@
+{
+	"name": "providerPortalCosmosDb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"Cosmos_AccountEndpoint": {
+				"type": "String",
+				"defaultValue": "#DEVOPS__CosmosAccountEndpoint"
+			},
+			"Cosmos_AccountKey": {
+				"type": "String",
+				"defaultValue": "#DEVOPS__CosmosAccountKey"
+			},
+			"Cosmos_Database": {
+				"type": "String",
+				"defaultValue": "DEVOPS__CosmosDatabase"
+			}
+		},
+		"annotations": [],
+		"type": "CosmosDb",
+		"typeProperties": {
+			"connectionString": "AccountEndpoint=@{linkedService().Cosmos_AccountEndpoint};Database=@{linkedService().Cosmos_Database};AccountKey=@{linkedService().Cosmos_AccountKey}"
+		}
+	}
+}

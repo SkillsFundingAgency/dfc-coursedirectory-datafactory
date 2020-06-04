@@ -1,0 +1,57 @@
+{
+	"name": "openData_Cache_Venues",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "venues.json",
+				"folderPath": {
+					"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+					"type": "Expression"
+				},
+				"container": "open-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Id": {
+					"type": "string"
+				},
+				"LocationName": {
+					"type": "string"
+				},
+				"LocationAddress1": {
+					"type": "string"
+				},
+				"LocationAddress2": {
+					"type": "null"
+				},
+				"LocationTown": {
+					"type": "string"
+				},
+				"LocationCounty": {
+					"type": "string"
+				},
+				"LocationPostcode": {
+					"type": "string"
+				},
+				"LocationLatitude": {
+					"type": "number"
+				},
+				"LocationLongitude": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}
