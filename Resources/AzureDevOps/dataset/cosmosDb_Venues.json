@@ -1,5 +1,5 @@
 {
-	"name": "venues",
+	"name": "cosmosDb_Venues",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalCosmosDb",

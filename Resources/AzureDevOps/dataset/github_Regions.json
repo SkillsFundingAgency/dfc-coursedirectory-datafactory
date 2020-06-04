@@ -1,5 +1,5 @@
 {
-	"name": "regions",
+	"name": "github_Regions",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "githubRaw",

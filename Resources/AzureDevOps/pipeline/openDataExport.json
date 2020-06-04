@@ -25,24 +25,11 @@
 							"type": "JsonReadSettings"
 						}
 					},
-					"sink": {
-						"type": "JsonSink",
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
-						}
-					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "regions",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "regions",
+						"referenceName": "github_Regions",
 						"type": "DatasetReference"
 					}
 				]

@@ -1,0 +1,29 @@
+{
+	"name": "openData_Export_Providers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+					"type": "Expression"
+				},
+				"container": "open-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

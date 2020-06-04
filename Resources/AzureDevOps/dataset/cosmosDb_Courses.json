@@ -1,5 +1,5 @@
 {
-	"name": "courses",
+	"name": "cosmosDb_Courses",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalCosmosDb",

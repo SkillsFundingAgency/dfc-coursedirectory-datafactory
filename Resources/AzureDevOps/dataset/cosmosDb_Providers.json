@@ -1,5 +1,5 @@
 {
-	"name": "providers",
+	"name": "cosmosDb_Providers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalCosmosDb",
