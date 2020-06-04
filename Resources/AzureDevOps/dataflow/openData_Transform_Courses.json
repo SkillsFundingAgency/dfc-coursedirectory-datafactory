@@ -1,0 +1,33 @@
+{
+	"name": "openData_Transform_Courses",
+	"properties": {
+		"folder": {
+			"name": "openDataExport"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cosmosDb_Courses",
+						"type": "DatasetReference"
+					},
+					"name": "courses"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "flattenCourseRuns"
+				},
+				{
+					"name": "sortByStartDate"
+				},
+				{
+					"name": "filterHistoricalCourseRuns"
+				}
+			],
+			"script": "source(output(\n\t\tCourseId as string,\n\t\tQualificationCourseTitle as string,\n\t\tLearnAimRef as string,\n\t\tNotionalNVQLevelv2 as string,\n\t\tAwardOrgCode as string,\n\t\tQualificationType as string,\n\t\tProviderUKPRN as string,\n\t\tCourseDescription as string,\n\t\tEntryRequirements as string,\n\t\tWhatYoullLearn as string,\n\t\tHowYoullLearn as string,\n\t\tWhatYoullNeed as string,\n\t\tHowYoullBeAssessed as string,\n\t\tWhereNext as string,\n\t\tAdultEducationBudget as boolean,\n\t\tAdvancedLearnerLoan as boolean,\n\t\tCourseRuns as (id as string, CourseInstanceId as string, VenueId as string, CourseName as string, ProviderCourseID as string, DeliveryMode as string, FlexibleStartDate as boolean, StartDate as string, CourseURL as string, Cost as string, CostDescription as string, DurationUnit as string, DurationValue as string, StudyMode as string, AttendancePattern as string, National as string, Regions as string[], RecordStatus as string, CreatedDate as string, CreatedBy as string, UpdatedDate as string, UpdatedBy as string, SubRegions as string, BulkUploadErrors as string)[],\n\t\tCourseStatus as string,\n\t\tCreatedDate as string,\n\t\tCreatedBy as string,\n\t\tUpdatedDate as string,\n\t\tIsValid as boolean,\n\t\tUpdatedBy as string,\n\t\tBulkUploadErrors as string[],\n\t\tLarlessReason as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document') ~> courses\ncourses foldDown(unroll(CourseRuns),\n\tmapColumn(\n\t\tProviderUkprn = ProviderUKPRN,\n\t\tCourseName = CourseRuns.CourseName,\n\t\tCourseId,\n\t\tLearnAimRef = LearnAimRef,\n\t\tDeliveryMode = CourseRuns.DeliveryMode,\n\t\tFlexibleStartDate = CourseRuns.FlexibleStartDate,\n\t\tStartDate = CourseRuns.StartDate,\n\t\tCourseURL = CourseRuns.CourseURL,\n\t\tCost = CourseRuns.Cost,\n\t\tCostDescription = CourseRuns.CostDescription,\n\t\tNational = CourseRuns.National,\n\t\tRegions = CourseRuns.Regions,\n\t\tVenueId = CourseRuns.VenueId,\n\t\tUpdatedDate = CourseRuns.UpdatedDate,\n\t\tDurationUnit = CourseRuns.DurationUnit,\n\t\tDurationValue = CourseRuns.DurationValue\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> flattenCourseRuns\nflattenCourseRuns sort(desc(StartDate, false),\n\tasc(FlexibleStartDate, false)) ~> sortByStartDate\nsortByStartDate filter(toDate(startDate) > subDays(toDate(startDate), 1 + dayOfMonth(toDate(startDate)))) ~> filterHistoricalCourseRuns"
+		}
+	}
+}
