@@ -23,15 +23,9 @@
 			"transformations": [
 				{
 					"name": "Exists1"
-				},
-				{
-					"name": "Exists2"
-				},
-				{
-					"name": "Exists3"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery') ~> Venues\nsource(output(\n\t\tId as string,\n\t\tApiLocationId as string,\n\t\tSubRegionName as string,\n\t\tChecked as boolean,\n\t\tLatitude as double,\n\t\tLongitude as double,\n\t\tWeighting as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> CourseRuns\nExists2 exists(negate:false,\n\tbroadcast: 'auto')~> Exists1\nExists3 exists(negate:false,\n\tbroadcast: 'auto')~> Exists2\nVenues exists(negate:false,\n\tbroadcast: 'auto')~> Exists3"
+			"script": "source(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery') ~> Venues\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> CourseRuns\nVenues, CourseRuns exists(Venues@Id == CourseRuns@Id,\n\tnegate:false,\n\tbroadcast: 'auto')~> Exists1"
 		}
 	}
 }
