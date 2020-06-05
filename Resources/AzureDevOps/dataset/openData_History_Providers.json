@@ -1,5 +1,5 @@
 {
-	"name": "openData_Export_Providers",
+	"name": "openData_History_Providers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalBlobStorage",
@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": {
-					"value": "export",
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
 					"type": "Expression"
 				},
 				"container": "open-data"
@@ -26,43 +26,43 @@
 		},
 		"schema": [
 			{
-				"name": "ProviderUkprn",
+				"name": "ukprn",
 				"type": "String"
 			},
 			{
-				"name": "ProviderName",
+				"name": "providerName",
 				"type": "String"
 			},
 			{
-				"name": "TradingName",
+				"name": "tradingName",
 				"type": "String"
 			},
 			{
-				"name": "ContactAddress1",
+				"name": "contactAddress1",
 				"type": "String"
 			},
 			{
-				"name": "ContactAddress2",
+				"name": "contactAddress2",
 				"type": "String"
 			},
 			{
-				"name": "ContactTown",
+				"name": "contactTown",
 				"type": "String"
 			},
 			{
-				"name": "ContactPostcode",
+				"name": "contactPostcode",
 				"type": "String"
 			},
 			{
-				"name": "ContactWebsite",
+				"name": "contactWebsite",
 				"type": "String"
 			},
 			{
-				"name": "ContactEmail",
+				"name": "contactEmail",
 				"type": "String"
 			},
 			{
-				"name": "ContactPhone",
+				"name": "contactPhone",
 				"type": "String"
 			}
 		]
