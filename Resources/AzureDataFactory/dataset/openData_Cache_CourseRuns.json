@@ -1,0 +1,18 @@
+{
+	"name": "openData_Cache_CourseRuns",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalTableStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "AzureTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "OpenDataCacheCourseRuns"
+		}
+	}
+}
