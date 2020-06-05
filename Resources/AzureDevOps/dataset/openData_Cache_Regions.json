@@ -17,6 +17,32 @@
 				"folderPath": "cache",
 				"container": "open-data"
 			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Id": {
+					"type": "string"
+				},
+				"ApiLocationId": {
+					"type": "integer"
+				},
+				"SubRegionName": {
+					"type": "string"
+				},
+				"Checked": {
+					"type": "boolean"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Weighting": {
+					"type": "integer"
+				}
+			}
 		}
 	}
 }
