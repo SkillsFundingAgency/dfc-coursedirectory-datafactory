@@ -26,71 +26,91 @@
 		},
 		"schema": [
 			{
-				"name": "ukprn",
+				"name": "ProviderUkprn",
 				"type": "String"
 			},
 			{
-				"name": "courseName",
+				"name": "CourseName",
 				"type": "String"
 			},
 			{
-				"name": "courseId",
+				"name": "CourseId",
 				"type": "String"
 			},
 			{
-				"name": "lars",
+				"name": "LearnAimRef",
 				"type": "String"
 			},
 			{
-				"name": "deliveryMode",
+				"name": "DeliveryMode",
 				"type": "String"
 			},
 			{
-				"name": "startDate",
+				"name": "StartDate",
 				"type": "String"
 			},
 			{
-				"name": "courseUrl",
+				"name": "FlexibleStartDate",
 				"type": "String"
 			},
 			{
-				"name": "cost",
+				"name": "CourseURL",
 				"type": "String"
 			},
 			{
-				"name": "costDescription",
+				"name": "Cost",
 				"type": "String"
 			},
 			{
-				"name": "locationName",
+				"name": "CostDescription",
 				"type": "String"
 			},
 			{
-				"name": "locationAddress1",
+				"name": "Regions",
 				"type": "String"
 			},
 			{
-				"name": "locationAddress2",
+				"name": "National",
 				"type": "String"
 			},
 			{
-				"name": "locationTown",
+				"name": "LocationName",
 				"type": "String"
 			},
 			{
-				"name": "locationPostcode",
+				"name": "LocationAddress1",
 				"type": "String"
 			},
 			{
-				"name": "locationLatitudelocationLongitude",
+				"name": "LocationAddress2",
 				"type": "String"
 			},
 			{
-				"name": "updatedDate",
+				"name": "LocationTown",
 				"type": "String"
 			},
 			{
-				"name": "duration",
+				"name": "LocationPostcode",
+				"type": "String"
+			},
+			{
+				"name": "LocationLatitude",
+				"type": "String"
+			},
+			{
+				"name": "LocationLongitude",
+				"type": "String"
+			},
+			{
+				"name": "UpdatedDate",
+				"type": "String"
+			},
+			{
+				"name": "DurationUnit",
+				"type": "String"
+			},
+			{
+				"name": "DurationValue",
 				"type": "String"
 			},
 			{
