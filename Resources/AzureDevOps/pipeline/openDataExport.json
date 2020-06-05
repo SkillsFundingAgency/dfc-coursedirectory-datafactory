@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "copyRegionsToBlob",
+				"name": "copyRegionsToCache",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -45,7 +45,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "openData_Source_Regions",
+						"referenceName": "openData_Cache_Regions",
 						"type": "DatasetReference"
 					}
 				]
