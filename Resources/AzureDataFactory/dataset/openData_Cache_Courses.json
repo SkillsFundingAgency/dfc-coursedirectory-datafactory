@@ -17,6 +17,62 @@
 				"folderPath": "cache",
 				"container": "open-data"
 			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"ProviderUKPRN": {
+					"type": "integer"
+				},
+				"CourseId": {
+					"type": "integer"
+				},
+				"LearnAimRef": {
+					"type": "string"
+				},
+				"CourseName": {
+					"type": "string"
+				},
+				"DeliveryMode": {
+					"type": "integer"
+				},
+				"FlexibleStartDate": {
+					"type": "boolean"
+				},
+				"StartDate": {
+					"type": "string"
+				},
+				"CourseURL": {
+					"type": "null"
+				},
+				"Cost": {
+					"type": "integer"
+				},
+				"CostDescription": {
+					"type": "string"
+				},
+				"National": {
+					"type": "boolean"
+				},
+				"Regions": {
+					"type": "null"
+				},
+				"VenueId": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				},
+				"DurationUnit": {
+					"type": "integer"
+				},
+				"DurationValue": {
+					"type": "integer"
+				},
+				"AttendancePattern": {
+					"type": "integer"
+				}
+			}
 		}
 	}
 }
