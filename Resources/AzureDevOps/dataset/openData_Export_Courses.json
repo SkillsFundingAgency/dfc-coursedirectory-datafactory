@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": {
-					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+					"value": "export",
 					"type": "Expression"
 				},
 				"container": "open-data"

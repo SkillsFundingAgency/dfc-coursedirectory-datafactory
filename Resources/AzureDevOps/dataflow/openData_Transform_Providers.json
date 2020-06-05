@@ -9,32 +9,36 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "openData_Export_Courses",
-						"type": "DatasetReference"
-					},
-					"name": "courses"
-				},
-				{
-					"dataset": {
 						"referenceName": "cosmosDb_Providers",
 						"type": "DatasetReference"
 					},
 					"name": "providers"
+				},
+				{
+					"dataset": {
+						"referenceName": "openData_Export_Courses",
+						"type": "DatasetReference"
+					},
+					"name": "courses"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "joinProvidersToCourses"
-				},
-				{
 					"name": "flattenContactDetails"
 				},
 				{
 					"name": "splitContactTypes"
+				},
+				{
+					"name": "selectRelevantProviders"
+				},
+				{
+					"name": "map",
+					"description": "Creates an explicit mapping for each drifted column"
 				}
 			],
-			"script": "source(output(\n\t\tProviderUkprn as string,\n\t\tCourseName as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tDeliveryMode as string,\n\t\tStartDate as string,\n\t\tFlexibleStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tRegions as string,\n\t\tNational as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as string,\n\t\tLocationLongitude as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendanceType as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> courses\nsource(output(\n\t\tUnitedKingdomProviderReferenceNumber as string,\n\t\tProviderName as string,\n\t\tProviderStatus as string,\n\t\tProviderContact as (ContactType as string, ContactAddress as (SAON as (Description as string), PAON as (Description as string), StreetDescription as string, UniqueStreetReferenceNumber as string, Locality as string, Items as string[], ItemsElementName as string[], PostTown as string, PostCode as string, UniquePropertyReferenceNumber as string), ContactPersonalDetails as (PersonNameTitle as string, PersonGivenName as string, PersonFamilyName as string, PersonNameSuffix as string, PersonRequestedName as string), ContactRole as string, ContactTelephone1 as string, ContactTelephone2 as string, ContactFax as string, ContactWebsiteAddress as string, ContactEmail as string, LastUpdated as string)[],\n\t\tProviderVerificationDate as string,\n\t\tProviderVerificationDateSpecified as boolean,\n\t\tExpiryDateSpecified as boolean,\n\t\tProviderAssociations as string,\n\t\tProviderAliases as (ProviderAlias as string, LastUpdated as string)[],\n\t\tVerificationDetails as (VerificationAuthority as string, VerificationID as string)[],\n\t\tDateUpdated as string,\n\t\tDateDownloaded as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document') ~> providers\ncourses, providers join(ProviderUkprn == UnitedKingdomProviderReferenceNumber,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> joinProvidersToCourses\njoinProvidersToCourses foldDown(unroll(ProviderContact),\n\tmapColumn(\n\t\tProviderUkprn = UnitedKingdomProviderReferenceNumber,\n\t\tProviderName = ProviderName,\n\t\tContactType = ProviderContact.ContactType,\n\t\tContactAddress = ProviderContact.ContactAddress,\n\t\tContactPersonalDetails = ProviderContact.ContactPersonalDetails,\n\t\tContactRole = ProviderContact.ContactRole,\n\t\tContactTelephone1 = ProviderContact.ContactTelephone1,\n\t\tContactTelephone2 = ProviderContact.ContactTelephone2,\n\t\tContactFax = ProviderContact.ContactWebsiteAddress,\n\t\tContactEmail = ProviderContact.ContactEmail\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> flattenContactDetails\nflattenContactDetails split(ContactType == \"P\",\n\tContactType == \"T\",\n\tdisjoint: false) ~> splitContactTypes@(ContactType = P, ContactType = T, )"
+			"script": "source(output(\n\t\tUnitedKingdomProviderReferenceNumber as string,\n\t\tProviderName as string,\n\t\tProviderStatus as string,\n\t\tProviderContact as (ContactType as string, ContactAddress as (SAON as (Description as string), PAON as (Description as string), StreetDescription as string, UniqueStreetReferenceNumber as string, Locality as string, Items as string[], ItemsElementName as string[], PostTown as string, PostCode as string, UniquePropertyReferenceNumber as string), ContactPersonalDetails as (PersonNameTitle as string, PersonGivenName as string, PersonFamilyName as string, PersonNameSuffix as string, PersonRequestedName as string), ContactRole as string, ContactTelephone1 as string, ContactTelephone2 as string, ContactFax as string, ContactWebsiteAddress as string, ContactEmail as string, LastUpdated as string)[],\n\t\tProviderVerificationDate as string,\n\t\tProviderVerificationDateSpecified as boolean,\n\t\tExpiryDateSpecified as boolean,\n\t\tProviderAssociations as string,\n\t\tProviderAliases as (ProviderAlias as string, LastUpdated as string)[],\n\t\tVerificationDetails as (VerificationAuthority as string, VerificationID as string)[],\n\t\tDateUpdated as string,\n\t\tDateDownloaded as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document') ~> providers\nsource(output(\n\t\tProviderUkprn as string,\n\t\tCourseName as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tDeliveryMode as string,\n\t\tStartDate as string,\n\t\tFlexibleStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tRegions as string,\n\t\tNational as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as string,\n\t\tLocationLongitude as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendanceType as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> courses\nmap foldDown(unroll(ProviderContact),\n\tmapColumn(\n\t\tProviderUkprn = UnitedKingdomProviderReferenceNumber,\n\t\tProviderName = ProviderName,\n\t\tContactType = ProviderContact.ContactType,\n\t\tContactAddress = ProviderContact.ContactAddress,\n\t\tContactPersonalDetails = ProviderContact.ContactPersonalDetails,\n\t\tContactRole = ProviderContact.ContactRole,\n\t\tContactTelephone1 = ProviderContact.ContactTelephone1,\n\t\tContactTelephone2 = ProviderContact.ContactTelephone2,\n\t\tContactFax = ProviderContact.ContactWebsiteAddress,\n\t\tContactEmail = ProviderContact.ContactEmail\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> flattenContactDetails\nflattenContactDetails split(ContactType == \"P\",\n\tContactType == \"T\",\n\tdisjoint: false) ~> splitContactTypes@(ContactType = P, ContactType = T, )\nproviders, courses exists(UnitedKingdomProviderReferenceNumber == ProviderUkprn,\n\tnegate:false,\n\tbroadcast: 'auto')~> selectRelevantProviders\nselectRelevantProviders derive(Alias = toString(byName('Alias')),\n\t\tCourseDirectoryName = toString(byName('CourseDirectoryName')),\n\t\tDateOnboarded = toString(byName('DateOnboarded')),\n\t\tLastUpdatedBy = toString(byName('LastUpdatedBy')),\n\t\tMarketingInformation = toString(byName('MarketingInformation')),\n\t\tNationalApprenticeshipProvider = toBoolean(byName('NationalApprenticeshipProvider')),\n\t\tPassedOverallQAChecks = toBoolean(byName('PassedOverallQAChecks')),\n\t\tProviderId = toInteger(byName('ProviderId')),\n\t\tProviderType = toInteger(byName('ProviderType')),\n\t\tRoATPFFlag = toBoolean(byName('RoATPFFlag')),\n\t\tRoATPProviderTypeId = toInteger(byName('RoATPProviderTypeId')),\n\t\tRoATPStartDate = toString(byName('RoATPStartDate')),\n\t\tTradingName = toString(byName('TradingName')),\n\t\tUPIN = toInteger(byName('UPIN')),\n\t\tUpdatedBy = toString(byName('UpdatedBy'))) ~> map"
 		}
 	}
 }
