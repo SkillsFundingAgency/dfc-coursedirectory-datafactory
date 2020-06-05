@@ -114,7 +114,7 @@
 				"type": "String"
 			},
 			{
-				"name": "attendanceType",
+				"name": "AttendanceType",
 				"type": "String"
 			}
 		]
