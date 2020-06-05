@@ -24,6 +24,79 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "ukprn",
+				"type": "String"
+			},
+			{
+				"name": "courseName",
+				"type": "String"
+			},
+			{
+				"name": "courseId",
+				"type": "String"
+			},
+			{
+				"name": "lars",
+				"type": "String"
+			},
+			{
+				"name": "deliveryMode",
+				"type": "String"
+			},
+			{
+				"name": "startDate",
+				"type": "String"
+			},
+			{
+				"name": "courseUrl",
+				"type": "String"
+			},
+			{
+				"name": "cost",
+				"type": "String"
+			},
+			{
+				"name": "costDescription",
+				"type": "String"
+			},
+			{
+				"name": "locationName",
+				"type": "String"
+			},
+			{
+				"name": "locationAddress1",
+				"type": "String"
+			},
+			{
+				"name": "locationAddress2",
+				"type": "String"
+			},
+			{
+				"name": "locationTown",
+				"type": "String"
+			},
+			{
+				"name": "locationPostcode",
+				"type": "String"
+			},
+			{
+				"name": "locationLatitudelocationLongitude",
+				"type": "String"
+			},
+			{
+				"name": "updatedDate",
+				"type": "String"
+			},
+			{
+				"name": "duration",
+				"type": "String"
+			},
+			{
+				"name": "attendanceType",
+				"type": "String"
+			}
+		]
 	}
 }
