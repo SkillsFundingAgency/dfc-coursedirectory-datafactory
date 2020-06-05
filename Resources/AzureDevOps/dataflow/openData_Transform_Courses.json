@@ -13,6 +13,20 @@
 						"type": "DatasetReference"
 					},
 					"name": "courses"
+				},
+				{
+					"dataset": {
+						"referenceName": "cosmosDb_Venues",
+						"type": "DatasetReference"
+					},
+					"name": "venues"
+				},
+				{
+					"dataset": {
+						"referenceName": "openData_Cache_Regions",
+						"type": "DatasetReference"
+					},
+					"name": "regions"
 				}
 			],
 			"sinks": [],
@@ -24,10 +38,22 @@
 					"name": "sortByStartDate"
 				},
 				{
-					"name": "filterHistoricalCourseRuns"
+					"name": "filterRecentCourses"
+				},
+				{
+					"name": "filterValidAndActiveCourses"
+				},
+				{
+					"name": "splitByStartDate"
+				},
+				{
+					"name": "joinWithFlexibleCourses"
+				},
+				{
+					"name": "splitByLocationType"
 				}
 			],
-			"script": "source(output(\n\t\tCourseId as string,\n\t\tQualificationCourseTitle as string,\n\t\tLearnAimRef as string,\n\t\tNotionalNVQLevelv2 as string,\n\t\tAwardOrgCode as string,\n\t\tQualificationType as string,\n\t\tProviderUKPRN as string,\n\t\tCourseDescription as string,\n\t\tEntryRequirements as string,\n\t\tWhatYoullLearn as string,\n\t\tHowYoullLearn as string,\n\t\tWhatYoullNeed as string,\n\t\tHowYoullBeAssessed as string,\n\t\tWhereNext as string,\n\t\tAdultEducationBudget as boolean,\n\t\tAdvancedLearnerLoan as boolean,\n\t\tCourseRuns as (id as string, CourseInstanceId as string, VenueId as string, CourseName as string, ProviderCourseID as string, DeliveryMode as string, FlexibleStartDate as boolean, StartDate as string, CourseURL as string, Cost as string, CostDescription as string, DurationUnit as string, DurationValue as string, StudyMode as string, AttendancePattern as string, National as string, Regions as string[], RecordStatus as string, CreatedDate as string, CreatedBy as string, UpdatedDate as string, UpdatedBy as string, SubRegions as string, BulkUploadErrors as string)[],\n\t\tCourseStatus as string,\n\t\tCreatedDate as string,\n\t\tCreatedBy as string,\n\t\tUpdatedDate as string,\n\t\tIsValid as boolean,\n\t\tUpdatedBy as string,\n\t\tBulkUploadErrors as string[],\n\t\tLarlessReason as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document') ~> courses\ncourses foldDown(unroll(CourseRuns),\n\tmapColumn(\n\t\tProviderUkprn = ProviderUKPRN,\n\t\tCourseName = CourseRuns.CourseName,\n\t\tCourseId,\n\t\tLearnAimRef,\n\t\tDeliveryMode = CourseRuns.DeliveryMode,\n\t\tFlexibleStartDate = CourseRuns.FlexibleStartDate,\n\t\tStartDate = CourseRuns.StartDate,\n\t\tCourseURL = CourseRuns.CourseURL,\n\t\tCost = CourseRuns.Cost,\n\t\tCostDescription = CourseRuns.CostDescription,\n\t\tNational = CourseRuns.National,\n\t\tRegions = CourseRuns.Regions,\n\t\tVenueId = CourseRuns.VenueId,\n\t\tUpdatedDate = CourseRuns.UpdatedDate,\n\t\tDurationUnit = CourseRuns.DurationUnit,\n\t\tDurationValue = CourseRuns.DurationValue\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> flattenCourseRuns\nflattenCourseRuns sort(asc(StartDate, false),\n\tasc(FlexibleStartDate, false)) ~> sortByStartDate\nsortByStartDate filter(toDate(StartDate) > subDays(toDate(StartDate), 1 + dayOfMonth(toDate(StartDate)))) ~> filterHistoricalCourseRuns"
+			"script": "source(output(\n\t\tCourseId as string,\n\t\tQualificationCourseTitle as string,\n\t\tLearnAimRef as string,\n\t\tNotionalNVQLevelv2 as string,\n\t\tAwardOrgCode as string,\n\t\tQualificationType as string,\n\t\tProviderUKPRN as string,\n\t\tCourseDescription as string,\n\t\tEntryRequirements as string,\n\t\tWhatYoullLearn as string,\n\t\tHowYoullLearn as string,\n\t\tWhatYoullNeed as string,\n\t\tHowYoullBeAssessed as string,\n\t\tWhereNext as string,\n\t\tAdultEducationBudget as boolean,\n\t\tAdvancedLearnerLoan as boolean,\n\t\tCourseRuns as (id as string, CourseInstanceId as string, VenueId as string, CourseName as string, ProviderCourseID as string, DeliveryMode as integer, FlexibleStartDate as boolean, StartDate as string, CourseURL as string, Cost as integer, CostDescription as string, DurationUnit as integer, DurationValue as integer, StudyMode as integer, AttendancePattern as integer, National as boolean, Regions as string[], RecordStatus as integer, CreatedDate as string, CreatedBy as string, UpdatedDate as string, UpdatedBy as string, SubRegions as string, BulkUploadErrors as string)[],\n\t\tCourseStatus as integer,\n\t\tCreatedDate as string,\n\t\tCreatedBy as string,\n\t\tUpdatedDate as string,\n\t\tIsValid as boolean,\n\t\tUpdatedBy as string,\n\t\tBulkUploadErrors as string[],\n\t\tLarlessReason as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document') ~> courses\nsource(output(\n\t\tUKPRN as string,\n\t\tPROVIDER_ID as string,\n\t\tVENUE_ID as string,\n\t\tVENUE_NAME as string,\n\t\tPROV_VENUE_ID as string,\n\t\tADDRESS_1 as string,\n\t\tADDRESS_2 as string,\n\t\tTOWN as string,\n\t\tCOUNTY as string,\n\t\tPOSTCODE as string,\n\t\tLatitude as double,\n\t\tLongitude as double,\n\t\tStatus as string,\n\t\tDateUpdated as string,\n\t\tUpdatedBy as string,\n\t\tPHONE as string,\n\t\tEMAIL as string,\n\t\tWEBSITE as string,\n\t\tLocationId as string,\n\t\tTribalLocationId as string,\n\t\tTelephone as string,\n\t\tEmail as string,\n\t\tWebsite as string,\n\t\tCreatedBy as string,\n\t\tCreatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document') ~> venues\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> regions\nfilterValidAndActiveCourses foldDown(unroll(CourseRuns),\n\tmapColumn(\n\t\tProviderUkprn = ProviderUKPRN,\n\t\tCourseName = CourseRuns.CourseName,\n\t\tCourseId,\n\t\tLearnAimRef,\n\t\tDeliveryMode = CourseRuns.DeliveryMode,\n\t\tFlexibleStartDate = CourseRuns.FlexibleStartDate,\n\t\tStartDate = CourseRuns.StartDate,\n\t\tCourseURL = CourseRuns.CourseURL,\n\t\tCost = CourseRuns.Cost,\n\t\tCostDescription = CourseRuns.CostDescription,\n\t\tNational = CourseRuns.National,\n\t\tRegions = CourseRuns.Regions,\n\t\tVenueId = CourseRuns.VenueId,\n\t\tUpdatedDate = CourseRuns.UpdatedDate,\n\t\tDurationUnit = CourseRuns.DurationUnit,\n\t\tDurationValue = CourseRuns.DurationValue\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> flattenCourseRuns\nflattenCourseRuns sort(asc(StartDate, false),\n\tasc(FlexibleStartDate, false)) ~> sortByStartDate\nsplitByStartDate@hasStartDate filter(toDate(StartDate) > subDays(toDate(StartDate), 1 + dayOfMonth(toDate(StartDate)))) ~> filterRecentCourses\ncourses filter(and(CourseStatus == 1, IsValid)) ~> filterValidAndActiveCourses\nsortByStartDate split(!isNull(StartDate),\n\tFlexibleStartDate,\n\tdisjoint: false) ~> splitByStartDate@(hasStartDate, isFlexible, unknown)\nfilterRecentCourses, splitByStartDate@isFlexible union(byName: true)~> joinWithFlexibleCourses\njoinWithFlexibleCourses split(!(isNull(VenueId)),\n\tand(!(isNull(Regions)) , Regions != []),\n\tNational,\n\tdisjoint: false) ~> splitByLocationType@(hasVenue, isRegional, national, unknown)"
 		}
 	}
 }
