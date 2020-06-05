@@ -51,7 +51,7 @@
 				]
 			},
 			{
-				"name": "openData_Transform_Courses",
+				"name": "exportCourses",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
