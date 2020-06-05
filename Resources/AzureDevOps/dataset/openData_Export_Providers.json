@@ -24,6 +24,47 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "ukprn",
+				"type": "String"
+			},
+			{
+				"name": "providerName",
+				"type": "String"
+			},
+			{
+				"name": "tradingName",
+				"type": "String"
+			},
+			{
+				"name": "contactAddress1",
+				"type": "String"
+			},
+			{
+				"name": "contactAddress2",
+				"type": "String"
+			},
+			{
+				"name": "contactTown",
+				"type": "String"
+			},
+			{
+				"name": "contactPostcode",
+				"type": "String"
+			},
+			{
+				"name": "contactWebsite",
+				"type": "String"
+			},
+			{
+				"name": "contactEmail",
+				"type": "String"
+			},
+			{
+				"name": "contactPhone",
+				"type": "String"
+			}
+		]
 	}
 }
