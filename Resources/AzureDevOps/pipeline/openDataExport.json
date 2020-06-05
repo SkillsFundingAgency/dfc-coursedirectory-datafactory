@@ -85,7 +85,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyRegionsToCache",
+						"activity": "exportCourses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
