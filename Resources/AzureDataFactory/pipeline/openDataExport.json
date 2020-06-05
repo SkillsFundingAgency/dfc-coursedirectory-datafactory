@@ -130,7 +130,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "openData_Transform_CourseRuns",
+						"referenceName": "openData_Course_GetCurrentCourses",
 						"type": "DataFlowReference"
 					},
 					"compute": {

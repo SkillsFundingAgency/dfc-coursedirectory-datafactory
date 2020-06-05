@@ -1,5 +1,5 @@
 {
-	"name": "openData_Transform_CourseRuns",
+	"name": "openData_Course_GetCurrentCourses",
 	"properties": {
 		"folder": {
 			"name": "openDataExport"
