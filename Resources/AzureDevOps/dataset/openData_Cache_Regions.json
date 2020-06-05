@@ -1,5 +1,5 @@
 {
-	"name": "openData_Source_Regions",
+	"name": "openData_Cache_Regions",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalBlobStorage",
