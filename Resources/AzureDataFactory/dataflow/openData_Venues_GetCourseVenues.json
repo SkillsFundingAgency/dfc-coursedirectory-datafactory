@@ -22,13 +22,21 @@
 					"name": "Courses"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "openData_Cache_Venues",
+						"type": "DatasetReference"
+					},
+					"name": "UpdateCache"
+				}
+			],
 			"transformations": [
 				{
 					"name": "ExistsInCourses"
 				}
 			],
-			"script": "source(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery') ~> Venues\nsource(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Courses\nVenues, Courses exists(Venues@Id == VenueId,\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsInCourses"
+			"script": "source(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery') ~> Venues\nsource(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Courses\nVenues, Courses exists(Venues@Id == VenueId,\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsInCourses\nExistsInCourses sink(input(\n\t\tId as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationCounty as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['venues.json'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UpdateCache"
 		}
 	}
 }
