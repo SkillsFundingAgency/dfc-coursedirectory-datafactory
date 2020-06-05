@@ -51,42 +51,6 @@
 				]
 			},
 			{
-				"name": "exportCourses",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "copyRegionsToCache",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "copyCourseRunsToCache",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_Transform_Courses",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
-				}
-			},
-			{
 				"name": "exportProviders",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
@@ -131,6 +95,72 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "openData_Course_GetCurrentCourses",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "copyVenuesToCache",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "copyCourseRunsToCache",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Venues_GetCourseVenues",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "exportCourses",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "copyVenuesToCache",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "copyRegionsToCache",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Course_AttachVenues",
 						"type": "DataFlowReference"
 					},
 					"compute": {
