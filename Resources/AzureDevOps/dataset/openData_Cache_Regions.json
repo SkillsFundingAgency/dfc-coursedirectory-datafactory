@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "regions.json",
-				"folderPath": "source",
+				"folderPath": "cache",
 				"container": "open-data"
 			}
 		}
