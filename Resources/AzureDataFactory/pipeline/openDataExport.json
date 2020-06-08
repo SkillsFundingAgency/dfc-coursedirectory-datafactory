@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CacheRegions",
+				"name": "copyRegionsToCache",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -51,11 +51,11 @@
 				]
 			},
 			{
-				"name": "ExportProviders",
+				"name": "exportProviders",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "CacheCourses",
+						"activity": "copyCourseRunsToCache",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -81,7 +81,7 @@
 				}
 			},
 			{
-				"name": "CacheCourses",
+				"name": "copyCourseRunsToCache",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -104,11 +104,11 @@
 				}
 			},
 			{
-				"name": "CacheVenues",
+				"name": "copyVenuesToCache",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "CacheCourses",
+						"activity": "copyCourseRunsToCache",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -134,17 +134,17 @@
 				}
 			},
 			{
-				"name": "AttachCourseAddress",
+				"name": "exportCourses",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "CacheVenues",
+						"activity": "copyVenuesToCache",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "CacheRegions",
+						"activity": "copyRegionsToCache",
 						"dependencyConditions": [
 							"Succeeded"
 						]
