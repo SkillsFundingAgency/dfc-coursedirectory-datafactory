@@ -219,7 +219,8 @@
 									"path": "$['Id']"
 								},
 								"sink": {
-									"name": "Id"
+									"name": "Id",
+									"type": "String"
 								}
 							},
 							{
@@ -227,7 +228,8 @@
 									"path": "$['ApiLocationId']"
 								},
 								"sink": {
-									"name": "ApiLocationId"
+									"name": "ApiLocationId",
+									"type": "Int32"
 								}
 							},
 							{
@@ -235,12 +237,8 @@
 									"path": "$['SubRegionName']"
 								},
 								"sink": {
-									"name": "SubRegionName"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Checked']"
+									"name": "SubRegionName",
+									"type": "String"
 								}
 							},
 							{
@@ -248,7 +246,8 @@
 									"path": "$['Latitude']"
 								},
 								"sink": {
-									"name": "Latitude"
+									"name": "Latitude",
+									"type": "Double"
 								}
 							},
 							{
@@ -256,12 +255,8 @@
 									"path": "$['Longitude']"
 								},
 								"sink": {
-									"name": "Longitude"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Weighting']"
+									"name": "Longitude",
+									"type": "Double"
 								}
 							}
 						]
