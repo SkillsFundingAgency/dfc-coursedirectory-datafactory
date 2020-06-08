@@ -13,8 +13,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "courses.csv",
 				"folderPath": {
-					"value": "export",
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
 					"type": "Expression"
 				},
 				"container": "open-data"

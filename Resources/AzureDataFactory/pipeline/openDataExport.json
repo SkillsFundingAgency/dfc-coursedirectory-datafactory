@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "copyRegionsToCache",
+				"name": "GetRegions",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -51,11 +51,11 @@
 				]
 			},
 			{
-				"name": "exportProviders",
+				"name": "GetProviders",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyCourseRunsToCache",
+						"activity": "GetCourseRuns",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -81,7 +81,7 @@
 				}
 			},
 			{
-				"name": "copyCourseRunsToCache",
+				"name": "GetCourseRuns",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -104,11 +104,11 @@
 				}
 			},
 			{
-				"name": "copyVenuesToCache",
+				"name": "GetVenues",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyCourseRunsToCache",
+						"activity": "GetCourseRuns",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -134,17 +134,17 @@
 				}
 			},
 			{
-				"name": "exportCourses",
+				"name": "AttachCourseAddress",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyVenuesToCache",
+						"activity": "GetVenues",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "copyRegionsToCache",
+						"activity": "GetRegions",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -168,6 +168,117 @@
 						"computeType": "General"
 					}
 				}
+			},
+			{
+				"name": "ExportRegions",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "GetRegions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ApiLocationId']"
+								},
+								"sink": {
+									"name": "ApiLocationId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SubRegionName']"
+								},
+								"sink": {
+									"name": "SubRegionName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Checked']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Latitude']"
+								},
+								"sink": {
+									"name": "Latitude"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Longitude']"
+								},
+								"sink": {
+									"name": "Longitude"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Weighting']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Regions",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Regions",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []

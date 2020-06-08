@@ -15,7 +15,7 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "regions.csv",
 				"folderPath": {
-					"value": "export",
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
 					"type": "Expression"
 				},
 				"container": "open-data"

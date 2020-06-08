@@ -14,7 +14,10 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "coursesWithVenues.json",
-				"folderPath": "cache",
+				"folderPath": {
+					"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+					"type": "Expression"
+				},
 				"container": "open-data"
 			}
 		},
