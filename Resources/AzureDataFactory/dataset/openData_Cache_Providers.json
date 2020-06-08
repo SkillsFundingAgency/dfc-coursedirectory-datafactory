@@ -27,6 +27,9 @@
 				"ProviderName": {
 					"type": "string"
 				},
+				"TradingName": {
+					"type": "string"
+				},
 				"ProviderStatus": {
 					"type": "string"
 				},
