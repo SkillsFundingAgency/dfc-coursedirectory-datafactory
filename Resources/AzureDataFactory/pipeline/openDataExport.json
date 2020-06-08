@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "copyRegionsToCache",
+				"name": "CacheRegions",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -51,11 +51,11 @@
 				]
 			},
 			{
-				"name": "exportProviders",
+				"name": "ExportProviders",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyCourseRunsToCache",
+						"activity": "CacheCourses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -81,7 +81,7 @@
 				}
 			},
 			{
-				"name": "copyCourseRunsToCache",
+				"name": "CacheCourses",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -104,11 +104,11 @@
 				}
 			},
 			{
-				"name": "copyVenuesToCache",
+				"name": "CacheVenues",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyCourseRunsToCache",
+						"activity": "CacheCourses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -134,17 +134,17 @@
 				}
 			},
 			{
-				"name": "exportCourses",
+				"name": "AttachCourseAddress",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "copyVenuesToCache",
+						"activity": "CacheVenues",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "copyRegionsToCache",
+						"activity": "CacheRegions",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -159,6 +159,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Course_AttachVenues",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
