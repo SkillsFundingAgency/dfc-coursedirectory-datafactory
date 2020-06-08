@@ -55,7 +55,10 @@
 					"type": "boolean"
 				},
 				"Regions": {
-					"type": "null"
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
 				},
 				"VenueId": {
 					"type": "string"
