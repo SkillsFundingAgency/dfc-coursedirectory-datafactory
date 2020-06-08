@@ -12,14 +12,14 @@
 						"referenceName": "openData_Cache_Courses",
 						"type": "DatasetReference"
 					},
-					"name": "Courses"
+					"name": "courses"
 				},
 				{
 					"dataset": {
-						"referenceName": "openData_Cache_Venues",
+						"referenceName": "cosmosDb_Venues",
 						"type": "DatasetReference"
 					},
-					"name": "Venues"
+					"name": "venues"
 				}
 			],
 			"sinks": [
@@ -28,7 +28,7 @@
 						"referenceName": "openData_Export_Courses",
 						"type": "DatasetReference"
 					},
-					"name": "CoursesExport"
+					"name": "coursesExport"
 				}
 			],
 			"transformations": [
@@ -36,16 +36,13 @@
 					"name": "splitByLocationType"
 				},
 				{
-					"name": "JoinVenueAddress"
+					"name": "joinVenue"
 				},
 				{
-					"name": "JoinCourses"
-				},
-				{
-					"name": "SortByProvider"
+					"name": "joinCourses"
 				}
 			],
-			"script": "source(output(\n\t\tAttendancePattern as short,\n\t\tCost as double,\n\t\tCostDescription as string,\n\t\tCourseId as integer,\n\t\tCourseName as string,\n\t\tCourseURL as string,\n\t\tDeliveryMode as short,\n\t\tDurationUnit as short,\n\t\tDurationValue as short,\n\t\tFlexibleStartDate as boolean,\n\t\tLearnAimRef as string,\n\t\tNational as boolean,\n\t\tProviderUKPRN as integer,\n\t\tRegions as string[],\n\t\tStartDate as date,\n\t\tUpdatedDate as string,\n\t\tVenueId as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> Courses\nsource(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> Venues\nCourses split(and(National == false(), not(isNull(VenueId))) ,\n\tand(National == false(), and(not(isNull(Regions)), not(Regions == []))) ,\n\tNational == true(),\n\tdisjoint: false) ~> splitByLocationType@(CoursesWithVenues, CoursesWithRegions, NationalCourses, UnknownLocation)\nsplitByLocationType@CoursesWithVenues, Venues join(VenueId == Id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> JoinVenueAddress\nJoinVenueAddress, splitByLocationType@CoursesWithRegions, splitByLocationType@NationalCourses union(byName: true)~> JoinCourses\nJoinCourses sort(asc(ProviderUKPRN, true),\n\tasc(CourseId, true)) ~> SortByProvider\nSortByProvider sink(input(\n\t\tProviderUkprn as string,\n\t\tCourseName as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tDeliveryMode as string,\n\t\tStartDate as string,\n\t\tFlexibleStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tRegions as string,\n\t\tNational as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as string,\n\t\tLocationLongitude as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendanceType as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['courses.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> CoursesExport"
+			"script": "source(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> courses\nsource(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery',\n\tsystemColumns: false) ~> venues\ncourses split(not(isNull(VenueId)),\n\tnot(isNull(Regions)),\n\tNational,\n\tdisjoint: false) ~> splitByLocationType@(CoursesWithVenues, RegionalCourses, NationalCourses, UnknownLocation)\nsplitByLocationType@CoursesWithVenues, venues join(VenueId == Id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> joinVenue\njoinVenue, splitByLocationType@RegionalCourses, splitByLocationType@NationalCourses union(byName: true)~> joinCourses\njoinCourses sink(input(\n\t\tProviderUkprn as string,\n\t\tCourseName as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tDeliveryMode as string,\n\t\tStartDate as string,\n\t\tFlexibleStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tRegions as string,\n\t\tNational as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as string,\n\t\tLocationLongitude as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendanceType as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['courses.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> coursesExport"
 		}
 	}
 }
