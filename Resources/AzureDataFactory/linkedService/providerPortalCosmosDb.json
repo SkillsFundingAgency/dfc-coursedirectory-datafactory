@@ -5,15 +5,15 @@
 		"parameters": {
 			"Cosmos_AccountEndpoint": {
 				"type": "String",
-				"defaultValue": "https://dfc-dev-prov-cdb.documents.azure.com:443/"
+				"defaultValue": "#DEVOPS__CosmosAccountEndpoint"
 			},
 			"Cosmos_AccountKey": {
 				"type": "String",
-				"defaultValue": "cpiTI01tF3DQeFvNiZirR27q3oxSxGNUF4vZTAZAZw0sMx68roDDk0Ol7InC26TYb22WruXN1o4gBGHYYgoYOQ=="
+				"defaultValue": "#DEVOPS__CosmosAccountKey"
 			},
 			"Cosmos_Database": {
 				"type": "String",
-				"defaultValue": "providerportal"
+				"defaultValue": "DEVOPS__CosmosDatabase"
 			}
 		},
 		"annotations": [],
