@@ -10,11 +10,11 @@
 		"parameters": {
 			"Storage_AccountName": {
 				"type": "String",
-				"defaultValue": "#DEVOPS__AccountName"
+				"defaultValue": "#DEVOPS__StorageAccountName"
 			},
 			"Storage_AccountKey": {
 				"type": "String",
-				"defaultValue": "#DEVOPS__AccountKey"
+				"defaultValue": "#DEVOPS__StorageAccountKey"
 			},
 			"Storage_EndpointSuffix": {
 				"type": "String",
