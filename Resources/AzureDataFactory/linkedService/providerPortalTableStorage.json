@@ -2,16 +2,7 @@
 	"name": "providerPortalTableStorage",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"annotations": [],
-		"type": "AzureTableStorage",
-		"typeProperties": {
-			"connectionString": "DefaultEndpointsProtocol=@{linkedService().TableStorage_DefaultEndpointsProtocol};AccountName=@{linkedService().TableStorage_AccountName};AccountKey=@{linkedService().TableStorage_AccountKey};EndpointSuffix=@{linkedService().TableStorage_EndpointSuffix}"
-		},
 		"parameters": {
-			"TableStorage_DefaultEndpointsProtocol": {
-				"type": "String",
-				"defaultValue": "https"
-			},
 			"TableStorage_AccountName": {
 				"type": "String",
 				"defaultValue": "dfcdevprovstr"
@@ -24,6 +15,11 @@
 				"type": "String",
 				"defaultValue": "core.windows.net"
 			}
+		},
+		"annotations": [],
+		"type": "AzureTableStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=@{linkedService().TableStorage_AccountName};AccountKey=@{linkedService().TableStorage_AccountKey};EndpointSuffix=@{linkedService().TableStorage_EndpointSuffix}"
 		}
 	}
 }
