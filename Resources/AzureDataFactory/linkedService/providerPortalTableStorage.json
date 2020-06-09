@@ -6,11 +6,11 @@
 		"parameters": {
 			"Storage_AccountName": {
 				"type": "String",
-				"defaultValue": "dfcdevprovstr"
+				"defaultValue": "#DEVOPS__StorageAccountName"
 			},
 			"Storage_AccountKey": {
 				"type": "String",
-				"defaultValue": "pemHlHVup7/qQ5J6gBSJiSttmmGONmjmI1zOVU3MYsvBUpttbyg6EMKPJvYBCHd3EEYnchI6egw8iyj224XfbQ=="
+				"defaultValue": "#DEVOPS__StorageAccountKey"
 			},
 			"Storage_EndpointSuffix": {
 				"type": "String",
