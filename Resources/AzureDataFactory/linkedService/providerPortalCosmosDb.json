@@ -2,21 +2,24 @@
 	"name": "providerPortalCosmosDb",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
+		"parameters": {
+			"Cosmos_AccountEndpoint": {
+				"type": "String",
+				"defaultValue": "https://dfc-dev-prov-cdb.documents.azure.com:443/"
+			},
+			"Cosmos_AccountKey": {
+				"type": "String",
+				"defaultValue": "cpiTI01tF3DQeFvNiZirR27q3oxSxGNUF4vZTAZAZw0sMx68roDDk0Ol7InC26TYb22WruXN1o4gBGHYYgoYOQ=="
+			},
+			"Cosmos_Database": {
+				"type": "String",
+				"defaultValue": "providerportal"
+			}
+		},
 		"annotations": [],
 		"type": "CosmosDb",
 		"typeProperties": {
-			"connectionString": "AccountEndpoint=@{linkedService().Cosmos_AccountEndpoint};AccountKey=@{linkedService().Cosmos_AccountKey};Database=@{linkedService().Cosmos_Database};"
-		},
-		"parameters": {
-			"Cosmos_AccountEndpoint": {
-				"type": "String"
-			},
-			"Cosmos_AccountKey": {
-				"type": "String"
-			},
-			"Cosmos_Database": {
-				"type": "String"
-			}
+			"connectionString": "AccountEndpoint=@{linkedService().Cosmos_AccountEndpoint};Database=@{linkedService().Cosmos_Database};AccountKey=@{linkedService().Cosmos_AccountKey}"
 		}
 	}
 }
