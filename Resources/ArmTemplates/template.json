@@ -298,6 +298,36 @@
         "dataFactory2",
          "TableLinkedStorage"
       ]
+    },
+    {
+      "name": "providerPortalBlobStorage",
+      "apiVersion": "2019-05-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-blob-storage.json')]", 
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "StorageAccountName": {
+            "value": "[variables('tableStorageAccountName')]"
+          },
+          "StorageAccountKey": {
+            "value": "[listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+          },
+          "DataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          },
+          "LinkedServiceName": {
+            "value": "providerPortalBlobStorage"
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+         "BlobLinkedStorage"
+      ]
     }
   ],
   "outputs": {}
