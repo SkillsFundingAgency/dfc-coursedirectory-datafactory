@@ -112,7 +112,7 @@
       ]
     },
     {
-      "name": "providerPortalBlobStorage",
+      "name": "BlobStorage",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "properties": {
@@ -129,7 +129,7 @@
       }
     },
     {
-      "name": "providerPortalTableStorage",
+      "name": "TableStorage",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "properties": {
@@ -296,8 +296,7 @@
       },
       "dependsOn": [
         "dataFactory2",
-         "[variables('tableStorageAccountName')]"
-
+         "TableStorage"
       ]
     }
   ],
