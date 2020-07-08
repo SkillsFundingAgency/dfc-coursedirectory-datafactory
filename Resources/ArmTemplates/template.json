@@ -35,6 +35,7 @@
     "sharedPrefix": "[tolower(concat('dfc-', parameters('environment'), '-cd-test'))]",
     // remember to change above line
     "dfcDevOpsTemplatesUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
+    "dfcDevOpsTemplatesUrlTemp": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/NCSD-4041-data-factory-templates/ArmTemplates/",
     "dataFactoryName": "[concat(variables('sharedPrefix'),'-df')]",
     "storageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'str')]",
     "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
@@ -240,7 +241,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "datafactory-linkedservice-cosmosdb.json",
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-single-cosmosdb.json')]", 
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
