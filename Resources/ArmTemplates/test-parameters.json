@@ -4,6 +4,24 @@
     "parameters": {
       "environment": {
         "value": "local"
+      },
+      "cosmosDBName": {
+          "value": "dfc-dev-app-sharedresources-cdb"
+      },
+      "cosmosDbKey": {
+          "value": "not-a-real-key"
+      },
+      "cosmosDbCollectionName": {
+          "value": "a-test-collection"
+      },
+      "CosmosDbResourceGroup": {
+          "value": "dfc-dev-app-sharedresources-rg"
+      },
+      "dataFactoryAppDatabaseNeedsCreation": {
+          "value": true
+      },
+      "dataFactoryAppDatabaseThroughput": {
+          "value": 2
       }
     }
   }

@@ -7,17 +7,80 @@
         "metadata": {
           "description": "The environment being deployed to. Used to generate all resource names (apart from storage)"
         }
+      },
+      "CosmosDbResourceGroup": {
+          "type": "string"
+      },
+      "cosmosDbName": {
+          "type": "string"
+      },
+      "cosmosDbKey": {
+          "type": "securestring"
+      },
+      "cosmosDbCollectionName": {
+          "type": "string",
+          "metadata": {
+              "description": "The name of the collection to create"
+          }
+      },
+      "dataFactoryAppDatabaseNeedsCreation": {
+          "type": "bool"
+      },
+      "dataFactoryAppDatabaseThroughput": {
+          "type": "int"
       }
     },
     "variables": {
-      "sharedPrefix": "[tolower(concat('dfc-', parameters('environment'), '-cd'))]",
+      // remember to change the following lineand remove the -test
+      "sharedPrefix": "[tolower(concat('dfc-', parameters('environment'), '-cd-test'))]",
+      // remember to change above line
       "dfcDevOpsTemplatesUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
       "dataFactoryName": "[concat(variables('sharedPrefix'),'-df')]",
       "storageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'str')]",
-      "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
-      "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]"
+      "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
+      "tableStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'tablestr')]",
+      "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'test-prov-monitor-df-actgrp'))]",
+      "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]",
+      "cosmosDbCollectionPartitionKey": "/PartitionKey",
+      "cosmosDbDatabaseName": "dfc-app-datafactory",
+      "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
+
     },
     "resources": [
+      {
+        "name": "providerPortalBlobStorage",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('blobStorageAccountName')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "providerPortalTableStorage",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('tableStorageAccountName')]"
+            }
+          }
+        }
+      },
       {
         "name": "blobStorage",
         "type": "Microsoft.Resources/deployments",
@@ -52,8 +115,72 @@
           }
         },
         "dependsOn": [
-          "blobStorage"
+          "blobStorage",
+          "[parameters('cosmosDbCollectionName')]"
         ]
+      },
+      {
+          "name": "[variables('cosmosDbDatabaseName')]",
+          "type": "Microsoft.Resources/deployments",
+          "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+          "apiVersion": "2017-05-10",
+          "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                  "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'CosmosDb/cosmos-database.json')]",
+                  "contentVersion": "1.0.0.0"
+              },
+              "parameters": {
+                  "accountName": {
+                      "value": "[parameters('CosmosDbName')]"
+                  },
+                  "databaseName": {
+                      "value": "[variables('CosmosDbDatabaseName')]"
+                  },
+                  "useSharedRequestUnits": {
+                      "value": true
+                  },
+                  "offerThroughput": {
+                      "value": "[parameters('dataFactoryAppDatabaseThroughput')]"
+                  },
+                  "databaseNeedsCreation": {
+                      "value": "[parameters('dataFactoryAppDatabaseNeedsCreation')]"
+                  }
+              }
+          }
+      },
+      {
+          "apiVersion": "2017-05-10",
+          "name": "[parameters('cosmosDbCollectionName')]",
+          "type": "Microsoft.Resources/deployments",
+          "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+          "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                  "uri": "[concat(variables('dfcDevOpsTemplatesUrl'), 'CosmosDb/cosmos-collection.json')]",
+                  "contentVersion": "1.0.0.0"
+              },
+              "parameters": {
+                  "accountName": {
+                      "value": "[parameters('cosmosDbName')]"
+                  },
+                  "databaseName": {
+                      "value": "[variables('cosmosDbDatabaseName')]"
+                  },
+                  "collectionName": {
+                      "value": "[parameters('cosmosDbCollectionName')]"
+                  },
+                  "provisionRequestUnits": {
+                      "value": false
+                  },
+                  "partitionKey": {
+                      "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                  }
+              }
+          },
+          "dependsOn": [
+              "[variables('CosmosDbDatabaseName')]"
+          ]
       },
       {
         "name": "[concat(variables('dataFactoryName'), '-failed-pipelines')]",
