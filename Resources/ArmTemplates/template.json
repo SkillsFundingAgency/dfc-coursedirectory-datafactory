@@ -240,7 +240,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'), 'DataFactory/datafactory-linkedservice-cosmosdb.json')]",
+          "uri": "datafactory-linkedservice-cosmosdb.json",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -251,10 +251,13 @@
             "value": "[parameters('cosmosDbKey')]"
           },
           "CosmosDbDatabases": {
-            "value": "[array(variables('CosmosDbDatabaseName'))]"
+            "value": "[variables('CosmosDbDatabaseName')]"
           },
           "DataFactoryName": {
             "value": "[variables('dataFactoryName')]"
+          },
+          "LinkedServiceName": {
+            "value": "providerPortalCosmosDb"
           }
         }
       },
