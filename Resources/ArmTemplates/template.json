@@ -40,6 +40,7 @@
     "storageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'str')]",
     "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
     "tableStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'tablestr')]",
+    "tableStorageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('tableStorageAccountName'))]",
     "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
     "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]",
     "cosmosDbCollectionPartitionKey": "/PartitionKey",
@@ -265,6 +266,37 @@
       "dependsOn": [
         "dataFactory2",
          "[parameters('cosmosDbCollectionName')]"
+
+      ]
+    },
+    {
+      "name": "providerPortalTableStorage",
+      "apiVersion": "2019-05-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-table-storage.json')]", 
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "StorageAccountName": {
+            "value": "[variables('tableStorageAccountName')]"
+          },
+          "StorageAccountKey": {
+            "value": "[listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+          },
+          "DataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          },
+          "LinkedServiceName": {
+            "value": "providerPortalTableStorage"
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+         "[variables('tableStorageAccountName')]"
 
       ]
     }
