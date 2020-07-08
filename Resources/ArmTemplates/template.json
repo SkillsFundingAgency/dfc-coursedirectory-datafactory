@@ -39,85 +39,13 @@
       "storageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'str')]",
       "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
       "tableStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'tablestr')]",
-      "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'test-prov-monitor-df-actgrp'))]",
+      "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
       "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]",
       "cosmosDbCollectionPartitionKey": "/PartitionKey",
       "cosmosDbDatabaseName": "dfc-app-datafactory",
       "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]"
     },
     "resources": [
-      {
-        "name": "providerPortalBlobStorage",
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2017-05-10",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "storageAccountName": {
-              "value": "[variables('blobStorageAccountName')]"
-            }
-          }
-        }
-      },
-      {
-        "name": "providerPortalTableStorage",
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2017-05-10",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "storageAccountName": {
-              "value": "[variables('tableStorageAccountName')]"
-            }
-          }
-        }
-      },
-      {
-        "name": "blobStorage",
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2017-05-10",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "storageAccountName": {
-              "value": "[variables('storageAccountName')]"
-            }
-          }
-        }
-      },
-      {
-        "name": "dataFactory",
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2017-05-10",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'datafactory.json')]",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "DataFactoryName": {
-              "value": "[variables('dataFactoryName')]"
-            }
-          }
-        },
-        "dependsOn": [
-          "blobStorage",
-          "[parameters('cosmosDbCollectionName')]"
-        ]
-      },
       {
           "name": "[variables('cosmosDbDatabaseName')]",
           "type": "Microsoft.Resources/deployments",
@@ -182,6 +110,77 @@
           ]
       },
       {
+        "name": "providerPortalBlobStorage",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('blobStorageAccountName')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "providerPortalTableStorage",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('tableStorageAccountName')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "blobStorage",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('storageAccountName')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "dataFactory2",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2017-05-10",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'datafactory.json')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "DataFactoryName": {
+              "value": "[variables('dataFactoryName')]"
+            }
+          }
+        },
+        "dependsOn": [
+          "blobStorage"
+        ]
+      },
+      {
         "name": "[concat(variables('dataFactoryName'), '-failed-pipelines')]",
         "apiVersion": "2019-05-01",
         "type": "Microsoft.Resources/deployments",
@@ -231,7 +230,7 @@
             }
         },
         "dependsOn": [
-            "dataFactory"
+            "dataFactory2"
         ]
       }
     ],
