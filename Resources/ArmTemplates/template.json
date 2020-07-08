@@ -251,7 +251,7 @@
           "CosmosDbPrimaryKey": {
             "value": "[parameters('cosmosDbKey')]"
           },
-          "CosmosDbDatabases": {
+          "CosmosDbDatabase": {
             "value": "[variables('CosmosDbDatabaseName')]"
           },
           "DataFactoryName": {
