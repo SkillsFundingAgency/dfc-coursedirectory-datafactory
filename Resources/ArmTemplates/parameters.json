@@ -12,7 +12,7 @@
       "value": "__appSharedCosmosPrimaryKey__"
     },
     "CosmosDbResourceGroup": {
-      "value": "__persSharedResourceGroup__"
+      "value": "__cosmosSharedResourceGroup__"
     },
     "cosmosDbCollectionName": {
       "value": "__cosmosDbCollectionName__"
