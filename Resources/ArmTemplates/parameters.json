@@ -21,7 +21,7 @@
       "value": __CosmosDbDatabaseDoesntExist__
     },
     "dataFactoryAppDatabaseThroughput": {
-      "value": __actionplanAppDatabaseThroughput__
+      "value": __dataFactoryAppDatabaseThroughput__
     }
   }
 }
