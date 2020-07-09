@@ -962,7 +962,452 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_CoursesWithVenues')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "coursesWithVenues.json",
+            "folderPath": {
+              "value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ProviderUKPRN": {
+              "type": "integer"
+            },
+            "CourseId": {
+              "type": "integer"
+            },
+            "LearnAimRef": {
+              "type": "string"
+            },
+            "CourseName": {
+              "type": "string"
+            },
+            "DeliveryMode": {
+              "type": "integer"
+            },
+            "FlexibleStartDate": {
+              "type": "boolean"
+            },
+            "StartDate": {
+              "type": "string"
+            },
+            "CourseURL": {
+              "type": "null"
+            },
+            "Cost": {
+              "type": "integer"
+            },
+            "CostDescription": {
+              "type": "string"
+            },
+            "National": {
+              "type": "boolean"
+            },
+            "Regions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "VenueId": {
+              "type": "string"
+            },
+            "LocationName": {
+              "type": "string"
+            },
+            "LocationAddress1": {
+              "type": "string"
+            },
+            "LocationAddress2": {
+              "type": "null"
+            },
+            "LocationTown": {
+              "type": "string"
+            },
+            "LocationCounty": {
+              "type": "string"
+            },
+            "LocationPostcode": {
+              "type": "string"
+            },
+            "LocationLatitude": {
+              "type": "number"
+            },
+            "LocationLongitude": {
+              "type": "number"
+            },
+            "UpdatedDate": {
+              "type": "string"
+            },
+            "DurationUnit": {
+              "type": "integer"
+            },
+            "DurationValue": {
+              "type": "integer"
+            },
+            "AttendancePattern": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Providers')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "providers.json",
+            "folderPath": {
+              "value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "UnitedKingdomProviderReferenceNumber": {
+              "type": "string"
+            },
+            "ProviderName": {
+              "type": "string"
+            },
+            "TradingName": {
+              "type": "string"
+            },
+            "ProviderStatus": {
+              "type": "string"
+            },
+            "ProviderContact": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ContactType": {
+                    "type": "string"
+                  },
+                  "ContactAddress": {
+                    "type": "object",
+                    "properties": {
+                      "SAON": {
+                        "type": "object",
+                        "properties": {
+                          "Description": {
+                            "type": "null"
+                          }
+                        }
+                      },
+                      "PAON": {
+                        "type": "object",
+                        "properties": {
+                          "Description": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "StreetDescription": {
+                        "type": "string"
+                      },
+                      "UniqueStreetReferenceNumber": {
+                        "type": "null"
+                      },
+                      "Locality": {
+                        "type": "null"
+                      },
+                      "Items": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "ItemsElementName": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "PostTown": {
+                        "type": "null"
+                      },
+                      "PostCode": {
+                        "type": "string"
+                      },
+                      "UniquePropertyReferenceNumber": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "ContactPersonalDetails": {
+                    "type": "object",
+                    "properties": {
+                      "PersonNameTitle": {
+                        "type": "null"
+                      },
+                      "PersonGivenName": {
+                        "type": "null"
+                      },
+                      "PersonFamilyName": {
+                        "type": "null"
+                      },
+                      "PersonNameSuffix": {
+                        "type": "null"
+                      },
+                      "PersonRequestedName": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "ContactRole": {
+                    "type": "null"
+                  },
+                  "ContactTelephone1": {
+                    "type": "string"
+                  },
+                  "ContactTelephone2": {
+                    "type": "null"
+                  },
+                  "ContactFax": {
+                    "type": "string"
+                  },
+                  "ContactWebsiteAddress": {
+                    "type": "null"
+                  },
+                  "ContactEmail": {
+                    "type": "null"
+                  },
+                  "LastUpdated": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "ProviderVerificationDate": {
+              "type": "string"
+            },
+            "ProviderVerificationDateSpecified": {
+              "type": "boolean"
+            },
+            "ExpiryDateSpecified": {
+              "type": "boolean"
+            },
+            "ProviderAssociations": {
+              "type": "null"
+            },
+            "ProviderAliases": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ProviderAlias": {
+                    "type": "null"
+                  },
+                  "LastUpdated": {
+                    "type": "null"
+                  }
+                }
+              }
+            },
+            "VerificationDetails": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "VerificationAuthority": {
+                    "type": "string"
+                  },
+                  "VerificationID": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "string"
+            },
+            "DateUpdated": {
+              "type": "string"
+            },
+            "DateDownloaded": {
+              "type": "string"
+            },
+            "Status": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Regions')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "regions.json",
+            "folderPath": {
+              "value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "ApiLocationId": {
+              "type": "integer"
+            },
+            "SubRegionName": {
+              "type": "string"
+            },
+            "Checked": {
+              "type": "boolean"
+            },
+            "Latitude": {
+              "type": "number"
+            },
+            "Longitude": {
+              "type": "number"
+            },
+            "Weighting": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Venues')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "venues.json",
+            "folderPath": {
+              "value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "LocationName": {
+              "type": "string"
+            },
+            "LocationAddress1": {
+              "type": "string"
+            },
+            "LocationAddress2": {
+              "type": "null"
+            },
+            "LocationTown": {
+              "type": "string"
+            },
+            "LocationCounty": {
+              "type": "string"
+            },
+            "LocationPostcode": {
+              "type": "string"
+            },
+            "LocationLatitude": {
+              "type": "number"
+            },
+            "LocationLongitude": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
     }
   ],
   "outputs": {}
