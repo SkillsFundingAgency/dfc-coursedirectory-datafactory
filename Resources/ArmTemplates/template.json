@@ -1408,6 +1408,476 @@
         "dataFactory2",
         "providerPortalBlobStorage"
       ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Courses')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "folderPath": {
+              "value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          },
+          "columnDelimiter": ",",
+          "escapeChar": "\\",
+          "firstRowAsHeader": true,
+          "quoteChar": "\""
+        },
+        "schema": [
+          {
+            "name": "ProviderUkprn",
+            "type": "String"
+          },
+          {
+            "name": "CourseName",
+            "type": "String"
+          },
+          {
+            "name": "CourseId",
+            "type": "String"
+          },
+          {
+            "name": "LearnAimRef",
+            "type": "String"
+          },
+          {
+            "name": "DeliveryMode",
+            "type": "String"
+          },
+          {
+            "name": "StartDate",
+            "type": "String"
+          },
+          {
+            "name": "FlexibleStartDate",
+            "type": "String"
+          },
+          {
+            "name": "CourseURL",
+            "type": "String"
+          },
+          {
+            "name": "Cost",
+            "type": "String"
+          },
+          {
+            "name": "CostDescription",
+            "type": "String"
+          },
+          {
+            "name": "Regions",
+            "type": "String"
+          },
+          {
+            "name": "National",
+            "type": "String"
+          },
+          {
+            "name": "LocationName",
+            "type": "String"
+          },
+          {
+            "name": "LocationAddress1",
+            "type": "String"
+          },
+          {
+            "name": "LocationAddress2",
+            "type": "String"
+          },
+          {
+            "name": "LocationTown",
+            "type": "String"
+          },
+          {
+            "name": "LocationPostcode",
+            "type": "String"
+          },
+          {
+            "name": "LocationLatitude",
+            "type": "String"
+          },
+          {
+            "name": "LocationLongitude",
+            "type": "String"
+          },
+          {
+            "name": "UpdatedDate",
+            "type": "String"
+          },
+          {
+            "name": "DurationUnit",
+            "type": "String"
+          },
+          {
+            "name": "DurationValue",
+            "type": "String"
+          },
+          {
+            "name": "AttendanceType",
+            "type": "String"
+          }
+        ]
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Providers')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "folderPath": {
+              "value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          },
+          "columnDelimiter": ",",
+          "escapeChar": "\\",
+          "firstRowAsHeader": true,
+          "quoteChar": "\""
+        },
+        "schema": [
+          {
+            "name": "ProviderUkprn",
+            "type": "String"
+          },
+          {
+            "name": "ProviderName",
+            "type": "String"
+          },
+          {
+            "name": "TradingName",
+            "type": "String"
+          },
+          {
+            "name": "ContactAddress1",
+            "type": "String"
+          },
+          {
+            "name": "ContactAddress2",
+            "type": "String"
+          },
+          {
+            "name": "ContactTown",
+            "type": "String"
+          },
+          {
+            "name": "ContactPostcode",
+            "type": "String"
+          },
+          {
+            "name": "ContactWebsite",
+            "type": "String"
+          },
+          {
+            "name": "ContactEmail",
+            "type": "String"
+          },
+          {
+            "name": "ContactPhone",
+            "type": "String"
+          }
+        ]
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Regions')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "regions.csv",
+            "folderPath": {
+              "value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          },
+          "columnDelimiter": ",",
+          "escapeChar": "\\",
+          "firstRowAsHeader": true,
+          "quoteChar": "\""
+        },
+        "schema": [
+          {
+            "name": "Id",
+            "type": "String"
+          },
+          {
+            "name": "ApiLocationId",
+            "type": "String"
+          },
+          {
+            "name": "SubRegionName",
+            "type": "String"
+          },
+          {
+            "name": "Latitude",
+            "type": "String"
+          },
+          {
+            "name": "Longitude",
+            "type": "String"
+          }
+        ]
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_History_Courses')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "folderPath": {
+              "value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          },
+          "columnDelimiter": ",",
+          "escapeChar": "\\",
+          "firstRowAsHeader": true,
+          "quoteChar": "\""
+        },
+        "schema": [
+          {
+            "name": "ProviderUkprn",
+            "type": "String"
+          },
+          {
+            "name": "CourseName",
+            "type": "String"
+          },
+          {
+            "name": "CourseId",
+            "type": "String"
+          },
+          {
+            "name": "LearnAimRef",
+            "type": "String"
+          },
+          {
+            "name": "DeliveryMode",
+            "type": "String"
+          },
+          {
+            "name": "StartDate",
+            "type": "String"
+          },
+          {
+            "name": "FlexibleStartDate",
+            "type": "String"
+          },
+          {
+            "name": "CourseURL",
+            "type": "String"
+          },
+          {
+            "name": "Cost",
+            "type": "String"
+          },
+          {
+            "name": "CostDescription",
+            "type": "String"
+          },
+          {
+            "name": "Regions",
+            "type": "String"
+          },
+          {
+            "name": "National",
+            "type": "String"
+          },
+          {
+            "name": "LocationName",
+            "type": "String"
+          },
+          {
+            "name": "LocationAddress1",
+            "type": "String"
+          },
+          {
+            "name": "LocationAddress2",
+            "type": "String"
+          },
+          {
+            "name": "LocationTown",
+            "type": "String"
+          },
+          {
+            "name": "LocationPostcode",
+            "type": "String"
+          },
+          {
+            "name": "LocationLatitude",
+            "type": "String"
+          },
+          {
+            "name": "LocationLongitude",
+            "type": "String"
+          },
+          {
+            "name": "UpdatedDate",
+            "type": "String"
+          },
+          {
+            "name": "DurationUnit",
+            "type": "String"
+          },
+          {
+            "name": "DurationValue",
+            "type": "String"
+          },
+          {
+            "name": "AttendanceType",
+            "type": "String"
+          }
+        ]
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_History_Providers')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "folderPath": {
+              "value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          },
+          "columnDelimiter": ",",
+          "escapeChar": "\\",
+          "firstRowAsHeader": true,
+          "quoteChar": "\""
+        },
+        "schema": [
+          {
+            "name": "ukprn",
+            "type": "String"
+          },
+          {
+            "name": "providerName",
+            "type": "String"
+          },
+          {
+            "name": "tradingName",
+            "type": "String"
+          },
+          {
+            "name": "contactAddress1",
+            "type": "String"
+          },
+          {
+            "name": "contactAddress2",
+            "type": "String"
+          },
+          {
+            "name": "contactTown",
+            "type": "String"
+          },
+          {
+            "name": "contactPostcode",
+            "type": "String"
+          },
+          {
+            "name": "contactWebsite",
+            "type": "String"
+          },
+          {
+            "name": "contactEmail",
+            "type": "String"
+          },
+          {
+            "name": "contactPhone",
+            "type": "String"
+          }
+        ]
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "providerPortalBlobStorage"
+      ]
     }
   ],
   "outputs": {}
