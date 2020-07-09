@@ -784,12 +784,12 @@
             "Telephone": {
               "type": "string"
             },
-            "Email": {
-              "type": "string"
-            },
-            "Website": {
-              "type": "string"
-            },
+            // "Email": {
+            //   "type": "string"
+            // },
+            // "Website": {
+            //   "type": "string"
+            // },
             "CreatedBy": {
               "type": "string"
             },
