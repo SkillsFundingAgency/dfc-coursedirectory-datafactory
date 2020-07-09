@@ -333,7 +333,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'cosmosDb_Courses')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalCosmosDb",
@@ -517,7 +516,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'cosmosDb_Providers')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalCosmosDb",
@@ -707,7 +705,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'cosmosDb_Venues')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalCosmosDb",
@@ -828,7 +825,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'github_Regions')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "githubRaw",
@@ -881,7 +877,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Courses')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -972,7 +967,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_CoursesWithVenues')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1087,7 +1081,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Providers')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1291,7 +1284,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Regions')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1349,7 +1341,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Venues')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1413,7 +1404,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Courses')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1542,7 +1532,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Providers')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1619,7 +1608,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_Export_Regions')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
@@ -1677,7 +1665,6 @@
       "name": "[concat(variables('dataFactoryName'),'/', 'openData_History_Courses')]",
       "type": "Microsoft.DataFactory/factories/datasets",
       "apiVersion": "2018-06-01",
-      "location": "[variables('location')]",
       "properties": {
         "linkedServiceName": {
           "referenceName": "providerPortalBlobStorage",
