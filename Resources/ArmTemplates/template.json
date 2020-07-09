@@ -506,6 +506,7 @@
         },
         "typeProperties": {
           "collectionName": "courses",
+          "bucketName": "",
           "location": "[variables('location')]"
         }
       },
