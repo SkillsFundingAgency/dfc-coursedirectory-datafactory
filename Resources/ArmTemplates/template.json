@@ -806,6 +806,71 @@
           "providerPortalCosmosDb"
         ]
       }
+    },
+    {
+      "name":"[concat(variables('dataFactoryName'),'/', 'githubRaw')]",
+      "type": "Microsoft.DataFactory/factories/linkedServices",
+      "apiVersion": "2018-06-01",
+      "properties": {
+        "annotations": [],
+        "type": "HttpServer",
+        "typeProperties": {
+          "url": "https://raw.githubusercontent.com",
+          "enableServerCertificateValidation": true,
+          "authenticationType": "Anonymous"
+        }
+      },
+      "dependsOn": []
+    },
+
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'github_Regions')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "githubRaw",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "github"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "HttpServerLocation",
+            "relativeUrl": "/SkillsFundingAgency/dfc-coursedirectory-datafactory/features/PTCD-337/openapi/Resources/DataSources/regions.json"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "ApiLocationId": {
+              "type": "integer"
+            },
+            "SubRegionName": {
+              "type": "string"
+            },
+            "Checked": {
+              "type": "boolean"
+            },
+            "Latitude": {
+              "type": "number"
+            },
+            "Longitude": {
+              "type": "number"
+            },
+            "Weighting": {
+              "type": "integer"
+            }
+          }
+        }
+      }
     }
   ],
   "outputs": {}
