@@ -808,7 +808,7 @@
       }
     },
     {
-      "name":"[concat(variables('dataFactoryName'),'/', 'githubRaw')]",
+      "name": "[concat(variables('dataFactoryName'),'/', 'githubRaw')]",
       "type": "Microsoft.DataFactory/factories/linkedServices",
       "apiVersion": "2018-06-01",
       "properties": {
@@ -824,7 +824,6 @@
         "dataFactory2"
       ]
     },
-
     {
       "name": "[concat(variables('dataFactoryName'),'/', 'github_Regions')]",
       "type": "Microsoft.DataFactory/factories/datasets",
@@ -877,6 +876,93 @@
         "dataFactory2",
         "githubRaw"
       ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'),'/', 'openData_Cache_Courses')]",
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "providerPortalBlobStorage",
+          "type": "LinkedServiceReference"
+        },
+        "folder": {
+          "name": "openDataExpot"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "fileName": "courses.json",
+            "folderPath": {
+              "value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+              "type": "Expression"
+            },
+            "container": "open-data"
+          }
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ProviderUKPRN": {
+              "type": "integer"
+            },
+            "CourseId": {
+              "type": "integer"
+            },
+            "LearnAimRef": {
+              "type": "string"
+            },
+            "CourseName": {
+              "type": "string"
+            },
+            "DeliveryMode": {
+              "type": "integer"
+            },
+            "FlexibleStartDate": {
+              "type": "boolean"
+            },
+            "StartDate": {
+              "type": "string"
+            },
+            "CourseURL": {
+              "type": "null"
+            },
+            "Cost": {
+              "type": "integer"
+            },
+            "CostDescription": {
+              "type": "string"
+            },
+            "National": {
+              "type": "boolean"
+            },
+            "Regions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "VenueId": {
+              "type": "string"
+            },
+            "UpdatedDate": {
+              "type": "string"
+            },
+            "DurationUnit": {
+              "type": "integer"
+            },
+            "DurationValue": {
+              "type": "integer"
+            },
+            "AttendancePattern": {
+              "type": "integer"
+            }
+          }
+        }
+      }
     }
   ],
   "outputs": {}
