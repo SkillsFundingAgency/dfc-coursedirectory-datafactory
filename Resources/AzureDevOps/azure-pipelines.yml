@@ -30,3 +30,8 @@ stages:
       parameters:
         ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
         SolutionBaseName: '${{ variables.SolutionBaseName }}'
+    - task: PublishPipelineArtifact@0
+      displayName: Publish Region Data File artifact
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/data'
+        artifactName: ${{ variables.SolutionBaseName }}.RegionData
