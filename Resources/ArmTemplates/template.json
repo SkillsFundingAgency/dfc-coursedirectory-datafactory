@@ -218,34 +218,52 @@
         "TableLinkedStorage"
       ]
     },
-    {
-      "name": "providerPortalBlobStorage",
-      "apiVersion": "2019-05-01",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-blob-storage.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "StorageAccountName": {
-            "value": "[variables('blobStorageAccountName')]"
-          },
-          "StorageAccountKey": {
-            "value": "[listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
-          },
-          "DataFactoryName": {
-            "value": "[variables('dataFactoryName')]"
-          },
-          "LinkedServiceName": {
-            "value": "providerPortalBlobStorage"
+    // {
+    //   "name": "providerPortalBlobStorage",
+    //   "apiVersion": "2019-05-01",
+    //   "type": "Microsoft.Resources/deployments",
+    //   "properties": {
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-blob-storage.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "StorageAccountName": {
+    //         "value": "[variables('blobStorageAccountName')]"
+    //       },
+    //       "StorageAccountKey": {
+    //         "value": "[listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+    //       },
+    //       "DataFactoryName": {
+    //         "value": "[variables('dataFactoryName')]"
+    //       },
+    //       "LinkedServiceName": {
+    //         "value": "providerPortalBlobStorage"
+    //       }
+    //     }
+    //   },
+    //   "dependsOn": [
+    //     "dataFactory2",
+    //     "BlobLinkedStorage"
+    //   ]
+    // },
+    {  
+      "name":"[concat(variables('dataFactoryName'), '/providerPortalBlobStorage')]",
+      "type":"Microsoft.DataFactory/factories/linkedServices",
+      "apiVersion":"2018-06-01",
+      "properties":{  
+          "annotations":[  
+
+          ],
+          "type":"AzureBlobStorage",
+          "typeProperties":{  
+              "connectionString":"[concat('DefaultEndpointsProtocol=https;AccountName=',variables('blobStorageAccountName'),';AccountKey=',listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
           }
-        }
       },
-      "dependsOn": [
-        "dataFactory2",
-        "BlobLinkedStorage"
+      "dependsOn":[  
+          "dataFactory2",
+          "BlobLinkedStorage"
       ]
     },
     {
