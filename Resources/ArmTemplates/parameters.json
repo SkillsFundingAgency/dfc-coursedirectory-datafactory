@@ -10,18 +10,6 @@
     },
     "cosmosDbKey": {
       "value": "__appSharedCosmosPrimaryKey__"
-    },
-    "CosmosDbResourceGroup": {
-      "value": "__cosmosSharedResourceGroup__"
-    },
-    "cosmosDbCollectionName": {
-      "value": "__cosmosDbCollectionName__"
-    },
-    "dataFactoryAppDatabaseNeedsCreation": {
-      "value": __CosmosDbDatabaseDoesntExist__
-    },
-    "dataFactoryAppDatabaseThroughput": {
-      "value": __dataFactoryAppDatabaseThroughput__
     }
   }
 }
