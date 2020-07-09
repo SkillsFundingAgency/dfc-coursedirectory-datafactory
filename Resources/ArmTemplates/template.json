@@ -820,7 +820,9 @@
           "authenticationType": "Anonymous"
         }
       },
-      "dependsOn": []
+      "dependsOn": [
+        "dataFactory2"
+      ]
     },
 
     {
@@ -870,7 +872,11 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "dataFactory2",
+        "githubRaw"
+      ]
     }
   ],
   "outputs": {}
