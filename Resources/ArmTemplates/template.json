@@ -46,7 +46,7 @@
     "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
     "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]",
     // "cosmosDbCollectionPartitionKey": "/PartitionKey",
-    "cosmosDbDatabaseName": "providerportal",
+    "cosmosDbDatabaseName": "providerportal"
     // "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]"
   },
   "resources": [
