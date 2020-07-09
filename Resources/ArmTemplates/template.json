@@ -29,7 +29,8 @@
     "blobStorageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]",
     "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
     "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]",
-    "cosmosDbDatabaseName": "providerportal"
+    "cosmosDbDatabaseName": "providerportal",
+    "cosmosDbPartialConnectionString": "[concat('AccountEndpoint=https://', parameters('CosmosDbName'), '.documents.azure.com:443/;AccountKey=', parameters('cosmosDbKey'))]"
   },
   "resources": [
     {
@@ -157,30 +158,16 @@
       ]
     },
     {
-      "name": "providerPortalCosmosDb",
-      "apiVersion": "2019-05-01",
-      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(variables('dataFactoryName'), '/providerPortalCosmosDb')]",
+      "type": "Microsoft.DataFactory/factories/linkedservices",
+      "apiVersion": "2018-06-01",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-single-cosmosdb.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "CosmosDbName": {
-            "value": "[parameters('CosmosDbName')]"
-          },
-          "CosmosDbPrimaryKey": {
-            "value": "[parameters('cosmosDbKey')]"
-          },
-          "CosmosDbDatabase": {
-            "value": "[variables('CosmosDbDatabaseName')]"
-          },
-          "DataFactoryName": {
-            "value": "[variables('dataFactoryName')]"
-          },
-          "LinkedServiceName": {
-            "value": "providerPortalCosmosDb"
+        "type": "CosmosDb",
+        "description": "Azure CosmosDb linked service",
+        "typeProperties": {
+          "connectionString": {
+            "value": "[concat(variables('cosmosDbPartialConnectionString'), ';Database=', variables('cosmosDbDatabaseName'), ';')]",
+            "type": "SecureString"
           }
         }
       },
@@ -189,28 +176,16 @@
       ]
     },
     {
-      "name": "providerPortalTableStorage",
-      "apiVersion": "2019-05-01",
-      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(variables('dataFactoryName'), '/providerPortalTableStorage')]",
+      "type": "Microsoft.DataFactory/factories/linkedServices",
+      "apiVersion": "2018-06-01",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-table-storage.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "StorageAccountName": {
-            "value": "[variables('tableStorageAccountName')]"
-          },
-          "StorageAccountKey": {
-            "value": "[listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
-          },
-          "DataFactoryName": {
-            "value": "[variables('dataFactoryName')]"
-          },
-          "LinkedServiceName": {
-            "value": "providerPortalTableStorage"
-          }
+        "annotations": [
+
+        ],
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+          "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('tableStorageAccountName'),';AccountKey=',listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
         }
       },
       "dependsOn": [
@@ -218,52 +193,22 @@
         "TableLinkedStorage"
       ]
     },
-    // {
-    //   "name": "providerPortalBlobStorage",
-    //   "apiVersion": "2019-05-01",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('dfcDevOpsTemplatesUrlTemp'),'DataFactory/datafactory-linkedservice-blob-storage.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "StorageAccountName": {
-    //         "value": "[variables('blobStorageAccountName')]"
-    //       },
-    //       "StorageAccountKey": {
-    //         "value": "[listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
-    //       },
-    //       "DataFactoryName": {
-    //         "value": "[variables('dataFactoryName')]"
-    //       },
-    //       "LinkedServiceName": {
-    //         "value": "providerPortalBlobStorage"
-    //       }
-    //     }
-    //   },
-    //   "dependsOn": [
-    //     "dataFactory2",
-    //     "BlobLinkedStorage"
-    //   ]
-    // },
-    {  
-      "name":"[concat(variables('dataFactoryName'), '/providerPortalBlobStorage')]",
-      "type":"Microsoft.DataFactory/factories/linkedServices",
-      "apiVersion":"2018-06-01",
-      "properties":{  
-          "annotations":[  
+    {
+      "name": "[concat(variables('dataFactoryName'), '/providerPortalBlobStorage')]",
+      "type": "Microsoft.DataFactory/factories/linkedServices",
+      "apiVersion": "2018-06-01",
+      "properties": {
+        "annotations": [
 
-          ],
-          "type":"AzureBlobStorage",
-          "typeProperties":{  
-              "connectionString":"[concat('DefaultEndpointsProtocol=https;AccountName=',variables('blobStorageAccountName'),';AccountKey=',listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
-          }
+        ],
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+          "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('blobStorageAccountName'),';AccountKey=',listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
+        }
       },
-      "dependsOn":[  
-          "dataFactory2",
-          "BlobLinkedStorage"
+      "dependsOn": [
+        "dataFactory2",
+        "BlobLinkedStorage"
       ]
     },
     {
@@ -2037,7 +1982,7 @@
       ]
     },
     {
-       "name": "[concat(variables('dataFactoryName'),'/', 'openDataExport')]",
+      "name": "[concat(variables('dataFactoryName'),'/', 'openDataExport')]",
       "type": "Microsoft.DataFactory/factories/pipelines",
       "apiVersion": "2018-06-01",
       "properties": {
