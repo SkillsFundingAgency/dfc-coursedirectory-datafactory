@@ -1,5 +1,6 @@
 variables:
-  ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
+  InfrastructureArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates\Infrastructure'
+  InfrastructureSolutionBaseName: 'dfc-coursedirectory-datafactory-infrastructure'
   SolutionBaseName: 'dfc-coursedirectory-datafactory'
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
@@ -28,8 +29,8 @@ stages:
     steps:
     - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-arm-build.yml@dfc-devops
       parameters:
-        ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
-        SolutionBaseName: '${{ variables.SolutionBaseName }}'
+        ArmTemplateRoot: '${{ variables.InfrastructureArmTemplateRoot }}'
+        SolutionBaseName: '${{ variables.InfrastructureSolutionBaseName }}'
     - task: PublishPipelineArtifact@0
       displayName: Publish Region Data File artifact
       inputs:
