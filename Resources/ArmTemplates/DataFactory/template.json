@@ -1822,6 +1822,7 @@
           "location": {
             "type": "AzureBlobStorageLocation",
             "fileName": "regions.json",
+            "folderPath": "RegionData",
             "container": "open-data"
           }
         },
