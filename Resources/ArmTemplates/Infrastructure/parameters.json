@@ -4,12 +4,6 @@
   "parameters": {
     "environment": {
       "value": "__envAbbreviation__"
-    },
-    "cosmosDBName": {
-      "value": "__sharedCosmosDbAccount__"
-    },
-    "cosmosDbKey": {
-      "value": "__appSharedCosmosPrimaryKey__"
     }
   }
 }

@@ -4,12 +4,6 @@
     "parameters": {
       "environment": {
         "value": "local"
-      },
-      "cosmosDBName": {
-          "value": "dfc-dev-app-sharedresources-cdb"
-      },
-      "cosmosDbKey": {
-          "value": "not-a-real-key"
       }
     }
   }
