@@ -35,6 +35,7 @@ param(
 
 $storageContainerName = "open-data"
 
+
 # Get Storage Account Key
 Write-Verbose "Get Storage Account Key"
 $storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -AccountName $storageAccountName).Value[0]
@@ -42,6 +43,12 @@ $storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupN
 # Set AzStorageContext
 Write-Verbose "Get Storage Account Context"
 $destinationContext = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+
+$openDataContainer = Get-AzStorageContainer -Name $storageContainerName -Context $destinationContext
+
+if (!$openDataContainer) {
+    New-AzStorageContainer -ResourceGroupName $ResourceGroupName -AccountName $storageAccountName -ContainerName $storageContainerName
+}
 
 $BlobName="RegionData/$($LocalFileName)"
 $localFile = "$($LocalFilePath)\$($LocalFileName)"
