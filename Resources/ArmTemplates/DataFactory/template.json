@@ -26,10 +26,7 @@
     "tableStorageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('tableStorageAccountName'))]",
     "blobStorageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]",
     "cosmosDbDatabaseName": "providerportal",
-    "cosmosDbPartialConnectionString": "[concat('AccountEndpoint=https://', parameters('CosmosDbName'), '.documents.azure.com:443/;AccountKey=', parameters('cosmosDbKey'))]",
-    "providerPortalCosmosDb_connectionString": "[concat(variables('cosmosDbPartialConnectionString'), ';Database=', variables('cosmosDbDatabaseName'), ';')]",
-    "providerPortalTableStorage_connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('tableStorageAccountName'),';AccountKey=',listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]",
-    "providerPortalBlobStorage_connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('blobStorageAccountName'),';AccountKey=',listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
+    "cosmosDbPartialConnectionString": "[concat('AccountEndpoint=https://', parameters('CosmosDbName'), '.documents.azure.com:443/;AccountKey=', parameters('cosmosDbKey'))]"
   },
   "resources": [
       {
@@ -41,7 +38,7 @@
               "annotations": [],
               "type": "CosmosDb",
               "typeProperties": {
-                  "connectionString": "[variables('providerPortalCosmosDb_connectionString')]"
+                  "connectionString": "[concat(variables('cosmosDbPartialConnectionString'), ';Database=', variables('cosmosDbDatabaseName'), ';')]"
               }
           },
           "dependsOn": []
@@ -54,7 +51,7 @@
               "annotations": [],
               "type": "AzureBlobStorage",
               "typeProperties": {
-                  "connectionString": "[variables('providerPortalTableStorage_connectionString')]"
+                  "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('tableStorageAccountName'),';AccountKey=',listKeys(variables('tableStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
               }
           },
           "dependsOn": []
@@ -67,7 +64,7 @@
               "annotations": [],
               "type": "AzureBlobStorage",
               "typeProperties": {
-                  "connectionString": "[variables('providerPortalBlobStorage_connectionString')]"
+                  "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('blobStorageAccountName'),';AccountKey=',listKeys(variables('blobStorageAccountId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
               }
           },
           "dependsOn": []
