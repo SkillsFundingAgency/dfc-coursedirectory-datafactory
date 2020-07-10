@@ -37,7 +37,7 @@ $storageContainerName = "open-data"
 
 # Get Storage Account Key
 Write-Verbose "Get Storage Account Key"
-$storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $storageAccountRG -AccountName $storageAccountName).Value[0]
+$storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -AccountName $storageAccountName).Value[0]
  
 # Set AzStorageContext
 Write-Verbose "Get Storage Account Context"
