@@ -44,7 +44,7 @@ $storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupN
 Write-Verbose "Get Storage Account Context"
 $destinationContext = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
 
-$openDataContainer = Get-AzStorageContainer -Name $storageContainerName -Context $destinationContext
+$openDataContainer = Get-AzStorageContainer -Prefix $storageContainerName -Context $destinationContext
 
 if (!$openDataContainer) {
     New-AzStorageContainer -Context $destinationContext -Name $storageContainerName
