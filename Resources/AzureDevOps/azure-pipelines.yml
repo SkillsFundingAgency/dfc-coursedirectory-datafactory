@@ -1,6 +1,6 @@
 variables:
   InfrastructureArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates\Infrastructure'
-  InfrastructureSolutionBaseName: 'dfc-coursedirectory-datafactory.infrastructure'
+  InfrastructureSolutionBaseName: 'dfc-coursedirectory-datafactory.Infrastructure'
   SolutionBaseName: 'dfc-coursedirectory-datafactory'
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
