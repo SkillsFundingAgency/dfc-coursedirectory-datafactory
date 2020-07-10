@@ -58,5 +58,5 @@ stages:
       displayName: Publish PSScripts Pipeline Artifact
       inputs:
         targetPath: $(Build.ArtifactStagingDirectory)/Resources/PSScripts
-        artifactName: Dfc.Shared.Resources.PSScripts
+        artifactName: ${{ variables.SolutionBaseName }}.PSScripts
 
