@@ -18,7 +18,7 @@ Name of the service principal
 Name of the service principal
 
 .EXAMPLE
-StorageAccountFileCopy.ps1 -StorageaccountName "dfcdevcdtestdfblobstr" -ResourceGroupName dfc-dev-cd-df-rg -LocalFilePath "C:\Users\olusolaadio\ncds\dfc-coursedirectory-datafactory\data" -LocalFileName "Regions.json" -verbose
+CopyFileToStorageAccount.ps1 -StorageaccountName "dfcdevcdtestdfblobstr" -ResourceGroupName dfc-dev-cd-df-rg -LocalFilePath "C:\Users\olusolaadio\ncds\dfc-coursedirectory-datafactory\data" -LocalFileName "Regions.json" -verbose
 
 #>
 [CmdletBinding()]
@@ -47,7 +47,7 @@ $destinationContext = New-AzStorageContext -StorageAccountName $storageAccountNa
 $openDataContainer = Get-AzStorageContainer -Name $storageContainerName -Context $destinationContext
 
 if (!$openDataContainer) {
-    New-AzStorageContainer -ResourceGroupName $ResourceGroupName -AccountName $storageAccountName -ContainerName $storageContainerName
+    New-AzStorageContainer -Context $destinationContext -Name $storageContainerName
 }
 
 $BlobName="RegionData/$($LocalFileName)"
