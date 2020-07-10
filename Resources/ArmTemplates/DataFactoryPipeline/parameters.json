@@ -1,0 +1,15 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "__envAbbreviation__"
+    },
+    "cosmosDBName": {
+      "value": "__sharedCosmosDbAccount__"
+    },
+    "cosmosDbKey": {
+      "value": "__appSharedCosmosPrimaryKey__"
+    }
+  }
+}
