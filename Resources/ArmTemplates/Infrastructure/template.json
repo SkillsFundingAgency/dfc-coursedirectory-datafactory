@@ -15,7 +15,7 @@
     "dataFactoryName": "[concat(variables('sharedPrefix'),'-df')]",
     "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
     "tableStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'tablestr')]",
-    "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-df-actgrp'))]",
+    "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-actgrp'))]",
     "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]"
   },
   "resources": [
