@@ -10,9 +10,7 @@
     }
   },
   "variables": {
-    // remember to change the following lineand remove the -test
-    "sharedPrefix": "[tolower(concat('dfc-',toLower(parameters('environment')), '-cd-test'))]",
-    // remember to change above line
+    "sharedPrefix": "[tolower(concat('dfc-',toLower(parameters('environment')), '-cd'))]",
     "dfcDevOpsTemplatesUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
     "dataFactoryName": "[concat(variables('sharedPrefix'),'-df')]",
     "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",

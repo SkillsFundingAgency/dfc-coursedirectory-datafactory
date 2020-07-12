@@ -16,9 +16,7 @@
     }
   },
   "variables": {
-    // remember to change the following lineand remove the -test
-    "sharedPrefix": "[tolower(concat('dfc-', parameters('environment'), '-cd-test'))]",
-    // remember to change above line
+    "sharedPrefix": "[tolower(concat('dfc-', parameters('environment'), '-cd'))]",
     "factoryName": "[concat(variables('sharedPrefix'),'-df')]",
     "factoryId": "[concat('Microsoft.DataFactory/factories/', variables('factoryName'))]",
     "blobStorageAccountName": "[concat(replace(variables('factoryName'),'-',''),'blobstr')]",
