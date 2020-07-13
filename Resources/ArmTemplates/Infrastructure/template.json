@@ -1,0 +1,128 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "The environment being deployed to. Used to generate all resource names (apart from storage)"
+      }
+    }
+  },
+  "variables": {
+    "sharedPrefix": "[tolower(concat('dfc-',toLower(parameters('environment')), '-prov'))]",
+    "dfcDevOpsTemplatesUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
+    "dataFactoryName": "[concat(variables('sharedPrefix'),'-df')]",
+    "blobStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'blobstr')]",
+    "tableStorageAccountName": "[concat(replace(variables('dataFactoryName'),'-',''),'tablestr')]",
+    "actionGroupName": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-actgrp'))]",
+    "actionGroupResourceGroup": "[tolower(concat('dfc-', parameters('environment'),'-prov-monitor-rg'))]"
+  },
+  "resources": [
+    {
+      "name": "BlobLinkedStorage",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('blobStorageAccountName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "TableLinkedStorage",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'storage-account.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('tableStorageAccountName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "dataFactory2",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'datafactory.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "DataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'), '-failed-pipelines')]",
+      "apiVersion": "2019-05-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'), 'Application-Insights/metric-alerts.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "enabled": {
+            "value": true
+          },
+          "alertName": {
+            "value": "[concat(variables('dataFactoryName'), '-failed-pipelines')]"
+          },
+          "alertSeverity": {
+            "value": 3
+          },
+          "metricName": {
+            "value": "PipelineFailedRuns"
+          },
+          "operator": {
+            "value": "GreaterThan"
+          },
+          "threshold": {
+            "value": "0"
+          },
+          "aggregation": {
+            "value": "Total"
+          },
+          "windowSize": {
+            "value": "PT5M"
+          },
+          "evaluationFrequency": {
+            "value": "PT1M"
+          },
+          "actionGroupName": {
+            "value": "[variables('actionGroupName')]"
+          },
+          "actionGroupResourceGroup": {
+            "value": "[variables('actionGroupResourceGroup')]"
+          },
+          "resourceId": {
+            "value": "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2"
+      ]
+    }
+  ],
+  "outputs": {}
+}

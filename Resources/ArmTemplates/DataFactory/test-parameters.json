@@ -3,7 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "environment": {
-        "value": "__envAbbreviation__"
+        "value": "local"
+      },
+      "cosmosDBName": {
+          "value": "dfc-dev-app-sharedresources-cdb"
+      },
+      "cosmosDbKey": {
+          "value": "not-a-real-key"
       }
     }
   }
