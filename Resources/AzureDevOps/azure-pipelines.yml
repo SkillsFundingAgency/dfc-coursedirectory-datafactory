@@ -33,16 +33,6 @@ stages:
       parameters:
         ArmTemplateRoot: '${{ variables.InfrastructureArmTemplateRoot }}'
         SolutionBaseName: '${{ variables.InfrastructureSolutionBaseName }}'
-  - job: TestPipelineArmTemplates
-    displayName: "Test & package Pipeline ARM template(s)"
-    steps:
-    - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-arm-build.yml@dfc-devops
-      parameters:
-        ArmTemplateRoot: '${{ variables.DataFactoryArmTemplateRoot }}'
-        SolutionBaseName: '${{ variables.DataFactorySolutionBaseName }}'
-  - job: PublishFileArtifacts
-    displayName: "Publish File artifacts"
-    steps:
     - task: PublishPipelineArtifact@0
       displayName: Publish Region Data File artifact
       inputs:
@@ -53,3 +43,8 @@ stages:
       inputs:
         targetPath: $(Build.SourcesDirectory)/PSScripts
         artifactName: ${{ variables.SolutionBaseName }}.PSScripts
+    - task: PublishPipelineArtifact@0
+      displayName: Publish DataFactory Artifact
+      inputs:
+        targetPath: $(Build.SourcesDirectory)/dfc-dev-prov-df
+        artifactName: ${{ variables.SolutionBaseName }}.DataFactory
