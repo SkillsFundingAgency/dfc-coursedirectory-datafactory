@@ -37,7 +37,7 @@ $connectionString = "DefaultEndpointsProtocol=https;AccountName=$($storageAccoun
 
 Write-Verbose "Get Storage Account Conn string $($connectionString)"
 
-Write-Output "##vso[task.setvariable variable=$(ConnectionStringVariable);issecret=true]$($connectionString)" 
+Write-Output "##vso[task.setvariable variable=$($ConnectionStringVariable);issecret=true]$($connectionString)" 
 
 
 
