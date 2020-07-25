@@ -1,0 +1,52 @@
+{
+	"name": "openData_Cache_Regions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "regions.json",
+				"folderPath": {
+					"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+					"type": "Expression"
+				},
+				"container": "open-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Id": {
+					"type": "string"
+				},
+				"ApiLocationId": {
+					"type": "integer"
+				},
+				"SubRegionName": {
+					"type": "string"
+				},
+				"Checked": {
+					"type": "boolean"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Weighting": {
+					"type": "integer"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
