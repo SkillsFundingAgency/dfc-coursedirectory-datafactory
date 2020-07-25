@@ -20,7 +20,9 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$StorageaccountName,
     [Parameter(Mandatory=$true)]
-    [string]$ResourceGroupName
+    [string]$ResourceGroupName,
+    [Parameter(Mandatory=$true)]
+    [string]$ConnectionStringVariable
 )
 
 
@@ -35,7 +37,7 @@ $connectionString = "DefaultEndpointsProtocol=https;AccountName=$($storageAccoun
 
 Write-Verbose "Get Storage Account Conn string $($connectionString)"
 
-Write-Output "##vso[task.setvariable variable=DataStorageAccountConnString;issecret=true]$($connectionString)" 
+Write-Output "##vso[task.setvariable variable=$(ConnectionStringVariable);issecret=true]$($connectionString)" 
 
 
 
