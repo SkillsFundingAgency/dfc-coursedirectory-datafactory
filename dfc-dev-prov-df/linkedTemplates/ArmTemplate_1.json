@@ -1,0 +1,454 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dfc-dev-prov-df"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Venues_GetCourseVenues')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "openDataExport"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "cosmosDb_Venues",
+								"type": "DatasetReference"
+							},
+							"name": "Venues"
+						},
+						{
+							"dataset": {
+								"referenceName": "openData_Cache_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "Courses"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "openData_Cache_Venues",
+								"type": "DatasetReference"
+							},
+							"name": "UpdateCache"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ExistsInCourses"
+						}
+					],
+					"script": "source(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery') ~> Venues\nsource(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Courses\nVenues, Courses exists(Id == VenueId,\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsInCourses\nExistsInCourses sink(input(\n\t\tId as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationCounty as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['venues.json'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UpdateCache"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openDataExport')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetRegions",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "StorageRegions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "openData_Cache_Regions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetProviders",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "GetCourseRuns",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "openData_Transform_Providers",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Providers": {},
+									"ProviderCourses": {},
+									"exportProviders": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					},
+					{
+						"name": "GetCourseRuns",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "openData_Course_GetCurrentCourses",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Courses": {},
+									"UpdateCache": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					},
+					{
+						"name": "GetVenues",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "GetCourseRuns",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "openData_Venues_GetCourseVenues",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Venues": {},
+									"Courses": {},
+									"UpdateCache": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					},
+					{
+						"name": "AttachCourseAddress",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "GetVenues",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "GetRegions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "openData_Course_AttachVenues",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Courses": {},
+									"Venues": {},
+									"Export": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					},
+					{
+						"name": "ExportRegions",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "GetRegions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Id']"
+										},
+										"sink": {
+											"name": "Id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ApiLocationId']"
+										},
+										"sink": {
+											"name": "ApiLocationId",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SubRegionName']"
+										},
+										"sink": {
+											"name": "SubRegionName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Latitude']"
+										},
+										"sink": {
+											"name": "Latitude",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Longitude']"
+										},
+										"sink": {
+											"name": "Longitude",
+											"type": "Double"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "openData_Cache_Regions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "openData_Export_Regions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/openData_Venues_GetCourseVenues')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Four am run')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "openDataExport",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-07-09T14:49:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								4
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/openDataExport')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Two am run')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "openDataExport",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-07-25T19:14:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								2
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/openDataExport')]"
+			]
+		}
+	]
+}
