@@ -1,0 +1,71 @@
+{
+	"name": "openData_History_Providers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+					"type": "Expression"
+				},
+				"container": "open-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ukprn",
+				"type": "String"
+			},
+			{
+				"name": "providerName",
+				"type": "String"
+			},
+			{
+				"name": "tradingName",
+				"type": "String"
+			},
+			{
+				"name": "contactAddress1",
+				"type": "String"
+			},
+			{
+				"name": "contactAddress2",
+				"type": "String"
+			},
+			{
+				"name": "contactTown",
+				"type": "String"
+			},
+			{
+				"name": "contactPostcode",
+				"type": "String"
+			},
+			{
+				"name": "contactWebsite",
+				"type": "String"
+			},
+			{
+				"name": "contactEmail",
+				"type": "String"
+			},
+			{
+				"name": "contactPhone",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
