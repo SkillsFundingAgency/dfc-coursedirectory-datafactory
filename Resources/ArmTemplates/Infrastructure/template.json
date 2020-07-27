@@ -155,7 +155,7 @@
             "value": true
           },
           "alertName": {
-            "value": "'dfc-col-prov-df', '-failed-pipelines')]"
+            "value": "dfc-col-prov-df-failed-pipelines"
           },
           "alertSeverity": {
             "value": 3
