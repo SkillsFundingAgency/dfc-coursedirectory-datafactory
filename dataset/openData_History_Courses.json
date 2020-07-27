@@ -1,0 +1,123 @@
+{
+	"name": "openData_History_Courses",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "openDataExpot"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+					"type": "Expression"
+				},
+				"container": "open-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ProviderUkprn",
+				"type": "String"
+			},
+			{
+				"name": "CourseName",
+				"type": "String"
+			},
+			{
+				"name": "CourseId",
+				"type": "String"
+			},
+			{
+				"name": "LearnAimRef",
+				"type": "String"
+			},
+			{
+				"name": "DeliveryMode",
+				"type": "String"
+			},
+			{
+				"name": "StartDate",
+				"type": "String"
+			},
+			{
+				"name": "FlexibleStartDate",
+				"type": "String"
+			},
+			{
+				"name": "CourseURL",
+				"type": "String"
+			},
+			{
+				"name": "Cost",
+				"type": "String"
+			},
+			{
+				"name": "CostDescription",
+				"type": "String"
+			},
+			{
+				"name": "Regions",
+				"type": "String"
+			},
+			{
+				"name": "National",
+				"type": "String"
+			},
+			{
+				"name": "LocationName",
+				"type": "String"
+			},
+			{
+				"name": "LocationAddress1",
+				"type": "String"
+			},
+			{
+				"name": "LocationAddress2",
+				"type": "String"
+			},
+			{
+				"name": "LocationTown",
+				"type": "String"
+			},
+			{
+				"name": "LocationPostcode",
+				"type": "String"
+			},
+			{
+				"name": "LocationLatitude",
+				"type": "String"
+			},
+			{
+				"name": "LocationLongitude",
+				"type": "String"
+			},
+			{
+				"name": "UpdatedDate",
+				"type": "String"
+			},
+			{
+				"name": "DurationUnit",
+				"type": "String"
+			},
+			{
+				"name": "DurationValue",
+				"type": "String"
+			},
+			{
+				"name": "AttendanceType",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
