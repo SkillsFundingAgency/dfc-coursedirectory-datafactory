@@ -51,5 +51,5 @@ stages:
     - task: PublishPipelineArtifact@0
       displayName: Publish DataFactory Artifact
       inputs:
-        targetPath: $(Build.SourcesDirectory)/adf_publish/dfc-col-prov-df
+        targetPath: $(Build.SourcesDirectory)/adf_publish/adf_publish/dfc-col-prov-df
         artifactName: ${{ variables.SolutionBaseName }}.DataFactory
