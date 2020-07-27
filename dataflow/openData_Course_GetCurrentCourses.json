@@ -35,7 +35,8 @@
 					"name": "SortByStartDate"
 				},
 				{
-					"name": "SplitByStartDate"
+					"name": "SplitByStartDate",
+					"description": "Conditionally distributing data in FlexibleStartDate groups, based on columns '{1}'"
 				},
 				{
 					"name": "JoinFlexibleCourses"
