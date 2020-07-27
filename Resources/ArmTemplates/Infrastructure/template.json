@@ -122,6 +122,59 @@
       "dependsOn": [
         "dataFactory2"
       ]
+    },
+    {
+      "name": "[concat(variables('dataFactoryName'), '-succeeded-pipelines')]",
+      "apiVersion": "2019-05-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'), 'Application-Insights/metric-alerts.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "enabled": {
+            "value": true
+          },
+          "alertName": {
+            "value": "[concat(variables('dataFactoryName'), '-succeeded-pipelines')]"
+          },
+          "alertSeverity": {
+            "value": 3
+          },
+          "metricName": {
+            "value": "PipelineSucceededRuns"
+          },
+          "operator": {
+            "value": "GreaterThan"
+          },
+          "threshold": {
+            "value": "0"
+          },
+          "aggregation": {
+            "value": "Total"
+          },
+          "windowSize": {
+            "value": "PT5M"
+          },
+          "evaluationFrequency": {
+            "value": "PT1M"
+          },
+          "actionGroupName": {
+            "value": "[variables('actionGroupName')]"
+          },
+          "actionGroupResourceGroup": {
+            "value": "[variables('actionGroupResourceGroup')]"
+          },
+          "resourceId": {
+            "value": "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2"
+      ]
     }
   ],
   "outputs": {}
