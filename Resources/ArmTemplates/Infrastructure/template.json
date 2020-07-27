@@ -122,6 +122,76 @@
       "dependsOn": [
         "dataFactory2"
       ]
+    },
+    {
+      "name": "dataFactorycol",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'),'datafactory.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "DataFactoryName": {
+            "value": "dfc-col-prov-df"
+          }
+        }
+      }
+    },
+    {
+      "name": "[concat('dfc-col-prov-df', '-failed-pipelines')]",
+      "apiVersion": "2019-05-01",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('dfcDevOpsTemplatesUrl'), 'Application-Insights/metric-alerts.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "enabled": {
+            "value": true
+          },
+          "alertName": {
+            "value": "'dfc-col-prov-df', '-failed-pipelines')]"
+          },
+          "alertSeverity": {
+            "value": 3
+          },
+          "metricName": {
+            "value": "PipelineFailedRuns"
+          },
+          "operator": {
+            "value": "GreaterThan"
+          },
+          "threshold": {
+            "value": "0"
+          },
+          "aggregation": {
+            "value": "Total"
+          },
+          "windowSize": {
+            "value": "PT5M"
+          },
+          "evaluationFrequency": {
+            "value": "PT1M"
+          },
+          "actionGroupName": {
+            "value": "[variables('actionGroupName')]"
+          },
+          "actionGroupResourceGroup": {
+            "value": "[variables('actionGroupResourceGroup')]"
+          },
+          "resourceId": {
+            "value": "[resourceId('Microsoft.DataFactory/factories', 'dfc-col-prov-df')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory2"
+      ]
     }
   ],
   "outputs": {}
