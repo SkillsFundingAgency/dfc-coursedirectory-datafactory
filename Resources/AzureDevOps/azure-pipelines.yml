@@ -15,11 +15,6 @@ resources:
     name: SkillsFundingAgency/dfc-devops
     ref: refs/tags/v1.11.2
     endpoint: 'GitHub (ESFA)'
-  - repository: adf_publish
-    type: github
-    name: SkillsFundingAgency/dfc-coursedirectory-datafactory
-    ref: adf_publish
-    endpoint: 'GitHub (ESFA)'
 
 pool:
   name: NCS - CI and CD
@@ -51,5 +46,5 @@ stages:
     - task: PublishPipelineArtifact@0
       displayName: Publish DataFactory Artifact
       inputs:
-        targetPath: $(Build.SourcesDirectory)/adf_publish/adf_publish/dfc-col-prov-df
+        targetPath: $(Build.SourcesDirectory)/dfc-col-prov-df
         artifactName: ${{ variables.SolutionBaseName }}.DataFactory
