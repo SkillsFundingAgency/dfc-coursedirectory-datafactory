@@ -1,0 +1,1755 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dfc-col-prov-df"
+		},
+		"providerPortalBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'providerPortalBlobStorage'"
+		},
+		"providerPortalCosmosDb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'providerPortalCosmosDb'"
+		},
+		"providerPortalTableStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'providerPortalTableStorage'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/providerPortalBlobStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('providerPortalBlobStorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/providerPortalCosmosDb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Azure CosmosDb linked service",
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('providerPortalCosmosDb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/providerPortalTableStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('providerPortalTableStorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StorageRegions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "RegionData"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "regions.json",
+						"folderPath": "RegionData",
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Id": {
+							"type": "string"
+						},
+						"ApiLocationId": {
+							"type": "integer"
+						},
+						"SubRegionName": {
+							"type": "string"
+						},
+						"Checked": {
+							"type": "boolean"
+						},
+						"Latitude": {
+							"type": "number"
+						},
+						"Longitude": {
+							"type": "number"
+						},
+						"Postcode": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cosmosDb_Courses')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalCosmosDb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "cosmos"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CourseId": {
+							"type": "integer"
+						},
+						"QualificationCourseTitle": {
+							"type": "string"
+						},
+						"LearnAimRef": {
+							"type": "string"
+						},
+						"NotionalNVQLevelv2": {
+							"type": "string"
+						},
+						"AwardOrgCode": {
+							"type": "string"
+						},
+						"QualificationType": {
+							"type": "string"
+						},
+						"ProviderUKPRN": {
+							"type": "integer"
+						},
+						"CourseDescription": {
+							"type": "string"
+						},
+						"EntryRequirements": {
+							"type": "string"
+						},
+						"WhatYoullLearn": {
+							"type": "string"
+						},
+						"HowYoullLearn": {
+							"type": "string"
+						},
+						"WhatYoullNeed": {
+							"type": "string"
+						},
+						"HowYoullBeAssessed": {
+							"type": "string"
+						},
+						"WhereNext": {
+							"type": "string"
+						},
+						"AdultEducationBudget": {
+							"type": "boolean"
+						},
+						"AdvancedLearnerLoan": {
+							"type": "boolean"
+						},
+						"CourseRuns": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"CourseInstanceId": {
+										"type": "null"
+									},
+									"VenueId": {
+										"type": "null"
+									},
+									"CourseName": {
+										"type": "string"
+									},
+									"ProviderCourseID": {
+										"type": "string"
+									},
+									"DeliveryMode": {
+										"type": "integer"
+									},
+									"FlexibleStartDate": {
+										"type": "boolean"
+									},
+									"StartDate": {
+										"type": "string"
+									},
+									"CourseURL": {
+										"type": "string"
+									},
+									"Cost": {
+										"type": "integer"
+									},
+									"CostDescription": {
+										"type": "string"
+									},
+									"DurationUnit": {
+										"type": "integer"
+									},
+									"DurationValue": {
+										"type": "integer"
+									},
+									"StudyMode": {
+										"type": "integer"
+									},
+									"AttendancePattern": {
+										"type": "integer"
+									},
+									"National": {
+										"type": "null"
+									},
+									"Regions": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"RecordStatus": {
+										"type": "integer"
+									},
+									"CreatedDate": {
+										"type": "string"
+									},
+									"CreatedBy": {
+										"type": "null"
+									},
+									"UpdatedDate": {
+										"type": "null"
+									},
+									"UpdatedBy": {
+										"type": "null"
+									},
+									"SubRegions": {
+										"type": "null"
+									},
+									"BulkUploadErrors": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"CourseStatus": {
+							"type": "integer"
+						},
+						"CreatedDate": {
+							"type": "string"
+						},
+						"CreatedBy": {
+							"type": "string"
+						},
+						"UpdatedDate": {
+							"type": "string"
+						},
+						"IsValid": {
+							"type": "boolean"
+						},
+						"UpdatedBy": {
+							"type": "string"
+						},
+						"BulkUploadErrors": {
+							"type": "array"
+						},
+						"LarlessReason": {
+							"type": "null"
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "courses"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalCosmosDb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cosmosDb_Providers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalCosmosDb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "cosmos"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"UnitedKingdomProviderReferenceNumber": {
+							"type": "string"
+						},
+						"ProviderName": {
+							"type": "string"
+						},
+						"ProviderStatus": {
+							"type": "string"
+						},
+						"ProviderContact": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"ContactType": {
+										"type": "string"
+									},
+									"ContactAddress": {
+										"type": "object",
+										"properties": {
+											"SAON": {
+												"type": "object",
+												"properties": {
+													"Description": {
+														"type": "null"
+													}
+												}
+											},
+											"PAON": {
+												"type": "object",
+												"properties": {
+													"Description": {
+														"type": "string"
+													}
+												}
+											},
+											"StreetDescription": {
+												"type": "string"
+											},
+											"UniqueStreetReferenceNumber": {
+												"type": "null"
+											},
+											"Locality": {
+												"type": "null"
+											},
+											"Items": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											},
+											"ItemsElementName": {
+												"type": "array",
+												"items": {
+													"type": "integer"
+												}
+											},
+											"PostTown": {
+												"type": "null"
+											},
+											"PostCode": {
+												"type": "string"
+											},
+											"UniquePropertyReferenceNumber": {
+												"type": "null"
+											}
+										}
+									},
+									"ContactPersonalDetails": {
+										"type": "object",
+										"properties": {
+											"PersonNameTitle": {
+												"type": "null"
+											},
+											"PersonGivenName": {
+												"type": "null"
+											},
+											"PersonFamilyName": {
+												"type": "null"
+											},
+											"PersonNameSuffix": {
+												"type": "null"
+											},
+											"PersonRequestedName": {
+												"type": "null"
+											}
+										}
+									},
+									"ContactRole": {
+										"type": "null"
+									},
+									"ContactTelephone1": {
+										"type": "string"
+									},
+									"ContactTelephone2": {
+										"type": "null"
+									},
+									"ContactFax": {
+										"type": "string"
+									},
+									"ContactWebsiteAddress": {
+										"type": "null"
+									},
+									"ContactEmail": {
+										"type": "null"
+									},
+									"LastUpdated": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"ProviderVerificationDate": {
+							"type": "string"
+						},
+						"ProviderVerificationDateSpecified": {
+							"type": "boolean"
+						},
+						"ExpiryDateSpecified": {
+							"type": "boolean"
+						},
+						"ProviderAssociations": {
+							"type": "null"
+						},
+						"ProviderAliases": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"ProviderAlias": {
+										"type": "null"
+									},
+									"LastUpdated": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"VerificationDetails": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"VerificationAuthority": {
+										"type": "string"
+									},
+									"VerificationID": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"DateUpdated": {
+							"type": "string"
+						},
+						"DateDownloaded": {
+							"type": "string"
+						},
+						"Status": {
+							"type": "integer"
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "ukrlp"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalCosmosDb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cosmosDb_Venues')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalCosmosDb",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "cosmos"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"UKPRN": {
+							"type": "integer"
+						},
+						"PROVIDER_ID": {
+							"type": "integer"
+						},
+						"VENUE_ID": {
+							"type": "integer"
+						},
+						"VENUE_NAME": {
+							"type": "string"
+						},
+						"PROV_VENUE_ID": {
+							"type": "string"
+						},
+						"ADDRESS_1": {
+							"type": "string"
+						},
+						"ADDRESS_2": {
+							"type": "string"
+						},
+						"TOWN": {
+							"type": "string"
+						},
+						"COUNTY": {
+							"type": "string"
+						},
+						"POSTCODE": {
+							"type": "string"
+						},
+						"Latitude": {
+							"type": "number"
+						},
+						"Longitude": {
+							"type": "number"
+						},
+						"Status": {
+							"type": "integer"
+						},
+						"DateUpdated": {
+							"type": "string"
+						},
+						"UpdatedBy": {
+							"type": "string"
+						},
+						"PHONE": {
+							"type": "string"
+						},
+						"EMAIL": {
+							"type": "string"
+						},
+						"WEBSITE": {
+							"type": "string"
+						},
+						"LocationId": {
+							"type": "integer"
+						},
+						"TribalLocationId": {
+							"type": "null"
+						},
+						"Telephone": {
+							"type": "string"
+						},
+						"CreatedBy": {
+							"type": "string"
+						},
+						"CreatedDate": {
+							"type": "string"
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "venues"
+				},
+				"dependsOn": [
+					"dataFactory2",
+					"providerPortalCosmosDb"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalCosmosDb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Cache_Courses')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "courses.json",
+						"folderPath": {
+							"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"ProviderUKPRN": {
+							"type": "integer"
+						},
+						"CourseId": {
+							"type": "integer"
+						},
+						"LearnAimRef": {
+							"type": "string"
+						},
+						"CourseName": {
+							"type": "string"
+						},
+						"DeliveryMode": {
+							"type": "integer"
+						},
+						"FlexibleStartDate": {
+							"type": "boolean"
+						},
+						"StartDate": {
+							"type": "string"
+						},
+						"CourseURL": {
+							"type": "null"
+						},
+						"Cost": {
+							"type": "integer"
+						},
+						"CostDescription": {
+							"type": "string"
+						},
+						"National": {
+							"type": "boolean"
+						},
+						"Regions": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"VenueId": {
+							"type": "string"
+						},
+						"UpdatedDate": {
+							"type": "string"
+						},
+						"DurationUnit": {
+							"type": "integer"
+						},
+						"DurationValue": {
+							"type": "integer"
+						},
+						"AttendancePattern": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Cache_CoursesWithVenues')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "coursesWithVenues.json",
+						"folderPath": {
+							"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"ProviderUKPRN": {
+							"type": "integer"
+						},
+						"CourseId": {
+							"type": "integer"
+						},
+						"LearnAimRef": {
+							"type": "string"
+						},
+						"CourseName": {
+							"type": "string"
+						},
+						"DeliveryMode": {
+							"type": "integer"
+						},
+						"FlexibleStartDate": {
+							"type": "boolean"
+						},
+						"StartDate": {
+							"type": "string"
+						},
+						"CourseURL": {
+							"type": "null"
+						},
+						"Cost": {
+							"type": "integer"
+						},
+						"CostDescription": {
+							"type": "string"
+						},
+						"National": {
+							"type": "boolean"
+						},
+						"Regions": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"VenueId": {
+							"type": "string"
+						},
+						"LocationName": {
+							"type": "string"
+						},
+						"LocationAddress1": {
+							"type": "string"
+						},
+						"LocationAddress2": {
+							"type": "null"
+						},
+						"LocationTown": {
+							"type": "string"
+						},
+						"LocationCounty": {
+							"type": "string"
+						},
+						"LocationPostcode": {
+							"type": "string"
+						},
+						"LocationLatitude": {
+							"type": "number"
+						},
+						"LocationLongitude": {
+							"type": "number"
+						},
+						"UpdatedDate": {
+							"type": "string"
+						},
+						"DurationUnit": {
+							"type": "integer"
+						},
+						"DurationValue": {
+							"type": "integer"
+						},
+						"AttendancePattern": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Cache_Providers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "providers.json",
+						"folderPath": {
+							"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"UnitedKingdomProviderReferenceNumber": {
+							"type": "string"
+						},
+						"ProviderName": {
+							"type": "string"
+						},
+						"TradingName": {
+							"type": "string"
+						},
+						"ProviderStatus": {
+							"type": "string"
+						},
+						"ProviderContact": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"ContactType": {
+										"type": "string"
+									},
+									"ContactAddress": {
+										"type": "object",
+										"properties": {
+											"SAON": {
+												"type": "object",
+												"properties": {
+													"Description": {
+														"type": "null"
+													}
+												}
+											},
+											"PAON": {
+												"type": "object",
+												"properties": {
+													"Description": {
+														"type": "string"
+													}
+												}
+											},
+											"StreetDescription": {
+												"type": "string"
+											},
+											"UniqueStreetReferenceNumber": {
+												"type": "null"
+											},
+											"Locality": {
+												"type": "null"
+											},
+											"Items": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											},
+											"ItemsElementName": {
+												"type": "array",
+												"items": {
+													"type": "integer"
+												}
+											},
+											"PostTown": {
+												"type": "null"
+											},
+											"PostCode": {
+												"type": "string"
+											},
+											"UniquePropertyReferenceNumber": {
+												"type": "null"
+											}
+										}
+									},
+									"ContactPersonalDetails": {
+										"type": "object",
+										"properties": {
+											"PersonNameTitle": {
+												"type": "null"
+											},
+											"PersonGivenName": {
+												"type": "null"
+											},
+											"PersonFamilyName": {
+												"type": "null"
+											},
+											"PersonNameSuffix": {
+												"type": "null"
+											},
+											"PersonRequestedName": {
+												"type": "null"
+											}
+										}
+									},
+									"ContactRole": {
+										"type": "null"
+									},
+									"ContactTelephone1": {
+										"type": "string"
+									},
+									"ContactTelephone2": {
+										"type": "null"
+									},
+									"ContactFax": {
+										"type": "string"
+									},
+									"ContactWebsiteAddress": {
+										"type": "null"
+									},
+									"ContactEmail": {
+										"type": "null"
+									},
+									"LastUpdated": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"ProviderVerificationDate": {
+							"type": "string"
+						},
+						"ProviderVerificationDateSpecified": {
+							"type": "boolean"
+						},
+						"ExpiryDateSpecified": {
+							"type": "boolean"
+						},
+						"ProviderAssociations": {
+							"type": "null"
+						},
+						"ProviderAliases": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"ProviderAlias": {
+										"type": "null"
+									},
+									"LastUpdated": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"VerificationDetails": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"VerificationAuthority": {
+										"type": "string"
+									},
+									"VerificationID": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"id": {
+							"type": "string"
+						},
+						"DateUpdated": {
+							"type": "string"
+						},
+						"DateDownloaded": {
+							"type": "string"
+						},
+						"Status": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Cache_Regions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "regions.json",
+						"folderPath": {
+							"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Id": {
+							"type": "string"
+						},
+						"ApiLocationId": {
+							"type": "integer"
+						},
+						"SubRegionName": {
+							"type": "string"
+						},
+						"Checked": {
+							"type": "boolean"
+						},
+						"Latitude": {
+							"type": "number"
+						},
+						"Longitude": {
+							"type": "number"
+						},
+						"Weighting": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Cache_Venues')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "venues.json",
+						"folderPath": {
+							"value": "@concat('cache/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Id": {
+							"type": "string"
+						},
+						"LocationName": {
+							"type": "string"
+						},
+						"LocationAddress1": {
+							"type": "string"
+						},
+						"LocationAddress2": {
+							"type": "null"
+						},
+						"LocationTown": {
+							"type": "string"
+						},
+						"LocationCounty": {
+							"type": "string"
+						},
+						"LocationPostcode": {
+							"type": "string"
+						},
+						"LocationLatitude": {
+							"type": "number"
+						},
+						"LocationLongitude": {
+							"type": "number"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Export_Courses')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProviderUkprn",
+						"type": "String"
+					},
+					{
+						"name": "CourseName",
+						"type": "String"
+					},
+					{
+						"name": "CourseId",
+						"type": "String"
+					},
+					{
+						"name": "LearnAimRef",
+						"type": "String"
+					},
+					{
+						"name": "DeliveryMode",
+						"type": "String"
+					},
+					{
+						"name": "StartDate",
+						"type": "String"
+					},
+					{
+						"name": "FlexibleStartDate",
+						"type": "String"
+					},
+					{
+						"name": "CourseURL",
+						"type": "String"
+					},
+					{
+						"name": "Cost",
+						"type": "String"
+					},
+					{
+						"name": "CostDescription",
+						"type": "String"
+					},
+					{
+						"name": "Regions",
+						"type": "String"
+					},
+					{
+						"name": "National",
+						"type": "String"
+					},
+					{
+						"name": "LocationName",
+						"type": "String"
+					},
+					{
+						"name": "LocationAddress1",
+						"type": "String"
+					},
+					{
+						"name": "LocationAddress2",
+						"type": "String"
+					},
+					{
+						"name": "LocationTown",
+						"type": "String"
+					},
+					{
+						"name": "LocationPostcode",
+						"type": "String"
+					},
+					{
+						"name": "LocationLatitude",
+						"type": "String"
+					},
+					{
+						"name": "LocationLongitude",
+						"type": "String"
+					},
+					{
+						"name": "UpdatedDate",
+						"type": "String"
+					},
+					{
+						"name": "DurationUnit",
+						"type": "String"
+					},
+					{
+						"name": "DurationValue",
+						"type": "String"
+					},
+					{
+						"name": "AttendanceType",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Export_Providers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProviderUkprn",
+						"type": "String"
+					},
+					{
+						"name": "ProviderName",
+						"type": "String"
+					},
+					{
+						"name": "TradingName",
+						"type": "String"
+					},
+					{
+						"name": "ContactAddress1",
+						"type": "String"
+					},
+					{
+						"name": "ContactAddress2",
+						"type": "String"
+					},
+					{
+						"name": "ContactTown",
+						"type": "String"
+					},
+					{
+						"name": "ContactPostcode",
+						"type": "String"
+					},
+					{
+						"name": "ContactWebsite",
+						"type": "String"
+					},
+					{
+						"name": "ContactEmail",
+						"type": "String"
+					},
+					{
+						"name": "ContactPhone",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Export_Regions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "regions.csv",
+						"folderPath": {
+							"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Id",
+						"type": "String"
+					},
+					{
+						"name": "ApiLocationId",
+						"type": "String"
+					},
+					{
+						"name": "SubRegionName",
+						"type": "String"
+					},
+					{
+						"name": "Latitude",
+						"type": "String"
+					},
+					{
+						"name": "Longitude",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_History_Courses')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProviderUkprn",
+						"type": "String"
+					},
+					{
+						"name": "CourseName",
+						"type": "String"
+					},
+					{
+						"name": "CourseId",
+						"type": "String"
+					},
+					{
+						"name": "LearnAimRef",
+						"type": "String"
+					},
+					{
+						"name": "DeliveryMode",
+						"type": "String"
+					},
+					{
+						"name": "StartDate",
+						"type": "String"
+					},
+					{
+						"name": "FlexibleStartDate",
+						"type": "String"
+					},
+					{
+						"name": "CourseURL",
+						"type": "String"
+					},
+					{
+						"name": "Cost",
+						"type": "String"
+					},
+					{
+						"name": "CostDescription",
+						"type": "String"
+					},
+					{
+						"name": "Regions",
+						"type": "String"
+					},
+					{
+						"name": "National",
+						"type": "String"
+					},
+					{
+						"name": "LocationName",
+						"type": "String"
+					},
+					{
+						"name": "LocationAddress1",
+						"type": "String"
+					},
+					{
+						"name": "LocationAddress2",
+						"type": "String"
+					},
+					{
+						"name": "LocationTown",
+						"type": "String"
+					},
+					{
+						"name": "LocationPostcode",
+						"type": "String"
+					},
+					{
+						"name": "LocationLatitude",
+						"type": "String"
+					},
+					{
+						"name": "LocationLongitude",
+						"type": "String"
+					},
+					{
+						"name": "UpdatedDate",
+						"type": "String"
+					},
+					{
+						"name": "DurationUnit",
+						"type": "String"
+					},
+					{
+						"name": "DurationValue",
+						"type": "String"
+					},
+					{
+						"name": "AttendanceType",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_History_Providers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "providerPortalBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "openDataExpot"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@concat('export/', formatDateTime(utcnow(), 'yyyy-MM-dd'), '/', formatDateTime(utcnow(), 'HHmm')) ",
+							"type": "Expression"
+						},
+						"container": "open-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ukprn",
+						"type": "String"
+					},
+					{
+						"name": "providerName",
+						"type": "String"
+					},
+					{
+						"name": "tradingName",
+						"type": "String"
+					},
+					{
+						"name": "contactAddress1",
+						"type": "String"
+					},
+					{
+						"name": "contactAddress2",
+						"type": "String"
+					},
+					{
+						"name": "contactTown",
+						"type": "String"
+					},
+					{
+						"name": "contactPostcode",
+						"type": "String"
+					},
+					{
+						"name": "contactWebsite",
+						"type": "String"
+					},
+					{
+						"name": "contactEmail",
+						"type": "String"
+					},
+					{
+						"name": "contactPhone",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/providerPortalBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Course_AttachVenues')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "openDataExport"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "openData_Cache_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "Courses"
+						},
+						{
+							"dataset": {
+								"referenceName": "cosmosDb_Venues",
+								"type": "DatasetReference"
+							},
+							"name": "Venues"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "openData_Export_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "Export"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SplitByLocationType"
+						},
+						{
+							"name": "JoinVenues"
+						},
+						{
+							"name": "UnionCourses"
+						},
+						{
+							"name": "SelectColumns"
+						}
+					],
+					"script": "source(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> Courses\nsource(output(\n\t\tId as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationCounty as string,\n\t\tLocationLatitude as double,\n\t\tLocationLongitude as double,\n\t\tLocationName as string,\n\t\tLocationPostcode as string,\n\t\tLocationTown as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tquery: 'SELECT  c.id as Id\\n       ,c.VENUE_NAME as LocationName\\n       ,c.ADDRESS_1 as LocationAddress1\\n       ,c.ADDRESS_2 as LocationAddress2\\n       ,c.TOWN as LocationTown\\n       ,c.COUNTY as LocationCounty\\n       ,c.POSTCODE as LocationPostcode\\n       ,c.Latitude as LocationLatitude\\n       ,c.Longitude as LocationLongitude                                                 \\nFROM c',\n\tformat: 'documentQuery',\n\tsystemColumns: false) ~> Venues\nCourses split(not(isNull(VenueId)),\n\tnot(isNull(Regions)),\n\tNational,\n\tdisjoint: false) ~> SplitByLocationType@(CoursesWithVenues, RegionalCourses, NationalCourses, UnknownLocation)\nSplitByLocationType@CoursesWithVenues, Venues join(VenueId == Id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> JoinVenues\nJoinVenues, SplitByLocationType@RegionalCourses, SplitByLocationType@NationalCourses union(byName: true)~> UnionCourses\nUnionCourses select(mapColumn(\n\t\tProviderUKPRN,\n\t\tCourseId,\n\t\tLearnAimRef,\n\t\tCourseName,\n\t\tDeliveryMode,\n\t\tFlexibleStartDate,\n\t\tStartDate,\n\t\tCourseURL,\n\t\tCost,\n\t\tCostDescription,\n\t\tNational,\n\t\tRegions,\n\t\tLocationAddress1,\n\t\tLocationAddress2,\n\t\tLocationCounty,\n\t\tLocationLatitude,\n\t\tLocationLongitude,\n\t\tLocationName,\n\t\tLocationPostcode,\n\t\tLocationTown,\n\t\tUpdatedDate,\n\t\tAttendancePattern,\n\t\tDurationUnit,\n\t\tDurationValue\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColumns\nSelectColumns sink(input(\n\t\tProviderUkprn as string,\n\t\tCourseName as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tDeliveryMode as string,\n\t\tStartDate as string,\n\t\tFlexibleStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tRegions as string,\n\t\tNational as string,\n\t\tLocationName as string,\n\t\tLocationAddress1 as string,\n\t\tLocationAddress2 as string,\n\t\tLocationTown as string,\n\t\tLocationPostcode as string,\n\t\tLocationLatitude as string,\n\t\tLocationLongitude as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendanceType as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['courses.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tquoteAll: true) ~> Export"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/openData_Cache_Courses')]",
+				"[concat(variables('factoryId'), '/datasets/cosmosDb_Venues')]",
+				"[concat(variables('factoryId'), '/datasets/openData_Export_Courses')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Course_GetCurrentCourses')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "openDataExport"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "cosmosDb_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "Courses"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "openData_Cache_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "UpdateCache"
+						}
+					],
+					"transformations": [
+						{
+							"name": "AddStartDate"
+						},
+						{
+							"name": "FilterOutCoursesAlreadyRunning"
+						},
+						{
+							"name": "SortByStartDate"
+						},
+						{
+							"name": "SplitByStartDate",
+							"description": "Conditionally distributing data in FlexibleStartDate groups, based on columns '{1}'"
+						},
+						{
+							"name": "JoinFlexibleCourses"
+						}
+					],
+					"script": "source(output(\n\t\tAttendancePattern as integer,\n\t\tCost as double,\n\t\tCostDescription as string,\n\t\tCourseId as integer,\n\t\tCourseName as string,\n\t\tCourseURL as string,\n\t\tDeliveryMode as integer,\n\t\tDurationUnit as integer,\n\t\tDurationValue as integer,\n\t\tFlexibleStartDate as boolean,\n\t\tLearnAimRef as string,\n\t\tNational as boolean,\n\t\tProviderUKPRN as integer,\n\t\tRegions as string[],\n\t\tStartDateTime as string,\n\t\tUpdatedDateTime as string,\n\t\tVenueId as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'SELECT c.ProviderUKPRN\\n,c.CourseId\\n,c.LearnAimRef\\n,cx.CourseName\\n,cx.DeliveryMode\\n,cx.FlexibleStartDate\\n,cx.StartDate as StartDateTime\\n,cx.CourseURL\\n,cx.Cost\\n,cx.CostDescription\\n,cx.National\\n,cx.Regions\\n,cx.VenueId\\n,cx.UpdatedDate as UpdatedDateTime\\n,cx.DurationUnit\\n,cx.DurationValue\\n,cx.AttendancePattern\\nFROM   c\\nJOIN   cx IN c.CourseRuns\\nWHERE c.CourseStatus = 1 \\nAND c.IsValid = true',\n\tformat: 'documentQuery',\n\tsystemColumns: false) ~> Courses\nCourses derive(StartDate = toDate(StartDateTime)) ~> AddStartDate\nSortByStartDate filter(StartDate >= subMonths(subDays(currentDate(), dayOfMonth(currentDate()) - 1), 1)) ~> FilterOutCoursesAlreadyRunning\nSplitByStartDate@StartDateIsFixed sort(asc(StartDate, false)) ~> SortByStartDate\nAddStartDate split(FlexibleStartDate == false(),\n\tFlexibleStartDate == true(),\n\tdisjoint: false) ~> SplitByStartDate@(StartDateIsFixed, StartDateIsFlexible, UnkownStartDate)\nFilterOutCoursesAlreadyRunning, SplitByStartDate@StartDateIsFlexible union(byName: true)~> JoinFlexibleCourses\nJoinFlexibleCourses sink(input(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string[],\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['courses.json'],\n\tmapColumn(\n\t\tAttendancePattern,\n\t\tCost,\n\t\tCostDescription,\n\t\tCourseId,\n\t\tCourseName,\n\t\tCourseURL,\n\t\tDeliveryMode,\n\t\tDurationUnit,\n\t\tDurationValue,\n\t\tFlexibleStartDate,\n\t\tStartDate,\n\t\tLearnAimRef,\n\t\tNational,\n\t\tProviderUKPRN,\n\t\tRegions,\n\t\tUpdatedDate = UpdatedDateTime,\n\t\tVenueId\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UpdateCache"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/cosmosDb_Courses')]",
+				"[concat(variables('factoryId'), '/datasets/openData_Cache_Courses')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/openData_Transform_Providers')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "openDataExport"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "cosmosDb_Providers",
+								"type": "DatasetReference"
+							},
+							"name": "Providers"
+						},
+						{
+							"dataset": {
+								"referenceName": "openData_Cache_Courses",
+								"type": "DatasetReference"
+							},
+							"name": "ProviderCourses"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "openData_Export_Providers",
+								"type": "DatasetReference"
+							},
+							"name": "exportProviders"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FlattenContactDetails"
+						},
+						{
+							"name": "splitContactTypes"
+						},
+						{
+							"name": "FilterOutApprenticeshipProviders"
+						},
+						{
+							"name": "SortByUkprn"
+						},
+						{
+							"name": "BackfillLegalContacts"
+						},
+						{
+							"name": "UnionProviders"
+						},
+						{
+							"name": "CreateContactColumns"
+						},
+						{
+							"name": "ProviderExistsInCourseList"
+						}
+					],
+					"script": "source(output(\n\t\tUnitedKingdomProviderReferenceNumber as string,\n\t\tProviderName as string,\n\t\tTradingName as string,\n\t\tProviderStatus as string,\n\t\tProviderType as integer,\n\t\tProviderContact as (ContactType as string, ContactAddress as (SAON as (Description as string), PAON as (Description as string), StreetDescription as string, UniqueStreetReferenceNumber as string, Locality as string, Items as string[], ItemsElementName as string[], PostTown as string, PostCode as string, UniquePropertyReferenceNumber as string), ContactPersonalDetails as (PersonNameTitle as string, PersonGivenName as string, PersonFamilyName as string, PersonNameSuffix as string, PersonRequestedName as string), ContactRole as string, ContactTelephone1 as string, ContactTelephone2 as string, ContactFax as string, ContactWebsiteAddress as string, ContactEmail as string, LastUpdated as string)[],\n\t\tProviderVerificationDate as string,\n\t\tProviderVerificationDateSpecified as boolean,\n\t\tExpiryDateSpecified as boolean,\n\t\tProviderAssociations as string,\n\t\tProviderAliases as (ProviderAlias as string, LastUpdated as string)[],\n\t\tVerificationDetails as (VerificationAuthority as string, VerificationID as string)[],\n\t\tDateUpdated as string,\n\t\tDateDownloaded as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document') ~> Providers\nsource(output(\n\t\tProviderUKPRN as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tDeliveryMode as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tNational as boolean,\n\t\tRegions as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tAttendancePattern as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ProviderCourses\nProviderExistsInCourseList foldDown(unroll(ProviderContact),\n\tmapColumn(\n\t\tProviderUkprn = UnitedKingdomProviderReferenceNumber,\n\t\tProviderName,\n\t\tTradingName,\n\t\tContactType = ProviderContact.ContactType,\n\t\tContactAddress = ProviderContact.ContactAddress,\n\t\tContactPersonalDetails = ProviderContact.ContactPersonalDetails,\n\t\tContactRole = ProviderContact.ContactRole,\n\t\tContactTelephone1 = ProviderContact.ContactTelephone1,\n\t\tContactTelephone2 = ProviderContact.ContactTelephone2,\n\t\tContactWebsite = ProviderContact.ContactWebsiteAddress,\n\t\tContactEmail = ProviderContact.ContactEmail\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenContactDetails\nSortByUkprn split(ContactType == \"P\",\n\tContactType == \"L\",\n\tdisjoint: false) ~> splitContactTypes@(Primary, Legal)\nProviders filter(ProviderType != 2) ~> FilterOutApprenticeshipProviders\nFlattenContactDetails sort(asc(ProviderUkprn, true)) ~> SortByUkprn\nsplitContactTypes@Legal, splitContactTypes@Primary exists(splitContactTypes@Legal@ProviderUkprn == splitContactTypes@Primary@ProviderUkprn,\n\tnegate:true,\n\tbroadcast: 'auto')~> BackfillLegalContacts\nsplitContactTypes@Primary, BackfillLegalContacts union(byName: true)~> UnionProviders\nUnionProviders derive(ContactAddress1 = concat(\n    iif(!isNull(ContactAddress.SAON.Description), ContactAddress.SAON.Description + \" \", \"\"), \n    iif(!isNull(ContactAddress.PAON.Description), ContactAddress.PAON.Description + \" \", \"\"),\n    ContactAddress.StreetDescription\n),\n\t\tContactAddress2 = ContactAddress.Locality,\n\t\tContactTown = iif(!isNull(ContactAddress.PostTown), ContactAddress.PostTown, ContactAddress.Items[0]),\n\t\tContactPostcode = ContactAddress.PostCode,\n\t\tContactPhone = iif(!isNull(ContactTelephone1), ContactTelephone1, ContactTelephone2)) ~> CreateContactColumns\nFilterOutApprenticeshipProviders, ProviderCourses exists(UnitedKingdomProviderReferenceNumber == ProviderUKPRN,\n\tnegate:false,\n\tbroadcast: 'auto')~> ProviderExistsInCourseList\nCreateContactColumns sink(input(\n\t\tProviderUkprn as string,\n\t\tProviderName as string,\n\t\tTradingName as string,\n\t\tContactAddress1 as string,\n\t\tContactAddress2 as string,\n\t\tContactTown as string,\n\t\tContactPostcode as string,\n\t\tContactWebsite as string,\n\t\tContactEmail as string,\n\t\tContactPhone as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['providers.csv'],\n\tmapColumn(\n\t\tProviderUkprn,\n\t\tProviderName,\n\t\tTradingName,\n\t\tContactAddress1,\n\t\tContactAddress2,\n\t\tContactTown,\n\t\tContactPostcode,\n\t\tContactWebsite,\n\t\tContactEmail,\n\t\tContactPhone\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tquoteAll: true) ~> exportProviders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/cosmosDb_Providers')]",
+				"[concat(variables('factoryId'), '/datasets/openData_Cache_Courses')]",
+				"[concat(variables('factoryId'), '/datasets/openData_Export_Providers')]"
+			]
+		}
+	]
+}
