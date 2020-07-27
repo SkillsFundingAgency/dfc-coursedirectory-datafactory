@@ -34,7 +34,7 @@
 			"transformations": [
 				{
 					"name": "SplitByLocationType",
-					"description": "Conditionally distributing data in VenueId, Regions, National groups, based on columns '{1}'"
+					"description": "Conditionally distributing the data in VenueId, Regions, National groups, based on columns '{1}'"
 				},
 				{
 					"name": "JoinVenues"
