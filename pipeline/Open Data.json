@@ -1320,6 +1320,67 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('rebuildCache')",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Copy Courses",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "CosmosDbSqlApiSource",
+									"preferredRegions": []
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"quoteAllText": true
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "cosmosDb_Providers",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "cosmosDb_Courses_Backup",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "open-data",
+										"folder": "backup/2020-08-10",
+										"filename": "courses.json"
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"variables": {
@@ -1338,6 +1399,10 @@
 			"sharedFolder": {
 				"type": "String",
 				"defaultValue": "shared"
+			},
+			"rebuildCache": {
+				"type": "Boolean",
+				"defaultValue": true
 			}
 		},
 		"annotations": [],
