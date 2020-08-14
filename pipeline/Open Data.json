@@ -8,7 +8,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Use existing backup?",
+						"activity": "UseExistingBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -336,7 +336,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Use existing backup?",
+						"activity": "UseExistingBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -396,7 +396,7 @@
 						]
 					},
 					{
-						"activity": "Use existing backup?",
+						"activity": "UseExistingBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1354,7 +1354,7 @@
 				]
 			},
 			{
-				"name": "Use existing backup?",
+				"name": "UseExistingBackup",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
