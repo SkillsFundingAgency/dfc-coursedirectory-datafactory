@@ -1,0 +1,1347 @@
+{
+	"name": "Open Data",
+	"properties": {
+		"description": "Generates open data compatible exports for courses, venues and providers.",
+		"activities": [
+			{
+				"name": "Transform Providers",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Providers",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Providers": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup/2020-08-10",
+								"filename": "prod-ukrlp.json"
+							},
+							"Cache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
+								"filename": "providers.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "Generate Providers CSV",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Transform Providers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['ProviderUkprn']"
+								},
+								"sink": {
+									"name": "PROVIDER_UKPRN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProviderName']"
+								},
+								"sink": {
+									"name": "PROVIDER_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TradingName']"
+								},
+								"sink": {
+									"name": "TRADING_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactAddress1']"
+								},
+								"sink": {
+									"name": "CONTACT_ADDRESS1",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactTown']"
+								},
+								"sink": {
+									"name": "CONTACT_TOWN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactPostcode']"
+								},
+								"sink": {
+									"name": "CONTACT_POSTCODE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactWebsite']"
+								},
+								"sink": {
+									"name": "CONTACT_WEBSITE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactPhone']"
+								},
+								"sink": {
+									"name": "CONTACT_PHONE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ContactEmail']"
+								},
+								"sink": {
+									"name": "CONTACT_EMAIL",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Providers",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "providers.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Providers",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('providers', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Copy Regions",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"path": "$['RegionId']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SubRegionName']"
+								},
+								"sink": {
+									"path": "$['SubRegionName']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Latitude']"
+								},
+								"sink": {
+									"path": "$['Latitude']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Longitude']"
+								},
+								"sink": {
+									"path": "$['Longitude']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Postcode']"
+								},
+								"sink": {
+									"path": "$['Postcode']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "sharedData_Regions",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Cache_Regions",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "regions.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "Transform Venues",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Venues",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Venues": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup/2020-08-10",
+								"filename": "prod-venues.json"
+							},
+							"Cache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
+								"filename": "venues.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "Transform Courses",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy Regions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Courses",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup/2020-08-10",
+								"filename": "prod-courses.json"
+							},
+							"Cache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
+								"filename": "courses.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "Generate Courses CSV",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Transform Courses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['ProviderUKPRN']"
+								},
+								"sink": {
+									"name": "PROVIDER_UKPRN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseId']"
+								},
+								"sink": {
+									"name": "COURSE_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LearnAimRef']"
+								},
+								"sink": {
+									"name": "LEARN_AIM_REF",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseName']"
+								},
+								"sink": {
+									"name": "COURSE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseDescription']"
+								},
+								"sink": {
+									"name": "COURSE_DESCRIPTION",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DeliveryMode']"
+								},
+								"sink": {
+									"name": "DELIVER_MODE",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FlexibleStartDate']"
+								},
+								"sink": {
+									"name": "FLEXIBLE_STARTDATE",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['StartDate']"
+								},
+								"sink": {
+									"name": "STARTDATE",
+									"type": "DateTime",
+									"format": "yyyy-MM-dd",
+									"culture": "en-GB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseURL']"
+								},
+								"sink": {
+									"name": "COURSE_URL",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Cost']"
+								},
+								"sink": {
+									"name": "COST",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CostDescription']"
+								},
+								"sink": {
+									"name": "COST_DESCRIPTION",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['National']"
+								},
+								"sink": {
+									"name": "NATIONAL",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RegionsString']"
+								},
+								"sink": {
+									"name": "REGIONS",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VenueId']"
+								},
+								"sink": {
+									"name": "VENUE_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DurationUnit']"
+								},
+								"sink": {
+									"name": "DURATION_UNIT",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DurationValue']"
+								},
+								"sink": {
+									"name": "DURATION_VALUE",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AttendancePattern']"
+								},
+								"sink": {
+									"name": "ATTENDANCE_PATTERN",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['UpdatedDate']"
+								},
+								"sink": {
+									"name": "UPDATED_DATE",
+									"type": "String",
+									"format": "u",
+									"culture": "en-GB"
+								}
+							}
+						],
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Courses",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "courses.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Courses",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('courses', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Generate Venues CSV",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Transform Venues",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['ProviderUkprn']"
+								},
+								"sink": {
+									"name": "PROVIDER_UKPRN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VenueId']"
+								},
+								"sink": {
+									"name": "LOCATION_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VenueName']"
+								},
+								"sink": {
+									"name": "NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address1']"
+								},
+								"sink": {
+									"name": "ADDRESS1",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address2']"
+								},
+								"sink": {
+									"name": "ADDRESS2",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Town']"
+								},
+								"sink": {
+									"name": "TOWN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['County']"
+								},
+								"sink": {
+									"name": "COUNTY",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Postcode']"
+								},
+								"sink": {
+									"name": "POSTCODE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Latitude']"
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Longitude']"
+								},
+								"sink": {
+									"name": "LONGITUDE",
+									"type": "Double"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Venues",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "venues.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Venues",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Generate Regions CSV",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy Regions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Regions",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "regions.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Regions",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('regions', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Join Courses to Venues",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Transform Venues",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Transform Courses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_CoursesWithVenues",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "venues.json"
+							},
+							"Cache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "Generate Courses with Venues CSV",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Join Courses to Venues",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['ProviderUkprn']"
+								},
+								"sink": {
+									"name": "PROVIDER_UKPRN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseId']"
+								},
+								"sink": {
+									"name": "COURSE_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LearnAimRef']"
+								},
+								"sink": {
+									"name": "LEARN_AIM_REF",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseName']"
+								},
+								"sink": {
+									"name": "COURSE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseDescription']"
+								},
+								"sink": {
+									"name": "COURSE_DESCRIPTION",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DeliveryMode']"
+								},
+								"sink": {
+									"name": "DELIVER_MODE",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AttendancePattern']"
+								},
+								"sink": {
+									"name": "ATTENDANCE_PATTERN",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FlexibleStartDate']"
+								},
+								"sink": {
+									"name": "FLEXIBLE_STARTDATE",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['StartDate']"
+								},
+								"sink": {
+									"name": "STARTDATE",
+									"type": "DateTime",
+									"format": "yyyy-MM-dd",
+									"culture": "en-GB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DurationUnit']"
+								},
+								"sink": {
+									"name": "DURATION_UNIT",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DurationValue']"
+								},
+								"sink": {
+									"name": "DURATION_VALUE",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Cost']"
+								},
+								"sink": {
+									"name": "COST",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CostDescription']"
+								},
+								"sink": {
+									"name": "COST_DESCRIPTION",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['National']"
+								},
+								"sink": {
+									"name": "NATIONAL",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['RegionsString']"
+								},
+								"sink": {
+									"name": "REGIONS",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['VenueName']"
+								},
+								"sink": {
+									"name": "LOCATION_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address1']"
+								},
+								"sink": {
+									"name": "LOCATION_ADDRESS1",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address2']"
+								},
+								"sink": {
+									"name": "LOCATION_ADDRESS2",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['County']"
+								},
+								"sink": {
+									"name": "LOCATION_COUNTY",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Email']"
+								},
+								"sink": {
+									"name": "LOCATION_EMAIL",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Latitude']"
+								},
+								"sink": {
+									"name": "LOCATION_LATITUDE",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Longitude']"
+								},
+								"sink": {
+									"name": "LOCATION_LONGITUDE",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Postcode']"
+								},
+								"sink": {
+									"name": "LOCATION_POSTCODE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Telephone']"
+								},
+								"sink": {
+									"name": "LOCATION_TELEPHONE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Town']"
+								},
+								"sink": {
+									"name": "LOCATION_TOWN",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Website']"
+								},
+								"sink": {
+									"name": "LOCATION_WEBSITE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CourseURL']"
+								},
+								"sink": {
+									"name": "COURSE_URL",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['UpdatedDate']"
+								},
+								"sink": {
+									"name": "UPDATED_DATE",
+									"type": "String",
+									"format": "u",
+									"culture": "en-GB"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "openData_Cache_Courses",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": "courses-with-venues.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "openData_Export_Courses",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('courses-with-venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"variables": {
+			"container": {
+				"type": "String",
+				"defaultValue": "open-data"
+			},
+			"cacheFolder": {
+				"type": "String",
+				"defaultValue": "cache"
+			},
+			"exportFolder": {
+				"type": "String",
+				"defaultValue": "export"
+			},
+			"sharedFolder": {
+				"type": "String",
+				"defaultValue": "shared"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-08-14T02:41:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

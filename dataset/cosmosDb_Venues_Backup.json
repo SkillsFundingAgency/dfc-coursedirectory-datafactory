@@ -1,0 +1,120 @@
+{
+	"name": "cosmosDb_Venues_Backup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "backup/2020-08-10"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "prod-venues.json"
+			}
+		},
+		"folder": {
+			"name": "cosmos/backups"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"UKPRN": {
+					"type": "integer"
+				},
+				"PROVIDER_ID": {
+					"type": "integer"
+				},
+				"VENUE_ID": {
+					"type": "integer"
+				},
+				"VENUE_NAME": {
+					"type": "string"
+				},
+				"PROV_VENUE_ID": {
+					"type": "string"
+				},
+				"ADDRESS_1": {
+					"type": "string"
+				},
+				"ADDRESS_2": {
+					"type": "string"
+				},
+				"TOWN": {
+					"type": "string"
+				},
+				"COUNTY": {
+					"type": "string"
+				},
+				"POSTCODE": {
+					"type": "string"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Status": {
+					"type": "integer"
+				},
+				"DateUpdated": {
+					"type": "string"
+				},
+				"UpdatedBy": {
+					"type": "string"
+				},
+				"LocationId": {
+					"type": "integer"
+				},
+				"TribalLocationId": {
+					"type": "null"
+				},
+				"Telephone": {
+					"type": "string"
+				},
+				"Email": {
+					"type": "string"
+				},
+				"Website": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"CreatedBy": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

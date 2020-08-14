@@ -1,0 +1,209 @@
+{
+	"name": "cosmosDb_Courses_Backup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "backup/2020-08-10"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "prod-courses.json"
+			}
+		},
+		"folder": {
+			"name": "cosmos/backups"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"CourseId": {
+					"type": "integer"
+				},
+				"QualificationCourseTitle": {
+					"type": "string"
+				},
+				"LearnAimRef": {
+					"type": "string"
+				},
+				"NotionalNVQLevelv2": {
+					"type": "string"
+				},
+				"AwardOrgCode": {
+					"type": "string"
+				},
+				"QualificationType": {
+					"type": "string"
+				},
+				"ProviderUKPRN": {
+					"type": "integer"
+				},
+				"CourseDescription": {
+					"type": "string"
+				},
+				"EntryRequirements": {
+					"type": "string"
+				},
+				"WhatYoullLearn": {
+					"type": "string"
+				},
+				"HowYoullLearn": {
+					"type": "string"
+				},
+				"WhatYoullNeed": {
+					"type": "string"
+				},
+				"HowYoullBeAssessed": {
+					"type": "string"
+				},
+				"WhereNext": {
+					"type": "string"
+				},
+				"AdultEducationBudget": {
+					"type": "boolean"
+				},
+				"AdvancedLearnerLoan": {
+					"type": "boolean"
+				},
+				"CourseRuns": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string"
+							},
+							"CourseInstanceId": {
+								"type": "null"
+							},
+							"VenueId": {
+								"type": "null"
+							},
+							"CourseName": {
+								"type": "string"
+							},
+							"ProviderCourseID": {
+								"type": "string"
+							},
+							"DeliveryMode": {
+								"type": "integer"
+							},
+							"FlexibleStartDate": {
+								"type": "boolean"
+							},
+							"StartDate": {
+								"type": "date"
+							},
+							"CourseURL": {
+								"type": "string"
+							},
+							"Cost": {
+								"type": "integer"
+							},
+							"CostDescription": {
+								"type": "string"
+							},
+							"DurationUnit": {
+								"type": "integer"
+							},
+							"DurationValue": {
+								"type": "integer"
+							},
+							"StudyMode": {
+								"type": "integer"
+							},
+							"AttendancePattern": {
+								"type": "integer"
+							},
+							"National": {
+								"type": "boolean"
+							},
+							"Regions": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"RecordStatus": {
+								"type": "integer"
+							},
+							"CreatedDate": {
+								"type": "date"
+							},
+							"CreatedBy": {
+								"type": "null"
+							},
+							"UpdatedDate": {
+								"type": "null"
+							},
+							"UpdatedBy": {
+								"type": "null"
+							},
+							"SubRegions": {
+								"type": "null"
+							},
+							"BulkUploadErrors": {
+								"type": "null"
+							}
+						}
+					}
+				},
+				"CourseStatus": {
+					"type": "integer"
+				},
+				"CreatedDate": {
+					"type": "date"
+				},
+				"CreatedBy": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "date"
+				},
+				"IsValid": {
+					"type": "boolean"
+				},
+				"UpdatedBy": {
+					"type": "string"
+				},
+				"BulkUploadErrors": {
+					"type": "array"
+				},
+				"LarlessReason": {
+					"type": "null"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

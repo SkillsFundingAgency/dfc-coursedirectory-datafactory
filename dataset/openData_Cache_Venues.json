@@ -1,0 +1,46 @@
+{
+	"name": "openData_Cache_Venues",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "cache"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "venues.json"
+			}
+		},
+		"folder": {
+			"name": "openData"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,124 @@
+{
+	"name": "openData_Export_Courses",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "export"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "courses.csv"
+			}
+		},
+		"folder": {
+			"name": "openData"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "PROVIDER_UKPRN",
+				"type": "String"
+			},
+			{
+				"name": "COURSE_ID",
+				"type": "String"
+			},
+			{
+				"name": "LEARN_AIM_REF",
+				"type": "String"
+			},
+			{
+				"name": "COURSE_NAME",
+				"type": "String"
+			},
+			{
+				"name": "FLEXIBLE_STARTDATE",
+				"type": "String"
+			},
+			{
+				"name": "STARTDATE",
+				"type": "String"
+			},
+			{
+				"name": "DURATION_UNIT",
+				"type": "String"
+			},
+			{
+				"name": "DURATION_VALUE",
+				"type": "String"
+			},
+			{
+				"name": "DELIVER_MODE",
+				"type": "String"
+			},
+			{
+				"name": "ATTENDANCE_PATTERN",
+				"type": "String"
+			},
+			{
+				"name": "COST",
+				"type": "String"
+			},
+			{
+				"name": "COST_DESCRIPTION",
+				"type": "String"
+			},
+			{
+				"name": "NATIONAL",
+				"type": "String"
+			},
+			{
+				"name": "REGIONS",
+				"type": "String"
+			},
+			{
+				"name": "VENUE_ID",
+				"type": "String"
+			},
+			{
+				"name": "COURSE_URL",
+				"type": "String"
+			},
+			{
+				"name": "COURSE_DESCRIPTION",
+				"type": "String"
+			},
+			{
+				"name": "UPDATED_DATE",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

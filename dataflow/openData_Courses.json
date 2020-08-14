@@ -1,0 +1,53 @@
+{
+	"name": "openData_Courses",
+	"properties": {
+		"folder": {
+			"name": "openData"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cosmosDb_Courses_Backup",
+						"type": "DatasetReference"
+					},
+					"name": "Courses"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "openData_Cache_Courses",
+						"type": "DatasetReference"
+					},
+					"name": "Cache"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FilterActive"
+				},
+				{
+					"name": "FlattenCourseRuns"
+				},
+				{
+					"name": "StartDateSplit"
+				},
+				{
+					"name": "FilterAvailableFixedCourses"
+				},
+				{
+					"name": "JoinFixedAndFlexible"
+				},
+				{
+					"name": "FilterActiveCourseRuns"
+				},
+				{
+					"name": "Sanitise"
+				}
+			],
+			"script": "source(output(\n\t\tid as string,\n\t\tCourseId as string,\n\t\tQualificationCourseTitle as string,\n\t\tLearnAimRef as string,\n\t\tNotionalNVQLevelv2 as string,\n\t\tAwardOrgCode as string,\n\t\tQualificationType as string,\n\t\tProviderUKPRN as string,\n\t\tCourseDescription as string,\n\t\tEntryRequirements as string,\n\t\tWhatYoullLearn as string,\n\t\tHowYoullLearn as string,\n\t\tWhatYoullNeed as string,\n\t\tHowYoullBeAssessed as string,\n\t\tWhereNext as string,\n\t\tAdultEducationBudget as boolean,\n\t\tAdvancedLearnerLoan as boolean,\n\t\tCourseRuns as (id as string, CourseInstanceId as string, VenueId as string, CourseName as string, ProviderCourseID as string, DeliveryMode as integer, FlexibleStartDate as boolean, StartDate as date, CourseURL as string, Cost as integer, CostDescription as string, DurationUnit as integer, DurationValue as integer, StudyMode as integer, AttendancePattern as integer, National as boolean, Regions as string[], RecordStatus as integer, CreatedDate as string, CreatedBy as string, UpdatedDate as date, UpdatedBy as string, SubRegions as string, BulkUploadErrors as string)[],\n\t\tCourseStatus as integer,\n\t\tCreatedDate as string,\n\t\tCreatedBy as string,\n\t\tUpdatedDate as string,\n\t\tIsValid as boolean,\n\t\tUpdatedBy as string,\n\t\tBulkUploadErrors as string[],\n\t\tLarlessReason as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Courses\nCourses filter(CourseStatus == 1 && IsValid == true() && ProviderUKPRN != \"0\" && !isNull(ProviderUKPRN)) ~> FilterActive\nFilterActive foldDown(unroll(CourseRuns),\n\tmapColumn(\n\t\tProviderUKPRN,\n\t\tCourseId = id,\n\t\tLearnAimRef,\n\t\tCourseDescription,\n\t\tCourseName = CourseRuns.CourseName,\n\t\tDeliveryMode = CourseRuns.DeliveryMode,\n\t\tFlexibleStartDate = CourseRuns.FlexibleStartDate,\n\t\tStartDate = CourseRuns.StartDate,\n\t\tCourseURL = CourseRuns.CourseURL,\n\t\tCost = CourseRuns.Cost,\n\t\tCostDescription = CourseRuns.CostDescription,\n\t\tNational = CourseRuns.National,\n\t\tRegions = CourseRuns.Regions,\n\t\tVenueId = CourseRuns.VenueId,\n\t\tUpdatedDate = CourseRuns.UpdatedDate,\n\t\tDurationUnit = CourseRuns.DurationUnit,\n\t\tDurationValue = CourseRuns.DurationValue,\n\t\tAttendancePattern = CourseRuns.AttendancePattern,\n\t\tRecordStatus = CourseRuns.RecordStatus\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenCourseRuns\nFilterActiveCourseRuns split(FlexibleStartDate == false(),\n\tFlexibleStartDate == true(),\n\tdisjoint: false) ~> StartDateSplit@(FixedStartdate, FlexibleStartdate)\nStartDateSplit@FixedStartdate filter(StartDate >= subMonths(subDays(currentDate(), dayOfMonth(currentDate()) - 1), 1)) ~> FilterAvailableFixedCourses\nFilterAvailableFixedCourses, StartDateSplit@FlexibleStartdate union(byName: true)~> JoinFixedAndFlexible\nFlattenCourseRuns filter(RecordStatus == 1) ~> FilterActiveCourseRuns\nJoinFixedAndFlexible derive(CourseName = regexReplace(CourseName, '(\\\\\")', ''),\n\t\tCourseDescription = regexReplace(CourseDescription, '(\\\\\")', ''),\n\t\tCostDescription = regexReplace(CostDescription, '(\\\\\")', ''),\n\t\tRegionsString = regexReplace(toString(Regions), '(\\\\\")', '')) ~> Sanitise\nSanitise sink(input(\n\t\tProviderUkprn as string,\n\t\tCourseId as string,\n\t\tLearnAimRef as string,\n\t\tCourseName as string,\n\t\tCourseDescription as string,\n\t\tCourseURL as string,\n\t\tCost as string,\n\t\tCostDescription as string,\n\t\tFlexibleStartDate as boolean,\n\t\tStartDate as string,\n\t\tDurationUnit as string,\n\t\tDurationValue as string,\n\t\tDeliveryMode as string,\n\t\tAttendancePattern as string,\n\t\tNational as boolean,\n\t\tRegions as string[],\n\t\tRegionsString as string,\n\t\tVenueId as string,\n\t\tUpdatedDate as string,\n\t\tRecordStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['courses.json'],\n\tmapColumn(\n\t\tProviderUKPRN,\n\t\tCourseId,\n\t\tLearnAimRef,\n\t\tCourseDescription,\n\t\tCourseName,\n\t\tDeliveryMode,\n\t\tFlexibleStartDate,\n\t\tStartDate,\n\t\tCourseURL,\n\t\tCost,\n\t\tCostDescription,\n\t\tNational,\n\t\tRegions,\n\t\tRegionsString,\n\t\tVenueId,\n\t\tDurationUnit,\n\t\tDurationValue,\n\t\tAttendancePattern,\n\t\tUpdatedDate,\n\t\tRecordStatus\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Cache"
+		}
+	}
+}

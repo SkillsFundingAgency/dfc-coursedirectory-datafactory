@@ -1,0 +1,92 @@
+{
+	"name": "openData_Export_Providers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "export"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "providers.csv"
+			}
+		},
+		"folder": {
+			"name": "openData"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "PROVIDER_UKPRN",
+				"type": "String"
+			},
+			{
+				"name": "PROVIDER_NAME",
+				"type": "String"
+			},
+			{
+				"name": "TRADING_NAME",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_ADDRESS1",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_ADDRESS2",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_TOWN",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_POSTCODE",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_WEBSITE",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_EMAIL",
+				"type": "String"
+			},
+			{
+				"name": "CONTACT_PHONE",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

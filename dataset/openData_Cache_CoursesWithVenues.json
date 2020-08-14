@@ -1,0 +1,141 @@
+{
+	"name": "openData_Cache_CoursesWithVenues",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "cache"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "courses-with-venues.json"
+			}
+		},
+		"folder": {
+			"name": "openData"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"ProviderUkprn": {
+					"type": "integer"
+				},
+				"CourseId": {
+					"type": "string"
+				},
+				"LearnAimRef": {
+					"type": "string"
+				},
+				"CourseName": {
+					"type": "string"
+				},
+				"CourseDescription": {
+					"type": "string"
+				},
+				"CourseURL": {
+					"type": "string"
+				},
+				"Cost": {
+					"type": "integer"
+				},
+				"CostDescription": {
+					"type": "string"
+				},
+				"FlexibleStartDate": {
+					"type": "boolean"
+				},
+				"StartDate": {
+					"type": "date"
+				},
+				"DurationUnit": {
+					"type": "integer"
+				},
+				"DurationValue": {
+					"type": "integer"
+				},
+				"DeliveryMode": {
+					"type": "integer"
+				},
+				"AttendancePattern": {
+					"type": "integer"
+				},
+				"National": {
+					"type": "boolean"
+				},
+				"Regions": {
+					"type": "array"
+				},
+				"RegionsString": {
+					"type": "string"
+				},
+				"VenueName": {
+					"type": "string"
+				},
+				"Address1": {
+					"type": "string"
+				},
+				"Address2": {
+					"type": "string"
+				},
+				"County": {
+					"type": "string"
+				},
+				"Email": {
+					"type": "string"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Postcode": {
+					"type": "string"
+				},
+				"Telephone": {
+					"type": "string"
+				},
+				"Town": {
+					"type": "string"
+				},
+				"Website": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "date"
+				},
+				"RecordStatus": {
+					"type": "integer"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

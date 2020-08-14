@@ -1,0 +1,49 @@
+{
+	"name": "sharedData_Regions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "sharedData"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "regions.json",
+				"folderPath": "shared",
+				"container": "open-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Id": {
+					"type": "string"
+				},
+				"ApiLocationId": {
+					"type": "integer"
+				},
+				"SubRegionName": {
+					"type": "string"
+				},
+				"Checked": {
+					"type": "boolean"
+				},
+				"Latitude": {
+					"type": "number"
+				},
+				"Longitude": {
+					"type": "number"
+				},
+				"Postcode": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

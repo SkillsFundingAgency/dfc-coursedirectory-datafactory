@@ -1,0 +1,16 @@
+{
+	"name": "dfc-dev-prov-df-ir",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "West Europe",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 8,
+					"timeToLive": 10
+				}
+			}
+		}
+	}
+}

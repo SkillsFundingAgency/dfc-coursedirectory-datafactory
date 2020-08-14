@@ -1,0 +1,221 @@
+{
+	"name": "cosmosDb_Ukrlp_Backup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "providerPortalBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "open-data"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "backup/2020-08-10"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "prod-ukrlp.json"
+			}
+		},
+		"folder": {
+			"name": "cosmos/backups"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"UnitedKingdomProviderReferenceNumber": {
+					"type": "string"
+				},
+				"ProviderName": {
+					"type": "string"
+				},
+				"TradingName": {
+					"type": "string"
+				},
+				"ProviderStatus": {
+					"type": "string"
+				},
+				"ProviderType": {
+					"type": "integer"
+				},
+				"ProviderContact": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"ContactType": {
+								"type": "string"
+							},
+							"ContactAddress": {
+								"type": "object",
+								"properties": {
+									"SAON": {
+										"type": "object",
+										"properties": {
+											"Description": {
+												"type": "string"
+											}
+										}
+									},
+									"PAON": {
+										"type": "object",
+										"properties": {
+											"Description": {
+												"type": "string"
+											}
+										}
+									},
+									"StreetDescription": {
+										"type": "string"
+									},
+									"UniqueStreetReferenceNumber": {
+										"type": "null"
+									},
+									"Locality": {
+										"type": "null"
+									},
+									"Items": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"ItemsElementName": {
+										"type": "array",
+										"items": {
+											"type": "integer"
+										}
+									},
+									"PostTown": {
+										"type": "null"
+									},
+									"PostCode": {
+										"type": "string"
+									},
+									"UniquePropertyReferenceNumber": {
+										"type": "null"
+									}
+								}
+							},
+							"ContactPersonalDetails": {
+								"type": "object",
+								"properties": {
+									"PersonNameTitle": {
+										"type": "null"
+									},
+									"PersonGivenName": {
+										"type": "null"
+									},
+									"PersonFamilyName": {
+										"type": "null"
+									},
+									"PersonNameSuffix": {
+										"type": "null"
+									},
+									"PersonRequestedName": {
+										"type": "null"
+									}
+								}
+							},
+							"ContactRole": {
+								"type": "null"
+							},
+							"ContactTelephone1": {
+								"type": "string"
+							},
+							"ContactTelephone2": {
+								"type": "null"
+							},
+							"ContactFax": {
+								"type": "null"
+							},
+							"ContactWebsiteAddress": {
+								"type": "null"
+							},
+							"ContactEmail": {
+								"type": "null"
+							},
+							"LastUpdated": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"ProviderVerificationDate": {
+					"type": "string"
+				},
+				"ProviderVerificationDateSpecified": {
+					"type": "boolean"
+				},
+				"ExpiryDateSpecified": {
+					"type": "boolean"
+				},
+				"ProviderAssociations": {
+					"type": "null"
+				},
+				"ProviderAliases": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"ProviderAlias": {
+								"type": "null"
+							},
+							"LastUpdated": {
+								"type": "null"
+							}
+						}
+					}
+				},
+				"VerificationDetails": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"VerificationAuthority": {
+								"type": "string"
+							},
+							"VerificationID": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"id": {
+					"type": "string"
+				},
+				"DateUpdated": {
+					"type": "date"
+				},
+				"DateDownloaded": {
+					"type": "date"
+				},
+				"Status": {
+					"type": "integer"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
