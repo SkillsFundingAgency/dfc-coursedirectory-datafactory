@@ -25,8 +25,11 @@
 									"value": "@variables('container')",
 									"type": "Expression"
 								},
-								"folder": "backup/2020-08-10",
-								"filename": "prod-ukrlp.json"
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Cache": {
 								"container": {
@@ -313,7 +316,10 @@
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
 							},
-							"filename": "regions.json"
+							"filename": {
+								"value": "@concat('regions-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -340,8 +346,11 @@
 									"value": "@variables('container')",
 									"type": "Expression"
 								},
-								"folder": "backup/2020-08-10",
-								"filename": "prod-venues.json"
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Cache": {
 								"container": {
@@ -371,6 +380,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Use existing backup?",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -391,8 +406,11 @@
 									"value": "@variables('container')",
 									"type": "Expression"
 								},
-								"folder": "backup/2020-08-10",
-								"filename": "prod-courses.json"
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Cache": {
 								"container": {
@@ -1322,18 +1340,18 @@
 				]
 			},
 			{
-				"name": "If Condition1",
+				"name": "Use existing backup?",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@variables('rebuildCache')",
+						"value": "@variables('skipBackup')",
 						"type": "Expression"
 					},
-					"ifTrueActivities": [
+					"ifFalseActivities": [
 						{
-							"name": "Copy Courses",
+							"name": "Create Course Backup",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -1347,6 +1365,109 @@
 							"typeProperties": {
 								"source": {
 									"type": "CosmosDbSqlApiSource",
+									"query": "SELECT * FROM c\nwhere c.CourseStatus = 1\nand c.IsValid = true\nand c.ProviderUKPRN != \"0\"\nand c.ProviderUKPRN != null",
+									"preferredRegions": []
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"quoteAllText": true
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "cosmosDb_Courses",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "cosmosDb_Courses_Backup",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "open-data",
+										"folder": "backup",
+										"filename": {
+											"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Create Venues Backup",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "CosmosDbSqlApiSource",
+									"query": "SELECT * FROM c\nwhere c.Status = 1\nand c.UKPRN != \"0\"\nand c.UKPRN != null",
+									"preferredRegions": []
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"quoteAllText": true
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "cosmosDb_Venues",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "cosmosDb_Venues_Backup",
+									"type": "DatasetReference",
+									"parameters": {
+										"container": "open-data",
+										"folder": "backup",
+										"filename": {
+											"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Create Providers Backup",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "CosmosDbSqlApiSource",
+									"query": "SELECT * FROM c\nwhere c.Status = 1\nand c.ProviderStatus = 'Active'\nand c.UnitedKingdomProviderReferenceNumber != 0\nand c.UnitedKingdomProviderReferenceNumber != null",
 									"preferredRegions": []
 								},
 								"sink": {
@@ -1369,12 +1490,15 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "cosmosDb_Courses_Backup",
+									"referenceName": "cosmosDb_Ukrlp_Backup",
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "open-data",
-										"folder": "backup/2020-08-10",
-										"filename": "courses.json"
+										"folder": "backup",
+										"filename": {
+											"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"type": "Expression"
+										}
 									}
 								}
 							]
@@ -1400,7 +1524,7 @@
 				"type": "String",
 				"defaultValue": "shared"
 			},
-			"rebuildCache": {
+			"skipBackup": {
 				"type": "Boolean",
 				"defaultValue": true
 			}
