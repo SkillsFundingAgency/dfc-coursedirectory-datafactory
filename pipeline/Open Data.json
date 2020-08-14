@@ -925,7 +925,56 @@
 							"fileExtension": ".csv"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['RegionId']"
+								},
+								"sink": {
+									"name": "REGION_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SubRegionName']"
+								},
+								"sink": {
+									"name": "SUBREGION_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Latitude']"
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Longitude']"
+								},
+								"sink": {
+									"name": "LONGITUDE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Postcode']"
+								},
+								"sink": {
+									"name": "POSTCODE"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
@@ -1549,7 +1598,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": false
+				"defaultValue": true
 			}
 		},
 		"annotations": [],
