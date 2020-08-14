@@ -140,6 +140,15 @@
 							},
 							{
 								"source": {
+									"path": "$['ContactAddress2']"
+								},
+								"sink": {
+									"name": "CONTACT_ADDRESS2",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['ContactTown']"
 								},
 								"sink": {
