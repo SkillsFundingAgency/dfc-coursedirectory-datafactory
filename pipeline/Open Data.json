@@ -8,7 +8,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "UseExistingBackup",
+						"activity": "SkipBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -336,7 +336,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "UseExistingBackup",
+						"activity": "SkipBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -396,7 +396,7 @@
 						]
 					},
 					{
-						"activity": "UseExistingBackup",
+						"activity": "SkipBackup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -579,7 +579,7 @@
 								},
 								"sink": {
 									"name": "COST",
-									"type": "Int16"
+									"type": "Int32"
 								}
 							},
 							{
@@ -633,7 +633,7 @@
 								},
 								"sink": {
 									"name": "DURATION_VALUE",
-									"type": "Int16"
+									"type": "Int32"
 								}
 							},
 							{
@@ -1152,7 +1152,7 @@
 								},
 								"sink": {
 									"name": "DURATION_VALUE",
-									"type": "Int16"
+									"type": "Int32"
 								}
 							},
 							{
@@ -1161,7 +1161,7 @@
 								},
 								"sink": {
 									"name": "COST",
-									"type": "Int16"
+									"type": "Int32"
 								}
 							},
 							{
@@ -1354,7 +1354,7 @@
 				]
 			},
 			{
-				"name": "UseExistingBackup",
+				"name": "SkipBackup",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
@@ -1540,7 +1540,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": true
+				"defaultValue": false
 			}
 		},
 		"annotations": [],
