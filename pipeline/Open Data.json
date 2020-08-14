@@ -970,7 +970,8 @@
 									"path": "$['Postcode']"
 								},
 								"sink": {
-									"name": "POSTCODE"
+									"name": "POSTCODE",
+									"type": "String"
 								}
 							}
 						]
