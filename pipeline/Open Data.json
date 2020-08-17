@@ -1041,6 +1041,27 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_CoursesWithVenues",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "venues.json"
+							},
+							"Cache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							}
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
