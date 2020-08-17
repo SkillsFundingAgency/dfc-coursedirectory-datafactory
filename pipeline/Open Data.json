@@ -1072,7 +1072,7 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['ProviderUkprn']"
+									"path": "$['ProviderUKPRN']"
 								},
 								"sink": {
 									"name": "PROVIDER_UKPRN",

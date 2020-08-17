@@ -44,7 +44,7 @@
 		"schema": {
 			"type": "object",
 			"properties": {
-				"ProviderUkprn": {
+				"ProviderUKPRN": {
 					"type": "string"
 				},
 				"CourseId": {
