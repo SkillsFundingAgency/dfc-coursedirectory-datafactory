@@ -1555,7 +1555,8 @@
 				"defaultValue": "shared"
 			},
 			"skipBackup": {
-				"type": "Boolean"
+				"type": "Boolean",
+				"defaultValue": false
 			}
 		},
 		"annotations": [],
