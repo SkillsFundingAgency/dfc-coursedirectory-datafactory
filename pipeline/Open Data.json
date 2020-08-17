@@ -38,6 +38,11 @@
 									"type": "Expression"
 								}
 							},
+							"Courses": {
+								"container": "open-data",
+								"folder": "backup/2020-08-10",
+								"filename": "prod-courses.json"
+							},
 							"Cache": {
 								"container": {
 									"value": "@variables('container')",
@@ -420,44 +425,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_Courses",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Courses": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Venues": {
-								"container": "open-data",
-								"folder": "backup/2020-08-10",
-								"filename": "prod-venues.json"
-							},
-							"Cache": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": {
-									"value": "@variables('cacheFolder')",
-									"type": "Expression"
-								},
-								"filename": "courses.json"
-							},
-							"CacheWithVenues": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "courses-with-venues.json"
-							}
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
@@ -1555,8 +1522,7 @@
 				"defaultValue": "shared"
 			},
 			"skipBackup": {
-				"type": "Boolean",
-				"defaultValue": false
+				"type": "Boolean"
 			}
 		},
 		"annotations": [],
