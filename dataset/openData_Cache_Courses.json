@@ -45,7 +45,7 @@
 			"type": "object",
 			"properties": {
 				"ProviderUkprn": {
-					"type": "integer"
+					"type": "string"
 				},
 				"CourseId": {
 					"type": "string"
