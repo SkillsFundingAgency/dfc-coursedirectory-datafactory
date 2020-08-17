@@ -435,6 +435,11 @@
 									"type": "Expression"
 								}
 							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "backup/2020-08-10",
+								"filename": "prod-venues.json"
+							},
 							"Cache": {
 								"container": {
 									"value": "@variables('container')",
@@ -445,6 +450,11 @@
 									"type": "Expression"
 								},
 								"filename": "courses.json"
+							},
+							"CacheWithVenues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
 							}
 						}
 					},
@@ -1016,64 +1026,11 @@
 				]
 			},
 			{
-				"name": "Join Courses to Venues",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Transform Venues",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Transform Courses",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_CoursesWithVenues",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Courses": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "courses.json"
-							},
-							"Venues": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "venues.json"
-							},
-							"Cache": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "courses-with-venues.json"
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
-				}
-			},
-			{
 				"name": "Generate Courses with Venues CSV",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Join Courses to Venues",
+						"activity": "Transform Courses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1598,8 +1555,7 @@
 				"defaultValue": "shared"
 			},
 			"skipBackup": {
-				"type": "Boolean",
-				"defaultValue": false
+				"type": "Boolean"
 			}
 		},
 		"annotations": [],
