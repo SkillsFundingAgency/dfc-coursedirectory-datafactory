@@ -1588,7 +1588,9 @@
 				"typeProperties": {
 					"url": "https://hooks.slack.com/services/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",
 					"method": "POST",
-					"body": "payload={\"text\": \"Data Factory run complete.\\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/\"}",
+					"body": {
+						"text": "Data Factory run complete.\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/"
+					},
 					"timeout": "00:10:00"
 				}
 			}
