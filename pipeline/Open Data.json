@@ -337,10 +337,7 @@
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
 							},
-							"filename": {
-								"value": "@concat('regions-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-								"type": "Expression"
-							}
+							"filename": "regions.json"
 						}
 					}
 				]
