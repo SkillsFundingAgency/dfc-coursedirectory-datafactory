@@ -1548,52 +1548,6 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Slack notification",
-				"type": "WebHook",
-				"dependsOn": [
-					{
-						"activity": "Generate Courses CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Generate Courses with Venues CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Generate Providers CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Generate Venues CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Generate Regions CSV",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://hooks.slack.com/services/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",
-					"method": "POST",
-					"headers": {
-						"content-type": "application/json"
-					},
-					"body": "{\ntext: \"Data Factory run complete.\\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/\"\n}",
-					"timeout": "00:10:00"
-				}
 			}
 		],
 		"variables": {
