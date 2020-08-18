@@ -1,0 +1,9 @@
+{
+	"name": "Generate LARSv6 import",
+	"properties": {
+		"folder": {
+			"name": "LARS"
+		},
+		"annotations": []
+	}
+}
