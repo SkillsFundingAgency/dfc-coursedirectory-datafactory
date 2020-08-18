@@ -2,7 +2,7 @@
 	"name": "openData_Courses",
 	"properties": {
 		"folder": {
-			"name": "openData"
+			"name": "Open Data"
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {

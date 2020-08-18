@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "sharedData"
+			"name": "Shared Data"
 		},
 		"annotations": [],
 		"type": "Json",

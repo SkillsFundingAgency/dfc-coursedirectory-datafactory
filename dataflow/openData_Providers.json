@@ -2,7 +2,7 @@
 	"name": "openData_Providers",
 	"properties": {
 		"folder": {
-			"name": "openData"
+			"name": "Open Data"
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {

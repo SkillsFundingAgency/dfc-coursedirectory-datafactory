@@ -1,5 +1,5 @@
 {
-	"name": "Open Data",
+	"name": "Generate Open Data export",
 	"properties": {
 		"description": "Generates open data compatible exports for courses, venues and providers.",
 		"activities": [
@@ -1614,6 +1614,9 @@
 				"type": "Boolean",
 				"defaultValue": true
 			}
+		},
+		"folder": {
+			"name": "Open Data"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-08-14T02:41:03Z"
