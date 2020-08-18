@@ -1548,6 +1548,18 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "WebHook1",
+				"type": "WebHook",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://hooks.slack.com/services/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",
+					"method": "POST",
+					"body": "payload={\"text\": \"Data Factory run complete.\\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/\"}",
+					"timeout": "00:10:00"
+				}
 			}
 		],
 		"variables": {
@@ -1569,7 +1581,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": true
+				"defaultValue": false
 			}
 		},
 		"annotations": [],
