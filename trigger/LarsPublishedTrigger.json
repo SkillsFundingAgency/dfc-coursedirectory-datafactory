@@ -6,7 +6,7 @@
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/lars-data/blobs/published",
+			"blobPathBeginsWith": "/lars-data/blobs/incoming/published",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/dfc-dev-prov-rg/providers/Microsoft.Storage/storageAccounts/dfcdevprovstr",
 			"events": [
