@@ -23,6 +23,45 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Providers",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Providers": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
+							},
+							"Courses": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
+							},
+							"Cache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
+								"filename": "providers.json"
+							}
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
