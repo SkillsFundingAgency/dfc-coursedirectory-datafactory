@@ -12,11 +12,11 @@
 			},
 			"folder": {
 				"type": "string",
-				"defaultValue": "backup/2020-08-10"
+				"defaultValue": "backup"
 			},
 			"filename": {
 				"type": "string",
-				"defaultValue": "prod-ukrlp.json"
+				"defaultValue": "ukrlp.json"
 			}
 		},
 		"folder": {

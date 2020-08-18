@@ -39,9 +39,15 @@
 								}
 							},
 							"Courses": {
-								"container": "open-data",
-								"folder": "backup/2020-08-10",
-								"filename": "prod-courses.json"
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Cache": {
 								"container": {
@@ -427,19 +433,37 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"Courses": {
-								"container": "open-data",
-								"folder": "backup/2020-08-10",
-								"filename": "prod-courses.json"
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Venues": {
-								"container": "open-data",
-								"folder": "backup/2020-08-10",
-								"filename": "prod-venues.json"
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Providers": {
-								"container": "open-data",
-								"folder": "backup/2020-08-10",
-								"filename": "prod-ukrlp.json"
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": "backup",
+								"filename": {
+									"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+									"type": "Expression"
+								}
 							},
 							"Cache": {
 								"container": "open-data",
