@@ -1550,9 +1550,40 @@
 				}
 			},
 			{
-				"name": "WebHook1",
+				"name": "Slack notification",
 				"type": "WebHook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Generate Courses CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Generate Courses with Venues CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Generate Providers CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Generate Venues CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Generate Regions CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"url": "https://hooks.slack.com/services/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",
