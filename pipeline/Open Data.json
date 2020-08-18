@@ -422,6 +422,37 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Courses",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "backup/2020-08-10",
+								"filename": "prod-courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "backup/2020-08-10",
+								"filename": "prod-venues.json"
+							},
+							"Providers": {
+								"container": "open-data",
+								"folder": "backup/2020-08-10",
+								"filename": "prod-ukrlp.json"
+							},
+							"Cache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"CacheWithVenues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							}
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
@@ -1311,9 +1342,18 @@
 						"referenceName": "openData_Export_CoursesWithVenues",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "open-data",
-							"folder": "export",
-							"filename": "courses-with-venues.csv"
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('exportFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat('courses-with-venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"type": "Expression"
+							}
 						}
 					}
 				]
