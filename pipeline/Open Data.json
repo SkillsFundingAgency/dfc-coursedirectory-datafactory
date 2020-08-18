@@ -1070,7 +1070,7 @@
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
-							"fileExtension": ".csv"
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -1340,38 +1340,23 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "openData_Cache_Courses",
+						"referenceName": "openData_Cache_CoursesWithVenues",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": {
-								"value": "@variables('container')",
-								"type": "Expression"
-							},
-							"folder": {
-								"value": "@variables('cacheFolder')",
-								"type": "Expression"
-							},
+							"container": "open-data",
+							"folder": "cache",
 							"filename": "courses-with-venues.json"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "openData_Export_Courses",
+						"referenceName": "openData_Export_CoursesWithVenues",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": {
-								"value": "@variables('container')",
-								"type": "Expression"
-							},
-							"folder": {
-								"value": "@variables('exportFolder')",
-								"type": "Expression"
-							},
-							"filename": {
-								"value": "@concat('courses-with-venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
-								"type": "Expression"
-							}
+							"container": "open-data",
+							"folder": "export",
+							"filename": "courses-with-venues.csv"
 						}
 					}
 				]
