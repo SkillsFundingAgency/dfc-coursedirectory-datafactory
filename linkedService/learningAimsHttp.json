@@ -1,0 +1,12 @@
+{
+	"name": "learningAimsHttp",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://findalearningaimbeta.fasst.org.uk/DownloadData/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
