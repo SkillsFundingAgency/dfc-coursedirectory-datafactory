@@ -1586,9 +1586,12 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://hooks.slack.com/services/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",
+					"url": "https://hooks.slack.com/services/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",
 					"method": "POST",
-					"body": "\"text\": \"Data Factory run complete.\\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/\"",
+					"headers": {
+						"content-type": "application/json"
+					},
+					"body": "{\ntext: \"Data Factory run complete.\\nhttps://dfcdevprovstr.blob.core.windows.net/open-data/export/\"\n}",
 					"timeout": "00:10:00"
 				}
 			}
