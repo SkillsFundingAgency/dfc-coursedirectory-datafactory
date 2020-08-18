@@ -1,6 +1,274 @@
 {
 	"name": "Generate LARSv6 import",
 	"properties": {
+		"activities": [
+			{
+				"name": "Unzip LARS data to storage",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Download LARSv6",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			},
+			{
+				"name": "Download LARSv6",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Transform progTypes",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Unzip LARS data to storage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			},
+			{
+				"name": "Transform subjectAreaTiers",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Unzip LARS data to storage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			},
+			{
+				"name": "Transform sectorCodes",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Unzip LARS data to storage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			},
+			{
+				"name": "transform Framework Aims",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Unzip LARS data to storage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Courses",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "venues.json"
+							},
+							"Providers": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "ukrlp.json"
+							},
+							"Cache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"CacheWithVenues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "transform LearnAimRefs",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Unzip LARS data to storage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_Courses",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "venues.json"
+							},
+							"Providers": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "ukrlp.json"
+							},
+							"Cache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"CacheWithVenues": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "Upload to Cosmos",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Transform sectorCodes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Transform subjectAreaTiers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Transform progTypes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "transform Framework Aims",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "transform LearnAimRefs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
 		"folder": {
 			"name": "LARS"
 		},
