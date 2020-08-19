@@ -1569,7 +1569,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": false
+				"defaultValue": true
 			}
 		},
 		"folder": {
