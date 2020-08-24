@@ -21,7 +21,7 @@
 						"referenceName": "openData_Cache_Venues",
 						"type": "DatasetReference"
 					},
-					"name": "Cache"
+					"name": "VenueCache"
 				}
 			],
 			"transformations": [
@@ -32,7 +32,7 @@
 					"name": "Transform"
 				}
 			],
-			"script": "source(output(\n\t\tUKPRN as string,\n\t\tPROVIDER_ID as string,\n\t\tVENUE_ID as string,\n\t\tVENUE_NAME as string,\n\t\tPROV_VENUE_ID as string,\n\t\tADDRESS_1 as string,\n\t\tADDRESS_2 as string,\n\t\tTOWN as string,\n\t\tCOUNTY as string,\n\t\tPOSTCODE as string,\n\t\tLatitude as double,\n\t\tLongitude as double,\n\t\tStatus as integer,\n\t\tDateUpdated as string,\n\t\tUpdatedBy as string,\n\t\tLocationId as string,\n\t\tTribalLocationId as string,\n\t\tTelephone as string,\n\t\tEmail as string,\n\t\tWebsite as string,\n\t\tid as string,\n\t\tCreatedBy as string,\n\t\tCreatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Venues\nVenues filter(Status == 1) ~> FilterActive\nFilterActive select(mapColumn(\n\t\tProviderUkprn = UKPRN,\n\t\tVenueId = id,\n\t\tVenueName = VENUE_NAME,\n\t\tAddress1 = ADDRESS_1,\n\t\tAddress2 = ADDRESS_2,\n\t\tTown = TOWN,\n\t\tCounty = COUNTY,\n\t\tPostcode = POSTCODE,\n\t\tLatitude,\n\t\tLongitude,\n\t\tTelephone,\n\t\tEmail,\n\t\tWebsite\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Transform\nTransform sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['venues.json'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Cache"
+			"script": "source(output(\n\t\tUKPRN as string,\n\t\tPROVIDER_ID as string,\n\t\tVENUE_ID as string,\n\t\tVENUE_NAME as string,\n\t\tPROV_VENUE_ID as string,\n\t\tADDRESS_1 as string,\n\t\tADDRESS_2 as string,\n\t\tTOWN as string,\n\t\tCOUNTY as string,\n\t\tPOSTCODE as string,\n\t\tLatitude as double,\n\t\tLongitude as double,\n\t\tStatus as integer,\n\t\tDateUpdated as string,\n\t\tUpdatedBy as string,\n\t\tLocationId as string,\n\t\tTribalLocationId as string,\n\t\tTelephone as string,\n\t\tEmail as string,\n\t\tWebsite as string,\n\t\tid as string,\n\t\tCreatedBy as string,\n\t\tCreatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Venues\nVenues filter(Status == 1) ~> FilterActive\nFilterActive select(mapColumn(\n\t\tProviderUkprn = UKPRN,\n\t\tVenueId = id,\n\t\tVenueName = VENUE_NAME,\n\t\tAddress1 = ADDRESS_1,\n\t\tAddress2 = ADDRESS_2,\n\t\tTown = TOWN,\n\t\tCounty = COUNTY,\n\t\tPostcode = POSTCODE,\n\t\tLatitude,\n\t\tLongitude,\n\t\tTelephone,\n\t\tEmail,\n\t\tWebsite\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Transform\nTransform sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['venues.json'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> VenueCache"
 		}
 	}
 }
