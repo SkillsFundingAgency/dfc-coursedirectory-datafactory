@@ -27,7 +27,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": "open-data/cache/provider"
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -306,7 +306,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": "open-data/cache/course"
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -510,8 +510,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "courses.json"
+							}
 						}
 					}
 				],
@@ -560,7 +559,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": "open-data/cache/venue"
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -688,8 +687,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "venues.json"
+							}
 						}
 					}
 				],
@@ -869,7 +867,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": "open-data/cache/courserun"
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -1164,8 +1162,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "courses-with-venues.json"
+							}
 						}
 					}
 				],
