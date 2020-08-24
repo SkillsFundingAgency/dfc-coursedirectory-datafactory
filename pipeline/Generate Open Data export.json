@@ -305,8 +305,7 @@
 					"source": {
 						"type": "JsonSource",
 						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"type": "AzureBlobStorageReadSettings"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -1438,7 +1437,7 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@variables('cacheFolder')",
+									"value": "@concat(variables('cacheFolder'), '/courses')",
 									"type": "Expression"
 								},
 								"filename": {
