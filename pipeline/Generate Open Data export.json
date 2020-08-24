@@ -1376,38 +1376,80 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"Courses": {
-								"container": "open-data",
-								"folder": "backup",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
 								"filename": "courses.json"
 							},
 							"Venues": {
-								"container": "open-data",
-								"folder": "backup",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
 								"filename": "venues.json"
 							},
 							"Providers": {
-								"container": "open-data",
-								"folder": "backup",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
 								"filename": "ukrlp.json"
 							},
 							"CourseCache": {
-								"container": "open-data",
-								"folder": "cache",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
 								"filename": "courses.json"
 							},
 							"CourseRunCache": {
-								"container": "open-data",
-								"folder": "cache",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')\n",
+									"type": "Expression"
+								},
 								"filename": "courses-with-venues.json"
 							},
 							"ProviderCache": {
-								"container": "open-data",
-								"folder": "cache",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
 								"filename": "providers.json"
 							},
 							"VenueCache": {
-								"container": "open-data",
-								"folder": "cache",
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								},
 								"filename": "venues.json"
 							}
 						}
@@ -1439,6 +1481,10 @@
 			"skipBackup": {
 				"type": "Boolean",
 				"defaultValue": false
+			},
+			"backupFolder": {
+				"type": "String",
+				"defaultValue": "backup"
 			}
 		},
 		"folder": {
