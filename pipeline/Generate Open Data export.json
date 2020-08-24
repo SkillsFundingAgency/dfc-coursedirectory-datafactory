@@ -1232,10 +1232,13 @@
 									"referenceName": "cosmosDb_Courses_Backup",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "open-data",
+										"container": {
+											"value": "@variables('container')",
+											"type": "Expression"
+										},
 										"folder": "backup",
 										"filename": {
-											"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
 											"type": "Expression"
 										}
 									}
@@ -1282,10 +1285,13 @@
 									"referenceName": "cosmosDb_Venues_Backup",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "open-data",
+										"container": {
+											"value": "@variables('container')",
+											"type": "Expression"
+										},
 										"folder": "backup",
 										"filename": {
-											"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
 											"type": "Expression"
 										}
 									}
@@ -1332,10 +1338,13 @@
 									"referenceName": "cosmosDb_Ukrlp_Backup",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "open-data",
+										"container": {
+											"value": "@variables('container')",
+											"type": "Expression"
+										},
 										"folder": "backup",
 										"filename": {
-											"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
+											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
 											"type": "Expression"
 										}
 									}
@@ -1384,7 +1393,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "courses.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+									"type": "Expression"
+								}
 							},
 							"Venues": {
 								"container": {
@@ -1395,7 +1407,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "venues.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+									"type": "Expression"
+								}
 							},
 							"Providers": {
 								"container": {
@@ -1406,7 +1421,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "ukrlp.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+									"type": "Expression"
+								}
 							},
 							"CourseCache": {
 								"container": {
@@ -1417,7 +1435,10 @@
 									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								},
-								"filename": "courses.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+									"type": "Expression"
+								}
 							},
 							"CourseRunCache": {
 								"container": {
@@ -1428,7 +1449,10 @@
 									"value": "@variables('cacheFolder')\n",
 									"type": "Expression"
 								},
-								"filename": "courses-with-venues.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses-with-venues.json')",
+									"type": "Expression"
+								}
 							},
 							"ProviderCache": {
 								"container": {
@@ -1439,7 +1463,10 @@
 									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								},
-								"filename": "providers.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-providers.json')",
+									"type": "Expression"
+								}
 							},
 							"VenueCache": {
 								"container": {
@@ -1450,7 +1477,10 @@
 									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								},
-								"filename": "venues.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+									"type": "Expression"
+								}
 							}
 						}
 					},
