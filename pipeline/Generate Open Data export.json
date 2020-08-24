@@ -4,76 +4,11 @@
 		"description": "Generates open data compatible exports for courses, venues and providers.",
 		"activities": [
 			{
-				"name": "Transform Providers",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "SkipBackup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_Providers",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Providers": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Courses": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Cache": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": {
-									"value": "@variables('cacheFolder')",
-									"type": "Expression"
-								},
-								"filename": "providers.json"
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
-				}
-			},
-			{
 				"name": "Generate Providers CSV",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Transform Providers",
+						"activity": "Transform data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -273,8 +208,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -349,146 +283,11 @@
 				]
 			},
 			{
-				"name": "Transform Venues",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "SkipBackup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_Venues",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Venues": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Cache": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": {
-									"value": "@variables('cacheFolder')",
-									"type": "Expression"
-								},
-								"filename": "venues.json"
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
-				}
-			},
-			{
-				"name": "Transform Courses",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Copy Regions",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "SkipBackup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "openData_Courses",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Courses": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('courses-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Venues": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('venues-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Providers": {
-								"container": {
-									"value": "@variables('container')",
-									"type": "Expression"
-								},
-								"folder": "backup",
-								"filename": {
-									"value": "@concat('ukrlp-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.json')",
-									"type": "Expression"
-								}
-							},
-							"Cache": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "courses.json"
-							},
-							"CacheWithVenues": {
-								"container": "open-data",
-								"folder": "cache",
-								"filename": "courses-with-venues.json"
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
-				}
-			},
-			{
 				"name": "Generate Courses CSV",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Transform Courses",
+						"activity": "Transform data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -741,7 +540,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Transform Venues",
+						"activity": "Transform data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1049,7 +848,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Transform Courses",
+						"activity": "Transform data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1383,7 +1182,7 @@
 				]
 			},
 			{
-				"name": "SkipBackup",
+				"name": "Skip backup",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
@@ -1417,8 +1216,7 @@
 										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
-										"type": "JsonWriteSettings",
-										"quoteAllText": true
+										"type": "JsonWriteSettings"
 									}
 								},
 								"enableStaging": false
@@ -1468,8 +1266,7 @@
 										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
-										"type": "JsonWriteSettings",
-										"quoteAllText": true
+										"type": "JsonWriteSettings"
 									}
 								},
 								"enableStaging": false
@@ -1519,8 +1316,7 @@
 										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
-										"type": "JsonWriteSettings",
-										"quoteAllText": true
+										"type": "JsonWriteSettings"
 									}
 								},
 								"enableStaging": false
@@ -1548,6 +1344,79 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Transform data",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Skip backup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Regions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "openData_TransformAll",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "venues.json"
+							},
+							"Providers": {
+								"container": "open-data",
+								"folder": "backup",
+								"filename": "ukrlp.json"
+							},
+							"CourseCache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses.json"
+							},
+							"CourseRunCache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "courses-with-venues.json"
+							},
+							"ProviderCache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "providers.json"
+							},
+							"VenueCache": {
+								"container": "open-data",
+								"folder": "cache",
+								"filename": "venues.json"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -1569,7 +1438,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": true
+				"defaultValue": false
 			}
 		},
 		"folder": {
