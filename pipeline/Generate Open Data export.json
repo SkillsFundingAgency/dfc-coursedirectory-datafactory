@@ -27,7 +27,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"fileListPath": "open-data/cache/provider"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -153,8 +153,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "providers.json"
+							}
 						}
 					}
 				],
@@ -305,7 +304,8 @@
 					"source": {
 						"type": "JsonSource",
 						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings"
+							"type": "AzureBlobStorageReadSettings",
+							"fileListPath": "open-data/cache/course"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -508,8 +508,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "courses.json"
+							}
 						}
 					}
 				],
@@ -558,7 +557,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"fileListPath": "open-data/cache/venue"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -685,8 +684,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "venues.json"
+							}
 						}
 					}
 				],
@@ -735,7 +733,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"fileListPath": "open-data/cache/region"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -816,8 +814,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "regions.json"
+							}
 						}
 					}
 				],
@@ -866,7 +863,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"fileListPath": "open-data/cache/courserun"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -1160,8 +1157,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "courses-with-venues.json"
+							}
 						}
 					}
 				],
