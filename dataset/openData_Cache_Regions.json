@@ -27,6 +27,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "regions.json",
 				"folderPath": {
 					"value": "@dataset().folder",
 					"type": "Expression"
