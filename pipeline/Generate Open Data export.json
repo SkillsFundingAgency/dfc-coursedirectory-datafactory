@@ -1444,7 +1444,7 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@concat(variables('cacheFolder'), '/course')",
+									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								}
 							},
@@ -1454,7 +1454,7 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@concat(variables('cacheFolder'), '/courserun')",
+									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								}
 							},
@@ -1464,7 +1464,7 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@concat(variables('cacheFolder'), '/provider')",
+									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								}
 							},
@@ -1474,7 +1474,7 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@concat(variables('cacheFolder'), '/venue')",
+									"value": "@variables('cacheFolder')",
 									"type": "Expression"
 								}
 							}
