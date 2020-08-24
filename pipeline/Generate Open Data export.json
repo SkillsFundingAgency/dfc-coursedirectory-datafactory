@@ -154,7 +154,10 @@
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
 							},
-							"filename": "providers.json"
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-providers.json')",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -172,7 +175,7 @@
 								"type": "Expression"
 							},
 							"filename": {
-								"value": "@concat('providers', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-providers.csv')",
 								"type": "Expression"
 							}
 						}
@@ -510,7 +513,10 @@
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
 							},
-							"filename": "courses.json"
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -528,7 +534,7 @@
 								"type": "Expression"
 							},
 							"filename": {
-								"value": "@concat('courses', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.csv')",
 								"type": "Expression"
 							}
 						}
@@ -687,7 +693,10 @@
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
 							},
-							"filename": "venues.json"
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -705,7 +714,7 @@
 								"type": "Expression"
 							},
 							"filename": {
-								"value": "@concat('venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.csv')",
 								"type": "Expression"
 							}
 						}
@@ -1154,9 +1163,18 @@
 						"referenceName": "openData_Cache_CoursesWithVenues",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "open-data",
-							"folder": "cache",
-							"filename": "courses-with-venues.json"
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('cacheFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses-with-venues.json')",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -1174,7 +1192,7 @@
 								"type": "Expression"
 							},
 							"filename": {
-								"value": "@concat('courses-with-venues', '-', formatDateTime(utcnow(), 'yyyy-MM-dd'), '.csv')",
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses-with-venues.csv')",
 								"type": "Expression"
 							}
 						}
@@ -1510,7 +1528,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": false
+				"defaultValue": true
 			},
 			"backupFolder": {
 				"type": "String",
