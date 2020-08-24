@@ -36,7 +36,8 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -153,7 +154,8 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							}
+							},
+							"filename": "providers.json"
 						}
 					}
 				],
@@ -314,7 +316,8 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -508,7 +511,8 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							}
+							},
+							"filename": "courses.json"
 						}
 					}
 				],
@@ -566,7 +570,8 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -684,7 +689,8 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							}
+							},
+							"filename": "venues.json"
 						}
 					}
 				],
@@ -873,7 +879,8 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -1158,7 +1165,8 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							}
+							},
+							"filename": "courses-with-venues.json"
 						}
 					}
 				],
@@ -1434,9 +1442,10 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@concat(variables('cacheFolder'), '/courses')",
+									"value": "@concat(variables('cacheFolder'), '/course')",
 									"type": "Expression"
-								}
+								},
+								"filename": "courses.json"
 							},
 							"CourseRunCache": {
 								"container": {
@@ -1444,9 +1453,10 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@variables('cacheFolder')\n",
+									"value": "@concat(variables('cacheFolder'), '/courserun')",
 									"type": "Expression"
-								}
+								},
+								"filename": "courses-with-venues.json"
 							},
 							"ProviderCache": {
 								"container": {
@@ -1454,9 +1464,10 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@variables('cacheFolder')",
+									"value": "@concat(variables('cacheFolder'), '/provider')",
 									"type": "Expression"
-								}
+								},
+								"filename": "providers.json"
 							},
 							"VenueCache": {
 								"container": {
@@ -1464,9 +1475,10 @@
 									"type": "Expression"
 								},
 								"folder": {
-									"value": "@variables('cacheFolder')",
+									"value": "@concat(variables('cacheFolder'), '/venue')",
 									"type": "Expression"
-								}
+								},
+								"filename": "venues.json"
 							}
 						}
 					},
