@@ -1435,10 +1435,6 @@
 								"folder": {
 									"value": "@concat(variables('cacheFolder'), '/courses')",
 									"type": "Expression"
-								},
-								"filename": {
-									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
-									"type": "Expression"
 								}
 							},
 							"CourseRunCache": {
@@ -1448,10 +1444,6 @@
 								},
 								"folder": {
 									"value": "@variables('cacheFolder')\n",
-									"type": "Expression"
-								},
-								"filename": {
-									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses-with-venues.json')",
 									"type": "Expression"
 								}
 							},
@@ -1463,10 +1455,6 @@
 								"folder": {
 									"value": "@variables('cacheFolder')",
 									"type": "Expression"
-								},
-								"filename": {
-									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-providers.json')",
-									"type": "Expression"
 								}
 							},
 							"VenueCache": {
@@ -1476,10 +1464,6 @@
 								},
 								"folder": {
 									"value": "@variables('cacheFolder')",
-									"type": "Expression"
-								},
-								"filename": {
-									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
 									"type": "Expression"
 								}
 							}
