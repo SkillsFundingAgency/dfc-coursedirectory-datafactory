@@ -27,7 +27,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "courses-with-venues.json",
 				"folderPath": {
 					"value": "@dataset().folder",
 					"type": "Expression"
