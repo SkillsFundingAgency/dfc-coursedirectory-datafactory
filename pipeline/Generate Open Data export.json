@@ -27,7 +27,8 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFileName": "*.json"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -276,8 +277,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "regions.json"
+							}
 						}
 					}
 				]
@@ -306,7 +306,8 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFileName": "*.json"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -559,7 +560,8 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFileName": "*.json"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -817,8 +819,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "regions.json"
+							}
 						}
 					}
 				],
@@ -867,7 +868,8 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFileName": "*.json"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
