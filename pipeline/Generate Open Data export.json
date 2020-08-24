@@ -154,8 +154,7 @@
 							"folder": {
 								"value": "@variables('cacheFolder')",
 								"type": "Expression"
-							},
-							"filename": "providers.json"
+							}
 						}
 					}
 				],
@@ -1444,8 +1443,7 @@
 								"folder": {
 									"value": "@concat(variables('cacheFolder'), '/course')",
 									"type": "Expression"
-								},
-								"filename": "courses.json"
+								}
 							},
 							"CourseRunCache": {
 								"container": {
@@ -1455,8 +1453,7 @@
 								"folder": {
 									"value": "@concat(variables('cacheFolder'), '/courserun')",
 									"type": "Expression"
-								},
-								"filename": "courses-with-venues.json"
+								}
 							},
 							"ProviderCache": {
 								"container": {
@@ -1466,8 +1463,7 @@
 								"folder": {
 									"value": "@concat(variables('cacheFolder'), '/provider')",
 									"type": "Expression"
-								},
-								"filename": "providers.json"
+								}
 							},
 							"VenueCache": {
 								"container": {
@@ -1477,8 +1473,7 @@
 								"folder": {
 									"value": "@concat(variables('cacheFolder'), '/venue')",
 									"type": "Expression"
-								},
-								"filename": "venues.json"
+								}
 							}
 						}
 					},
