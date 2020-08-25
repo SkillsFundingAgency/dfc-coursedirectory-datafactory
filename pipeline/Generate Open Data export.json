@@ -1489,9 +1489,9 @@
 							}
 						}
 					},
-					"integrationRuntime": {
-						"referenceName": "dfc-dev-prov-df-ir",
-						"type": "IntegrationRuntimeReference"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			}
@@ -1515,7 +1515,7 @@
 			},
 			"skipBackup": {
 				"type": "Boolean",
-				"defaultValue": false
+				"defaultValue": true
 			},
 			"backupFolder": {
 				"type": "String",
