@@ -1392,9 +1392,88 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
+					"dataflow": {
+						"referenceName": "openData_TransformAll",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Courses": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
+								"filename": "courses.json"
+							},
+							"Venues": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
+								"filename": "venues.json"
+							},
+							"Providers": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('backupFolder')",
+									"type": "Expression"
+								},
+								"filename": "ukrlp.json"
+							},
+							"CourseCache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								}
+							},
+							"CourseRunCache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								}
+							},
+							"ProviderCache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								}
+							},
+							"VenueCache": {
+								"container": {
+									"value": "@variables('container')",
+									"type": "Expression"
+								},
+								"folder": {
+									"value": "@variables('cacheFolder')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"integrationRuntime": {
+						"referenceName": "dfc-dev-prov-df-ir",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
