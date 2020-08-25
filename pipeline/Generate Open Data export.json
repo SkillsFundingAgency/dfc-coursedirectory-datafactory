@@ -1414,7 +1414,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "courses.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+									"type": "Expression"
+								}
 							},
 							"Venues": {
 								"container": {
@@ -1425,7 +1428,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "venues.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+									"type": "Expression"
+								}
 							},
 							"Providers": {
 								"container": {
@@ -1436,7 +1442,10 @@
 									"value": "@variables('backupFolder')",
 									"type": "Expression"
 								},
-								"filename": "ukrlp.json"
+								"filename": {
+									"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+									"type": "Expression"
+								}
 							},
 							"CourseCache": {
 								"container": {
