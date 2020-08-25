@@ -1248,7 +1248,10 @@
 											"value": "@variables('container')",
 											"type": "Expression"
 										},
-										"folder": "backup",
+										"folder": {
+											"value": "@variables('backupFolder')",
+											"type": "Expression"
+										},
 										"filename": {
 											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
 											"type": "Expression"
@@ -1301,7 +1304,10 @@
 											"value": "@variables('container')",
 											"type": "Expression"
 										},
-										"folder": "backup",
+										"folder": {
+											"value": "@variables('backupFolder')",
+											"type": "Expression"
+										},
 										"filename": {
 											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
 											"type": "Expression"
@@ -1354,7 +1360,10 @@
 											"value": "@variables('container')",
 											"type": "Expression"
 										},
-										"folder": "backup",
+										"folder": {
+											"value": "@variables('backupFolder')",
+											"type": "Expression"
+										},
 										"filename": {
 											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
 											"type": "Expression"
