@@ -55,7 +55,7 @@
 					"type": "string"
 				},
 				"Cost": {
-					"type": "integer"
+					"type": "decimal"
 				},
 				"CostDescription": {
 					"type": "string"
