@@ -420,7 +420,7 @@
 								},
 								"sink": {
 									"name": "COST",
-									"type": "Int32"
+									"type": "Double"
 								}
 							},
 							{
@@ -492,8 +492,8 @@
 								},
 								"sink": {
 									"name": "UPDATED_DATE",
-									"type": "String",
-									"format": "u",
+									"type": "DateTime",
+									"format": "yyyy-MM-dd",
 									"culture": "en-GB"
 								}
 							}
@@ -1002,7 +1002,7 @@
 								},
 								"sink": {
 									"name": "COST",
-									"type": "Int32"
+									"type": "Double"
 								}
 							},
 							{
@@ -1146,8 +1146,8 @@
 								},
 								"sink": {
 									"name": "UPDATED_DATE",
-									"type": "String",
-									"format": "u",
+									"type": "DateTime",
+									"format": "yyyy-MM-dd",
 									"culture": "en-GB"
 								}
 							}
