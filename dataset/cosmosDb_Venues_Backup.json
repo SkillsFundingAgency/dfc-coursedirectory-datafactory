@@ -13,10 +13,6 @@
 			"folder": {
 				"type": "string",
 				"defaultValue": "backup"
-			},
-			"filename": {
-				"type": "string",
-				"defaultValue": "venues.json"
 			}
 		},
 		"folder": {
@@ -28,7 +24,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@dataset().filename",
+					"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues-backup.json')",
 					"type": "Expression"
 				},
 				"folderPath": {
