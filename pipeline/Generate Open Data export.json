@@ -184,7 +184,14 @@
 			{
 				"name": "Copy Regions",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Purge backups",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -1196,7 +1203,14 @@
 			{
 				"name": "Use Cosmos",
 				"type": "IfCondition",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Purge backups",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -1205,7 +1219,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "Create Course Backup",
+							"name": "Create Course Backup from Cosmos",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -1261,7 +1275,7 @@
 							]
 						},
 						{
-							"name": "Create Venues Backup",
+							"name": "Create Venues Backup from Cosmos",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -1317,7 +1331,7 @@
 							]
 						},
 						{
-							"name": "Create Providers Backup",
+							"name": "Create Providers Backup from Cosmos",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -1496,13 +1510,32 @@
 				}
 			},
 			{
-				"name": "Clear backup",
+				"name": "Purge backups",
 				"type": "IfCondition",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Check Courses backup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Check UKRLP backup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Check Venues backup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@variables('skipBackup')",
+						"value": "@variables('deleteBackups')",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -1537,7 +1570,7 @@
 										}
 									}
 								},
-								"enableLogging": true,
+								"enableLogging": false,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true
@@ -1575,7 +1608,7 @@
 										}
 									}
 								},
-								"enableLogging": true,
+								"enableLogging": false,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true
@@ -1613,12 +1646,543 @@
 										}
 									}
 								},
-								"enableLogging": true,
+								"enableLogging": false,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true
 								}
 							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Check Courses backup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "cosmosDb_Courses_Backup",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('backupFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Check UKRLP backup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "cosmosDb_Ukrlp_Backup",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('backupFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Check Venues backup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "cosmosDb_Venues_Backup",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@variables('container')",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@variables('backupFolder')",
+								"type": "Expression"
+							},
+							"filename": {
+								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Copy backups",
+				"type": "Switch",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('source')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "Cosmos",
+							"activities": [
+								{
+									"name": "Copy Courses from Cosmos",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CosmosDbSqlApiSource",
+											"query": "SELECT * FROM c\nwhere c.ProviderUKPRN != \"0\"\nand c.ProviderUKPRN != null",
+											"preferredRegions": []
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Courses",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Courses_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Copy Venues from Cosmos",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CosmosDbSqlApiSource",
+											"query": "SELECT * FROM c\nwhere c.UKPRN != \"0\"\nand c.UKPRN != null",
+											"preferredRegions": []
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Venues",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Venues_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Copy Providers from Cosmos",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "CosmosDbSqlApiSource",
+											"query": "SELECT * FROM c\nwhere c.UnitedKingdomProviderReferenceNumber != 0\nand c.UnitedKingdomProviderReferenceNumber != null",
+											"preferredRegions": []
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Providers",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Ukrlp_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						},
+						{
+							"value": "Prod",
+							"activities": [
+								{
+									"name": "Copy Courses PROD backup",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "JsonSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"modifiedDatetimeStart": {
+													"value": "@getPastTime(1, 'Day')",
+													"type": "Expression"
+												},
+												"modifiedDatetimeEnd": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
+												"wildcardFileName": "*courses-backup.json"
+											},
+											"formatSettings": {
+												"type": "JsonReadSettings"
+											}
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Courses_Backup_PROD",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Courses_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Copy Venues PROD backup",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "JsonSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"modifiedDatetimeStart": {
+													"value": "@getPastTime(1, 'Day')",
+													"type": "Expression"
+												},
+												"modifiedDatetimeEnd": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
+												"wildcardFileName": "*venues-backup.json"
+											},
+											"formatSettings": {
+												"type": "JsonReadSettings"
+											}
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Venues_Backup_PROD",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Venues_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Copy UKRLP PROD backup",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "JsonSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"modifiedDatetimeStart": {
+													"value": "@getPastTime(1, 'Day')",
+													"type": "Expression"
+												},
+												"modifiedDatetimeEnd": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
+												"wildcardFileName": "*ukrlp-backup.json"
+											},
+											"formatSettings": {
+												"type": "JsonReadSettings"
+											}
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "cosmosDb_Ukrlp_Backup_PROD",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "cosmosDb_Ukrlp_Backup",
+											"type": "DatasetReference",
+											"parameters": {
+												"container": {
+													"value": "@variables('container')",
+													"type": "Expression"
+												},
+												"folder": {
+													"value": "@variables('backupFolder')",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
 						}
 					]
 				}
@@ -1645,13 +2209,13 @@
 				"type": "String",
 				"defaultValue": "backup"
 			},
-			"deleteBackups": {
-				"type": "String",
-				"defaultValue": "true"
+			"purgeBackups": {
+				"type": "Boolean",
+				"defaultValue": false
 			},
-			"useProdBackups": {
+			"source": {
 				"type": "String",
-				"defaultValue": "true"
+				"defaultValue": "cosmos"
 			}
 		},
 		"folder": {
