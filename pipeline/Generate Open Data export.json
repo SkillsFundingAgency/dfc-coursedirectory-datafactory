@@ -1203,7 +1203,7 @@
 						"value": "@variables('skipBackup')",
 						"type": "Expression"
 					},
-					"ifFalseActivities": [
+					"ifTrueActivities": [
 						{
 							"name": "Create Course Backup",
 							"type": "Copy",
