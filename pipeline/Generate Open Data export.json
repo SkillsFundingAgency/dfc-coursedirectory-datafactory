@@ -1343,10 +1343,6 @@
 										"folder": {
 											"value": "@variables('backupFolder')",
 											"type": "Expression"
-										},
-										"filename": {
-											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
-											"type": "Expression"
 										}
 									}
 								},
@@ -1381,10 +1377,6 @@
 										"folder": {
 											"value": "@variables('backupFolder')",
 											"type": "Expression"
-										},
-										"filename": {
-											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
-											"type": "Expression"
 										}
 									}
 								},
@@ -1418,10 +1410,6 @@
 										},
 										"folder": {
 											"value": "@variables('backupFolder')",
-											"type": "Expression"
-										},
-										"filename": {
-											"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
 											"type": "Expression"
 										}
 									}
@@ -1470,10 +1458,6 @@
 							"folder": {
 								"value": "@variables('backupFolder')",
 								"type": "Expression"
-							},
-							"filename": {
-								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
-								"type": "Expression"
 							}
 						}
 					}
@@ -1512,10 +1496,6 @@
 							},
 							"folder": {
 								"value": "@variables('backupFolder')",
-								"type": "Expression"
-							},
-							"filename": {
-								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
 								"type": "Expression"
 							}
 						}
@@ -1556,10 +1536,6 @@
 							"folder": {
 								"value": "@variables('backupFolder')",
 								"type": "Expression"
-							},
-							"filename": {
-								"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
-								"type": "Expression"
 							}
 						}
 					}
@@ -1584,7 +1560,7 @@
 					},
 					"cases": [
 						{
-							"value": "cosmos",
+							"value": "DEV",
 							"activities": [
 								{
 									"name": "Copy Courses from Cosmos",
@@ -1745,7 +1721,7 @@
 							]
 						},
 						{
-							"value": "prod",
+							"value": "PROD",
 							"activities": [
 								{
 									"name": "Copy Courses PROD backup",
@@ -1978,7 +1954,7 @@
 			},
 			"environment": {
 				"type": "String",
-				"defaultValue": "prod"
+				"defaultValue": "PROD"
 			}
 		},
 		"folder": {
