@@ -1955,7 +1955,7 @@
 			},
 			"environment": {
 				"type": "String",
-				"defaultValue": "PROD"
+				"defaultValue": "DEV"
 			}
 		},
 		"folder": {
