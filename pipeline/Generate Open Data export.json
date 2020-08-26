@@ -1323,30 +1323,11 @@
 			{
 				"name": "Purge backups",
 				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "Check Courses backup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Check UKRLP backup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Check Venues backup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@variables('deleteBackups')",
+						"value": "@variables('purgeBackups')",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -1662,11 +1643,11 @@
 													"type": "Expression"
 												},
 												"folder": {
-													"value": "@variables('backupFolder')",
+													"value": "@concat(variables('backupFolder'), '/', variables('environment'))",
 													"type": "Expression"
 												},
 												"filename": {
-													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses.json')",
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-courses-backup.json')",
 													"type": "Expression"
 												}
 											}
@@ -1718,11 +1699,11 @@
 													"type": "Expression"
 												},
 												"folder": {
-													"value": "@variables('backupFolder')",
+													"value": "@concat(variables('backupFolder'), '/', variables('environment'))",
 													"type": "Expression"
 												},
 												"filename": {
-													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues.json')",
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-venues-backup.json')",
 													"type": "Expression"
 												}
 											}
@@ -1774,11 +1755,11 @@
 													"type": "Expression"
 												},
 												"folder": {
-													"value": "@variables('backupFolder')",
+													"value": "@concat(variables('backupFolder'), '/', variables('environment'))",
 													"type": "Expression"
 												},
 												"filename": {
-													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp.json')",
+													"value": "@concat(formatDateTime(utcnow(), 'yyyy-MM-dd'), '-ukrlp-backup.json')",
 													"type": "Expression"
 												}
 											}
@@ -2029,7 +2010,7 @@
 			},
 			"purgeBackups": {
 				"type": "Boolean",
-				"defaultValue": false
+				"defaultValue": true
 			},
 			"environment": {
 				"type": "String",
