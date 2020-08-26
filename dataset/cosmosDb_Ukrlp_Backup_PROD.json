@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "cosmosbackups"
+				"container": "prodcosmosbackups"
 			}
 		},
 		"schema": {

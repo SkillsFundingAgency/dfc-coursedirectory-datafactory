@@ -170,7 +170,7 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@variables('exportFolder')",
+								"value": "@concat(variables('exportFolder'), '/', variables('environment'))",
 								"type": "Expression"
 							},
 							"filename": {
@@ -534,7 +534,7 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@variables('exportFolder')",
+								"value": "@concat(variables('exportFolder'), '/', variables('environment'))",
 								"type": "Expression"
 							},
 							"filename": {
@@ -713,7 +713,7 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@variables('exportFolder')",
+								"value": "@concat(variables('exportFolder'), '/', variables('environment'))",
 								"type": "Expression"
 							},
 							"filename": {
@@ -843,7 +843,7 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@variables('exportFolder')",
+								"value": "@concat(variables('exportFolder'), '/', variables('environment'))",
 								"type": "Expression"
 							},
 							"filename": {
@@ -1189,7 +1189,7 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@variables('exportFolder')",
+								"value": "@concat(variables('exportFolder'), '/', variables('environment'))",
 								"type": "Expression"
 							},
 							"filename": {
