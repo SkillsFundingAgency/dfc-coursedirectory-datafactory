@@ -1194,7 +1194,7 @@
 				]
 			},
 			{
-				"name": "Cosmos Backup",
+				"name": "Create new Cosmos backup",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
@@ -1380,7 +1380,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Cosmos Backup",
+						"activity": "Create new Cosmos backup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
