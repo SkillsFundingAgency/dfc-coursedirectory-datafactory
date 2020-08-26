@@ -1,44 +1,19 @@
 {
-	"name": "cosmosDb_Ukrlp_Backup",
+	"name": "cosmosDb_Ukrlp_Backup_PROD",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "providerPortalBlobStorage",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"container": {
-				"type": "string",
-				"defaultValue": "open-data"
-			},
-			"folder": {
-				"type": "string",
-				"defaultValue": "backup"
-			},
-			"filename": {
-				"type": "string",
-				"defaultValue": "ukrlp.json"
-			}
-		},
 		"folder": {
-			"name": "Cosmos/Backups/Local"
+			"name": "Cosmos/Backups/Prod"
 		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().filename",
-					"type": "Expression"
-				},
-				"folderPath": {
-					"value": "@dataset().folder",
-					"type": "Expression"
-				},
-				"container": {
-					"value": "@dataset().container",
-					"type": "Expression"
-				}
+				"container": "cosmosbackups"
 			}
 		},
 		"schema": {

@@ -1194,7 +1194,7 @@
 				]
 			},
 			{
-				"name": "Skip backup",
+				"name": "Cosmos Backup",
 				"type": "IfCondition",
 				"dependsOn": [],
 				"userProperties": [],
@@ -1380,7 +1380,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Skip backup",
+						"activity": "Cosmos Backup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1512,10 +1512,6 @@
 			"sharedFolder": {
 				"type": "String",
 				"defaultValue": "shared"
-			},
-			"skipBackup": {
-				"type": "Boolean",
-				"defaultValue": true
 			},
 			"backupFolder": {
 				"type": "String",

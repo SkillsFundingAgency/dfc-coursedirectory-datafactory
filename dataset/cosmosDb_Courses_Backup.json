@@ -20,7 +20,7 @@
 			}
 		},
 		"folder": {
-			"name": "Cosmos/Backups"
+			"name": "Cosmos/Backups/Local"
 		},
 		"annotations": [],
 		"type": "Json",

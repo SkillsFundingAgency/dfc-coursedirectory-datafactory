@@ -5,20 +5,6 @@
 			"referenceName": "providerPortalBlobStorage",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"container": {
-				"type": "string",
-				"defaultValue": "open-data"
-			},
-			"folder": {
-				"type": "string",
-				"defaultValue": "backup"
-			},
-			"filename": {
-				"type": "string",
-				"defaultValue": "courses.json"
-			}
-		},
 		"folder": {
 			"name": "Cosmos/Backups/Prod"
 		},
