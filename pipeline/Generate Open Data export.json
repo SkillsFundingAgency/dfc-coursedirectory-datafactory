@@ -1610,12 +1610,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "@variables('source')",
+						"value": "@variables('environment')",
 						"type": "Expression"
 					},
 					"cases": [
 						{
-							"value": "local",
+							"value": "cosmos",
 							"activities": [
 								{
 									"name": "Copy Courses from Cosmos",
@@ -1788,7 +1788,7 @@
 							]
 						},
 						{
-							"value": "Prod",
+							"value": "prod",
 							"activities": [
 								{
 									"name": "Copy Courses PROD backup",
