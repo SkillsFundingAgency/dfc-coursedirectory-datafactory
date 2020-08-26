@@ -1927,6 +1927,7 @@
 				}
 			}
 		],
+		"concurrency": 1,
 		"variables": {
 			"container": {
 				"type": "String",
