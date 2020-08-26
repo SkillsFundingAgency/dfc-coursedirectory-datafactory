@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Cosmos"
+			"name": "Cosmos/Local"
 		},
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
