@@ -71,7 +71,7 @@
 							},
 							{
 								"source": {
-									"path": "$['TradingName']"
+									"path": "$['Alias']"
 								},
 								"sink": {
 									"name": "TRADING_NAME",
