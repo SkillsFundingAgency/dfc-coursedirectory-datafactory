@@ -42,6 +42,9 @@
 				"CourseId": {
 					"type": "string"
 				},
+				"CourseRunId": {
+					"type": "string"
+				},
 				"LearnAimRef": {
 					"type": "string"
 				},
@@ -125,6 +128,15 @@
 				},
 				"RecordStatus": {
 					"type": "integer"
+				},
+				"StudyMode": {
+					"type": "integer"
+				},
+				"EntryRequirements": {
+					"type": "string"
+				},
+				"HowYoullBeAssessed": {
+					"type": "string"
 				}
 			}
 		}

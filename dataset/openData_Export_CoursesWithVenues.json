@@ -55,6 +55,10 @@
 				"type": "String"
 			},
 			{
+				"name": "COURSE_RUN_ID",
+				"type": "String"
+			},
+			{
 				"name": "LEARN_AIM_REF",
 				"type": "String"
 			},
@@ -144,6 +148,18 @@
 			},
 			{
 				"name": "UPDATED_DATE",
+				"type": "String"
+			},
+			{
+				"name": "STUDY_MODE",
+				"type": "String"
+			},
+			{
+				"name": "ENTRY_REQUIREMENTS",
+				"type": "String"
+			},
+			{
+				"name": "HOW_YOU_WILL_BE_ASSESSED",
 				"type": "String"
 			}
 		]
