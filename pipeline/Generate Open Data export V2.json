@@ -1263,7 +1263,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "openData_TransformAll",
+						"referenceName": "openData_TransformAll_v2",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"Courses": {
@@ -1338,9 +1338,9 @@
 							}
 						}
 					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
+					"integrationRuntime": {
+						"referenceName": "dfc-dev-prov-df-ir",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			},
