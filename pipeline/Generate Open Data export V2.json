@@ -1778,7 +1778,7 @@
 												"type": "AzureBlobStorageReadSettings",
 												"recursive": true,
 												"modifiedDatetimeStart": {
-													"value": "@getPastTime(1, 'Day')",
+													"value": "@getPastTime(16, 'Day')",
 													"type": "Expression"
 												},
 												"modifiedDatetimeEnd": {
@@ -1844,7 +1844,7 @@
 												"type": "AzureBlobStorageReadSettings",
 												"recursive": true,
 												"modifiedDatetimeStart": {
-													"value": "@getPastTime(1, 'Day')",
+													"value": "@getPastTime(16, 'Day')",
 													"type": "Expression"
 												},
 												"modifiedDatetimeEnd": {
@@ -1910,7 +1910,7 @@
 												"type": "AzureBlobStorageReadSettings",
 												"recursive": true,
 												"modifiedDatetimeStart": {
-													"value": "@getPastTime(1, 'Day')",
+													"value": "@getPastTime(16, 'Day')",
 													"type": "Expression"
 												},
 												"modifiedDatetimeEnd": {
