@@ -1,0 +1,7 @@
+{
+	"name": "steve-obsidian",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self Hosted runtime for testing purposes"
+	}
+}
