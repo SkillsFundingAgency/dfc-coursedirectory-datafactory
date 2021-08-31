@@ -6,12 +6,12 @@
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/open-data/blobs/export/PROD/",
-			"blobPathEndsWith": "courses.csv",
+			"blobPathBeginsWith": "/prodcosmosbackups/blobs/",
+			"blobPathEndsWith": "courses-backup.json",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/dfc-dev-prov-rg/providers/Microsoft.Storage/storageAccounts/dfcdevprovstr",
 			"events": [
-				"Microsoft.Storage.BlobDeleted"
+				"Microsoft.Storage.BlobCreated"
 			]
 		}
 	}
